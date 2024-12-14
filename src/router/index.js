@@ -23,6 +23,11 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    component: () => import(/* webpackChunkName: "about" */ '@/components/404Page.vue')
+  }
 ]
 
 const router = createRouter({
