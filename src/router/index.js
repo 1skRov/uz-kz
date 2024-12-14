@@ -17,6 +17,29 @@ const routes = [
         component: () => import(/* webpackChunkName: "about" */ '@/pages/aboutus/AboutUs.vue')
       },
       {
+        path: '/regions',
+        name: 'Regions',
+        component: () => import(/* webpackChunkName: "about" */ '@/pages/Regions/Regions.vue'),
+        redirect: '/regions/guide',
+        children: [
+          {
+            path: 'guide',
+            name: 'guide',
+            component: () => import(/* webpackChunkName: "about" */ '@/pages/Regions/Guide.vue'),
+          },
+          {
+            path: 'info',
+            name: 'info',
+            component: () => import(/* webpackChunkName: "about" */ '@/pages/Regions/Informations.vue'),
+          },
+          {
+            path: 'regions-contacts',
+            name: 'regions-contacts',
+            component: () => import(/* webpackChunkName: "about" */ '@/pages/Regions/Contacts.vue'),
+          },
+        ]
+      },
+      {
         path:'/member-association',
         name:'MemberAssociation',
         component: () => import(/* webpackChunkName: "about" */ '@/components/Dialog.vue')

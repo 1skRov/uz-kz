@@ -4,21 +4,35 @@ export default {
   data(){
     return {
       menuItems: [
-        { name: 'Руководство', icon: 'home' },
-        { name: 'Информация', icon: 'info-circle' },
-        { name: 'Контакты', icon: 'phone-square' }
+        { name: 'Руководство', icon: 'home', route: '/regions/guide' },
+        { name: 'Информация', icon: 'info-circle', route: '/regions/info' },
+        { name: 'Контакты', icon: 'phone-square', route: '/regions/regions-contacts' }
       ]
+    }
+  },
+  methods: {
+    navigateTo(route) {
+      this.$router.push(route);
+    },
+    isActive(route) {
+      return this.$route.path === route;
     }
   }
 }
 </script>
 
 <template>
-<div class="navigation" >
-  <div v-for="i in menuItems" :key="i.key" class="item">
-    <div style="padding: 1rem 0;" >{{ i.name }}</div>
+  <div class="navigation">
+    <div
+        v-for="item in menuItems"
+        :key="item.route"
+        class="item"
+        :class="{ active: isActive(item.route) }"
+        @click="navigateTo(item.route)"
+    >
+      <div style="padding: 1rem 0;">{{ item.name }}</div>
+    </div>
   </div>
-</div>
 </template>
 
 <style scoped>
@@ -28,6 +42,7 @@ export default {
   border: 1px solid #CFD3DA;
   border-radius: 8px;
   background-color: rgba(0, 114, 171, 0.02);
+  overflow: hidden;
 }
 .item {
   width: 100%;
@@ -35,6 +50,15 @@ export default {
   text-align: center;
   font-weight: 500;
   letter-spacing: 2px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+.item:hover {
+  background-color: rgba(0, 114, 171, 0.1);
+}
+.item.active {
+  background-color: #0072AB;
+  color: white;
 }
 .item + .item {
   border-left: 1px solid #CFD3DA;
