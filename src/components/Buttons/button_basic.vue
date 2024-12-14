@@ -6,14 +6,19 @@ export default {
       type: String,
       required: true
     },
+    isBlue: {
+      type: Boolean,
+      default: false
+    }
   },
 }
 </script>
 
 <template>
-<button class="btn">
-  {{ title_button }}
-</button>
+  <button
+      :class="['btn', { 'btn-blue': isBlue }]">
+    {{ title_button }}
+  </button>
 </template>
 
 <style scoped>
@@ -25,8 +30,20 @@ export default {
   font-weight: 500;
   background: #FFF;
   padding: 16px 36px;
+  transition: background 0.1s;
 }
+
 .btn:hover {
   background: rgb(249, 250, 251);
+}
+
+.btn-blue {
+  background: #0072AB;
+  color: white;
+  border: none;
+}
+
+.btn-blue:hover {
+  background: #0056b3;
 }
 </style>

@@ -5,10 +5,14 @@ import WhoWeaAre from "@/pages/aboutus/WhoWeaAre.vue";
 import OurHistory from "@/pages/aboutus/OurHistory.vue";
 import CultureAndTraditions from "@/pages/aboutus/CultureAndTraditions.vue";
 import PopularPersons from "@/pages/aboutus/PopularPersons.vue";
+import YouthOrganization from "@/pages/aboutus/YouthOrganization.vue";
+import EducationAndSport from "@/pages/aboutus/EducationAndSport.vue";
 
 export default {
   name: "AboutUs",
-  components: {PopularPersons, CultureAndTraditions, OurHistory, WhoWeaAre, Sections},
+  components: {
+    EducationAndSport,
+    YouthOrganization, PopularPersons, CultureAndTraditions, OurHistory, WhoWeaAre, Sections},
   data (){
     return {
       sections: ['кто мы','наша история','культура','личности','молодежные организации','образование и спорт','помощь',],
@@ -72,6 +76,12 @@ export default {
       </div>
       <div id="section-3" class="section">
         <PopularPersons/>
+      </div>
+      <div id="section-4" class="section">
+<!--        <YouthOrganization/>-->
+      </div>
+      <div id="section-5" class="section">
+        <EducationAndSport/>
       </div>
     </div>
   </div>

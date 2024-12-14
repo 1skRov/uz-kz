@@ -1,6 +1,6 @@
 <script>
 import SideBar from "@/pages/Main/SideBar.vue";
-import Button_basic from "@/components/Buttons/button.vue";
+import Button_basic from "@/components/Buttons/button_basic.vue";
 import Dialog from "@/components/Dialog.vue";
 
 export default {
