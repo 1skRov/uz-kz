@@ -7,10 +7,12 @@ import CultureAndTraditions from "@/pages/aboutus/CultureAndTraditions.vue";
 import PopularPersons from "@/pages/aboutus/PopularPersons.vue";
 import YouthOrganization from "@/pages/aboutus/YouthOrganization.vue";
 import EducationAndSport from "@/pages/aboutus/EducationAndSport.vue";
+import Help from "@/pages/aboutus/Help.vue";
 
 export default {
   name: "AboutUs",
   components: {
+    Help,
     EducationAndSport,
     YouthOrganization, PopularPersons, CultureAndTraditions, OurHistory, WhoWeaAre, Sections},
   data (){
@@ -82,6 +84,9 @@ export default {
       </div>
       <div id="section-5" class="section">
         <EducationAndSport/>
+      </div>
+      <div id="section-6" class="section">
+        <Help />
       </div>
     </div>
   </div>
