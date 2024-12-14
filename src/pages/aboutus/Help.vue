@@ -40,6 +40,7 @@ export default {
   border: 1px solid #EBEEF0;
   border-radius: 8px;
   display: flex;
+  background-color: rgba(0, 114, 171, 0.02);
 }
 
 .title {

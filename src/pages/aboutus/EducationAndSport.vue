@@ -76,6 +76,7 @@ export default {
   border-radius: 8px;
   position: relative;
   padding: 2.5rem;
+  background-color: rgba(0, 114, 171, 0.02);
 }
 .icon{
   position: absolute;
