@@ -58,8 +58,16 @@ export default {
       <div id="section-1" class="section">
         <OurHistory/>
       </div>
-      <div id="section-2" class="section">
-        <CultureAndTraditions/>
+      <div style="position: relative; width: 100%; background-color: #F7F8FA">
+        <div style="position: absolute; bottom:0; right: 0">
+          <img src="@/assets/images/cult-bottom.png" alt="">
+        </div>
+        <div style="position: absolute; top:0; right: 0">
+          <img src="@/assets/images/cult-top.png" alt="">
+        </div>
+        <div id="section-2" class="section">
+          <CultureAndTraditions/>
+        </div>
       </div>
     </div>
   </div>
