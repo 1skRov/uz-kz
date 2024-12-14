@@ -1,13 +1,36 @@
 <script>
 
+import Sections from "@/components/Sections.vue";
+import WhoWeaAre from "@/pages/aboutus/WhoWeaAre.vue";
+import OurHistory from "@/pages/aboutus/OurHistory.vue";
+
 export default {
   name: "AboutUs",
+  components: {OurHistory, WhoWeaAre, Sections},
   data (){
     return {
       sections: ['кто мы','наша история','культура','личности','молодежные организации','образование и спорт','помощь',],
       currentSection: 0,
     }
   },
+  mounted() {
+    const observer = new IntersectionObserver(this.handleIntersection, {
+      threshold: 0.3,
+    });
+
+    const sectionElements = document.querySelectorAll('.section');
+    sectionElements.forEach((section) => observer.observe(section));
+  },
+  methods:{
+    handleIntersection(entries) {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.id.split('-')[1];
+          this.currentSection = parseInt(sectionId);
+        }
+      }
+    },
+  }
 }
 </script>
 
@@ -17,16 +40,24 @@ export default {
       <div style="position: sticky; top:120px;">
         <ul>
           <li v-for="(section, index) in sections" :key="index" style="cursor: pointer">
-            <div :class="['circle mb-8 mx-auto', { active: currentSection === index }]">
+            <div :class="['circle', { active: currentSection === index }]">
             </div>
           </li>
         </ul>
       </div>
     </div>
 
-      <div class="text-box flex-wrap hid" style="width:140px; position: fixed; top:140px; left: 120px; padding: 12px 24px; z-index:1000">
+      <div class="text-box hid">
         {{ sections[currentSection] }}
       </div>
+    <div style="width: 100%">
+      <div id="section-0" class="section">
+        <WhoWeaAre/>
+      </div>
+      <div id="section-1" class="section">
+        <OurHistory/>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -75,11 +106,23 @@ export default {
   color: #575F6C;
   font-weight: 500;
   text-align: center;
+  text-wrap: wrap;
+  position: fixed;
+  top:140px;
+  left: 120px;
+  padding: 12px 24px;
+  z-index:1000
 }
 
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.section {
+  width: 65%;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

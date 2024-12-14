@@ -100,7 +100,7 @@ export default {
     .list {
       display: flex;
       align-items: center;
-      gap: 2.5rem;
+      gap: 4.5rem;
       list-style-type: none;
       margin: 0;
       padding: 0;
