@@ -3,10 +3,11 @@
 import Sections from "@/components/Sections.vue";
 import WhoWeaAre from "@/pages/aboutus/WhoWeaAre.vue";
 import OurHistory from "@/pages/aboutus/OurHistory.vue";
+import CultureAndTraditions from "@/pages/aboutus/CultureAndTraditions.vue";
 
 export default {
   name: "AboutUs",
-  components: {OurHistory, WhoWeaAre, Sections},
+  components: {CultureAndTraditions, OurHistory, WhoWeaAre, Sections},
   data (){
     return {
       sections: ['кто мы','наша история','культура','личности','молодежные организации','образование и спорт','помощь',],
@@ -56,6 +57,9 @@ export default {
       </div>
       <div id="section-1" class="section">
         <OurHistory/>
+      </div>
+      <div id="section-2" class="section">
+        <CultureAndTraditions/>
       </div>
     </div>
   </div>
