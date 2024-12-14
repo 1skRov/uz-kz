@@ -30,7 +30,7 @@ export default {
       </div>
     </div>
     <div class="image-container">
-      <img src="@/assets/images/3.png" alt="help" class="responsive-image">
+      <img src="@/assets/images/help.png" alt="help" class="responsive-image">
     </div>
   </div>
 </template>
