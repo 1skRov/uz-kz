@@ -31,7 +31,9 @@ export default {
       </template>
     </sections>
     <navigation/>
-    <router-view></router-view>
+    <div style="padding: 50px 0;">
+      <router-view></router-view>
+    </div>
   </div>
 </div>
 </template>
