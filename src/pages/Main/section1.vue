@@ -12,6 +12,12 @@ export default {
       title:"«Ассоциация этнокультурных объединений узбеков Республики Казахстан «Дустлик»",
       desc: "Для узбекской общины в Казахстане единство это основа нашего общего будущего и залог процветания и развития нашего народа.",
       btn_title:"СТать членов ассоциации",
+      images: [
+        require("@/assets/images/help.png"),
+        require("@/assets/images/help.png"),
+        require("@/assets/images/help.png"),
+        require("@/assets/images/help.png"),
+      ],
     };
   },
   methods: {
@@ -28,18 +34,12 @@ export default {
   <div class="content">
     <div class="tablet-space">
       <div class="tablet-space-img">
-        <div class="img1">
-          <img src="@/assets/images/1.png " alt="first">
-        </div>
-        <div style="margin-left: 4px;">
-          <div class="img-main">
-            <img src="@/assets/images/2.png" alt="">
+        <div class="image-grid">
+          <div class="large-image">
+            <img :src="images[0]" alt="Large image" />
           </div>
-          <div class="img-main">
-            <img src="@/assets/images/3.png" alt="">
-          </div>
-          <div class="img-main">
-            <img src="@/assets/images/4.png" alt="">
+          <div class="small-images">
+            <img v-for="(image, index) in images.slice(1, 4)" :key="index" :src="image" alt="Small image" />
           </div>
         </div>
       </div>
@@ -78,10 +78,37 @@ export default {
     width: 100%;
     display: flex;
     justify-content: end;
+    align-items: center;
     padding: 69px 0;
 
-    .img-main + .img-main {
-      margin-top: 4px;
+    .image-grid {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      //grid-template-rows: repeat(2, 1fr); /* Три строки */
+      gap: 10px;
+      height: 100%; /* Высота сетки */
+      width: 70%;
+      justify-content: end;
+    }
+
+
+
+    .large-image img,
+    .small-images img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Изображения заполняют блок без искажений */
+      border-radius: 8px;
+    }
+
+    .small-images {
+      display: grid;
+      grid-template-rows: repeat(3, 1fr);
+      gap: 10px; /* Отступы между изображениями */
+    }
+
+    .small-images img {
+      height: 100%;
     }
   }
 

@@ -40,6 +40,11 @@ const routes = [
         ]
       },
       {
+        path: '/documents',
+        name: 'Documents',
+        component: () => import(/* webpackChunkName: "about" */ '@/pages/Documents/Documents.vue')
+      },
+      {
         path:'/member-association',
         name:'MemberAssociation',
         component: () => import(/* webpackChunkName: "about" */ '@/components/Dialog.vue')
