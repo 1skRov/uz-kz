@@ -84,9 +84,8 @@ export default {
     .image-grid {
       display: grid;
       grid-template-columns: 3fr 1fr;
-      //grid-template-rows: repeat(2, 1fr); /* Три строки */
       gap: 10px;
-      height: 100%; /* Высота сетки */
+      height: 100%;
       width: 70%;
       justify-content: end;
     }
@@ -97,14 +96,14 @@ export default {
     .small-images img {
       width: 100%;
       height: 100%;
-      object-fit: cover; /* Изображения заполняют блок без искажений */
+      object-fit: cover;
       border-radius: 8px;
     }
 
     .small-images {
       display: grid;
       grid-template-rows: repeat(3, 1fr);
-      gap: 10px; /* Отступы между изображениями */
+      gap: 10px;
     }
 
     .small-images img {
