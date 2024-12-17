@@ -1,3 +1,36 @@
+<template>
+  <div class="section">
+    <side-bar :page="page" :icon="false" />
+    <div style="width: 100%">
+      <div class="content">
+        <sections>
+          <template #title>
+            {{ title }}
+          </template>
+          <template #title-button>
+            <div class="btns">
+              <left @click="moveLeft" />
+              <right @click="moveRight" />
+            </div>
+          </template>
+        </sections>
+      </div>
+
+      <div id="carousel" class="noselect">
+        <transition-group :name="direction" tag="div">
+          <div
+              v-for="(image, index) in visibleItems"
+              :key="image.id"
+              :class="['item', 'level' + calculateLevel(index)]"
+          >
+            <img :src="image.src" :alt="image.alt" />
+          </div>
+        </transition-group>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script>
 import Sections from "@/components/Sections.vue";
 import SideBar from "@/pages/Main/SideBar.vue";
@@ -7,83 +40,61 @@ import Right from "@/components/Buttons/right.vue";
 
 export default {
   name: "Section6",
-  components: {Right, Left, More, SideBar, Sections},
-  data(){
+  components: { Right, Left, More, SideBar, Sections },
+  data() {
     return {
       title: "Наши партнеры",
       page: "06",
-      items: [
-        { src: require("@/assets/icons/logo1.svg"), alt: "Logo 1" },
-        { src: require("@/assets/icons/logo2.svg"), alt: "Logo 2" },
-        { src: require("@/assets/icons/logo3.svg"), alt: "Logo 3" },
-        { src: require("@/assets/icons/logo4.svg"), alt: "Logo 4" },
-        { src: require("@/assets/icons/logo5.svg"), alt: "Logo 5" },
-        { src: require("@/assets/icons/logo6.svg"), alt: "Logo 6" },
-        { src: require("@/assets/icons/logo7.svg"), alt: "Logo 7" },
-        { src: require("@/assets/icons/logo8.svg"), alt: "Logo 8" },
+      images: [
+        { id: 1, src: require("@/assets/icons/logo1.svg"), alt: "Logo 1" },
+        { id: 2, src: require("@/assets/icons/logo2.svg"), alt: "Logo 2" },
+        { id: 3, src: require("@/assets/icons/logo3.svg"), alt: "Logo 3" },
+        { id: 4, src: require("@/assets/icons/logo4.svg"), alt: "Logo 4" },
+        { id: 5, src: require("@/assets/icons/logo5.svg"), alt: "Logo 5" },
+        { id: 6, src: require("@/assets/icons/logo6.svg"), alt: "Logo 6" },
+        { id: 7, src: require("@/assets/icons/logo7.svg"), alt: "Logo 7" },
+        { id: 8, src: require("@/assets/icons/logo8.svg"), alt: "Logo 8" },
       ],
-      slideWidth: 250,
-      animationDuration: 40,
-    }
+      active: 0,
+      direction: "",
+    };
   },
   computed: {
-    slideTrackStyle() {
-      const totalSlides = this.items.length;
-      const totalWidth = Math.min(this.slideWidth * totalSlides, window.innerWidth);
-
-      return {
-        "--total-width": `${totalWidth}px`,
-        "--animation-duration": `${this.animationDuration}s`,
-        "--translate-distance": `-${this.slideWidth * totalSlides}px`,
-      };
-    }
+    visibleItems() {
+      const visible = [];
+      const len = this.images.length;
+      for (let i = -2; i <= 2; i++) {
+        let index = (this.active + i + len) % len;
+        visible.push(this.images[index]);
+      }
+      return visible;
+    },
   },
-}
+  methods: {
+    moveLeft() {
+      this.direction = "left";
+      this.active = (this.active - 1 + this.images.length) % this.images.length;
+    },
+    moveRight() {
+      this.direction = "right";
+      this.active = (this.active + 1) % this.images.length;
+    },
+    calculateLevel(index) {
+      return index - 2;
+    },
+  },
+};
 </script>
 
-<template>
-  <div class="section">
-    <side-bar :page="page" :icon="false"/>
-    <div style="width: 100%">
-      <div class="content">
-        <sections>
-          <template #title>
-            {{ title }}
-          </template>
-          <template #title-button>
-            <div class="btns">
-              <left/>
-              <right/>
-            </div>
-          </template>
-        </sections>
-      </div>
-      <div class="slider">
-        <div class="slide-track" :style="slideTrackStyle">
-          <div
-              class="slide"
-              v-for="(item, index) in items"
-              :key="index"
-          >
-            <img :src="item.src" :alt="item.alt" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<style scoped lang="scss">
+<style scoped>
 .section {
   display: flex;
-  overflow: hidden;
 }
 .content {
   width: 70%;
   display: flex;
   justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
   align-items: center;
 }
 .btns {
@@ -91,64 +102,80 @@ export default {
   gap: 2rem;
   align-items: center;
 }
-.slider {
-  background: white;
-  height: 100px;
-  margin: auto;
-  overflow: hidden;
+
+#carousel {
   position: relative;
+  height: 35vh;
   width: 100%;
+  margin: 0;
+  overflow: hidden;
 }
 
-.slider::before,
-.slider::after {
-  background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 1) 0%,
-      rgba(255, 255, 255, 0) 100%
-  );
-  content: "";
-  height: 100px;
+.item {
   position: absolute;
-  width: 100px;
-  z-index: 2;
+  text-align: center;
+  transition: all 1s;
 }
 
-.slider::after {
-  right: 0;
-  top: 0;
-  transform: rotateZ(180deg);
-}
-
-.slider::before {
-  left: 0;
-  top: 0;
-}
-
-.slide-track {
-  display: flex;
-  width: var(--total-width);
-  animation: scroll var(--animation-duration) linear infinite;
-}
-
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(var(--translate-distance));
-  }
-}
-
-.slide {
-  height: 100px;
-  width: calc(100% / 8);
-  flex-shrink: 0;
-}
-
-.slide img {
+.item img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  border-radius: 8px;
+}
+
+.level-2 {
+  height: 150px;
+  width: 110px;
+  margin-top: 25px;
+  left: 5%;
+}
+
+.level-1 {
+  height: 180px;
+  width: 130px;
+  margin-top: 10px;
+  left: 25%;
+}
+
+.level0 {
+  height: 200px;
+  width: 150px;
+  left: 45%;
+}
+
+.level1 {
+  height: 180px;
+  width: 130px;
+  margin-top: 10px;
+  left: 65%;
+}
+
+.level2 {
+  height: 150px;
+  width: 110px;
+  margin-top: 25px;
+  left: 85%;
+}
+
+.left-enter-active,
+.right-enter-active {
+  transition: transform 1s, opacity 1s;
+}
+
+.left-enter,
+.left-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.right-enter,
+.right-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.noselect {
+  user-select: none;
 }
 </style>
