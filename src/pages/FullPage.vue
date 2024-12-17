@@ -19,7 +19,7 @@ export default {
       </transition>
     </div>
     <div>
-<!--      <Footer/>-->
+      <Footer/>
     </div>
   </div>
 </template>

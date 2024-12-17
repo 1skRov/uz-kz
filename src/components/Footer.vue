@@ -101,23 +101,6 @@ export default {
         </div>
       </div>
     </div>
-    <div class="content-for-mob">
-      <div class="sandbars">
-        <h2 class="main-text">О НАС</h2>
-      </div>
-      <div class="sandbars">
-        <h2 class="main-text">РЕГИОНЫ</h2>
-      </div>
-      <div class="sandbars">
-        <h2 class="main-text">ДОКУМЕНТЫ</h2>
-      </div>
-      <div class="sandbars">
-        <h2 class="main-text">ПРЕСС ЦЕНТР</h2>
-      </div>
-      <div class="sandbars">
-        <h2 class="main-text">КОНТАКТЫ</h2>
-      </div>
-    </div>
     <div class="text-line">
       <div class="text-end">© 2024 Единый Портал Узбеков Казахстана</div>
       <div class="text-line">
@@ -131,158 +114,65 @@ export default {
 <style scoped>
 .main {
   display: flex;
-  width:100%;
   flex-direction: column;
-  gap: 2.5rem;
+  background-color: #F7F8FA;
   padding: 56px 108px;
-  background: #F7F8FA;
-  .content {
-    display: flex;
-    justify-content: space-between;
-    .sandbars {
-      width: 16%;
-      .text {
-        color: rgba(156, 163, 175);
-      }
-      .main-text{
-        font-size: 16px;
-        font-weight: 500;
-        color: black;
-        margin-bottom:24px;
-      }
-      .btn {
-        text-transform: uppercase;
-        font-weight: 500;
-        padding: 16px 24px;
-        color: #fff;
-        cursor: pointer;
-        text-align: center;
-        border-radius: 6px;
-        border: 1px solid #CFD3DA;
-        background-color: #0072AB;
-      }
-      .text, .main-text {
-        word-wrap: break-word;
-        word-break: break-word;
-        overflow-wrap: break-word;
-      }
-      .text + .text {
-        margin-top: 16px;
-      }
-      .text + .main-text {
-        margin: 24px 0;
-      }
-    }
-  }
-  .content-line {
-    margin: 56px 0;
-    display: flex;
-    border-width: 1px 0px 1px 1px;
-    border-style: solid;
-    border-color: #EBEEF0;
-    .item {
-      display: flex;
-      align-items: center;
-      width:100%;
-      gap: 3rem;
-      margin-left: auto;
-      margin-right: auto;
-      justify-content: space-between;
-      .item-in {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        width: 50%;
-        margin-left: 80px;
-      }
-    }
-  }
-  .text-line {
-    display: flex;
-    justify-content: space-between;
-    .text-end {
-      text-align: start;
-    }
-    .text-end + .text-end {
-      margin-left: 1rem;
-    }
-  }
-  .content-for-mob {
-    display: none;
-  }
+  gap: 3rem;
 }
-@media (max-width : 992px) {
-  .main {
-    padding: 48px 40px;
-    .content {
-      .sandbars {
-        .text {
-          font-size: 14px;
-        }
-        .main-text{
-          font-size: 14px;
-        }
-        .btn {
-          font-size: 14px;
-        }
-      }
-    }
-    .text-line {
-      .text-end {
-        font-size: 14px;
-      }
-    }
-  }
+.main .content {
+  display: flex;
+  justify-content: space-between;
 }
-@media (max-width : 760px) {
-  .main {
-    padding: 32px 24px;
-    gap: 48px;
-    .content {
-      display: none;
-    }
-    .content-line {
-      margin-top: 0;
-      margin-bottom: 0;
-      flex-direction: column;
-      gap: 24px;
-      border:none;
-      .item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width:100%;
-        .item-in {
-          display: flex;
-          gap: 1rem;
-          margin-left: 0;
-        }
-      }
-    }
-    .text-line {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      .text-end {
-        font-size: 14px;
-      }
-      .text-end + .text-end {
-        margin-left: 0;
-      }
-    }
-    .content-for-mob {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      .sandbars {
-        .main-text{
-          font-weight: 500;
-          color: black;
-          font-size: 14px;
-        }
-      }
+.content .sandbars {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  width: 20vw;
+}
+.sandbars .text {
+  color: #9098A5;
+}
+.sandbars .btn {
+  background-color: #0072AB;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  text-align: center;
+  border-radius: 6px;
+  padding: 16px 24px;
+}
+.main-text {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+.main .content-line {
+  display: flex;
+}
 
-    }
-  }
+.content-line {
+  border-top: 1px solid #EBEEF0;
+  border-bottom: 1px solid #EBEEF0;
+}
+.content-line .item {
+  display: flex;
+  align-items: center;
+}
+.item .item-in {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width:40vw;
+  margin: 0 auto;
+}
+
+.main .text-line {
+  display: flex;
+  justify-content: space-between;
+}
+.text-end + .text-end {
+  margin-left: 3rem;
 }
 </style>
