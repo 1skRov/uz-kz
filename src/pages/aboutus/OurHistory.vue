@@ -132,8 +132,8 @@ export default {
 }
 .carousel-container .item {
   flex: 0 0 auto;
-  width: 320px;
-  height: 400px;
+  width: 390px;
+  height: 450px;
   display: flex;
   align-items: flex-end;
   background: #343434 no-repeat center center / cover;

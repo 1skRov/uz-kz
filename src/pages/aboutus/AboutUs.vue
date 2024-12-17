@@ -85,7 +85,7 @@ export default {
       <div id="section-5" class="section">
         <EducationAndSport/>
       </div>
-      <div id="section-6" class="section">
+      <div id="section-6" class="section" style="padding-bottom: 60px;">
         <Help />
       </div>
     </div>
