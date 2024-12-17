@@ -2,15 +2,46 @@
 
 import {defineComponent} from "vue";
 import MapComponent from "@/pages/Regions/Map.vue";
+import api from "@/axios";
 
 export default defineComponent({
   components: {MapComponent},
   data(){
     return {
-      location:"Дом дружбы, г.Астана, пр.Б. Момышулы, 24/9, офис 21",
-      phone: "+7 (717) 234-56-78",
-      email: "info@domdrudby.ru",
+      contacts: {
+        phone1: null,
+        phone2: null,
+        email: null,
+        address: null
+      },
     }
+  },
+  mounted(){
+    this.getContacts();
+  },
+  methods: {
+    getContacts(){
+      api.get('/contacts/', {
+        headers: {
+          'ngrok-skip-browser-warning': 'true'
+        }
+      })
+          .then(response => {
+            const data = response.data[0];
+            if (data) {
+              this.contacts = {
+                address: data.address,
+                phone1: data.phone1,
+                phone2: data.phone2,
+                email: data.email,
+              };
+            }
+            console.log("contacts загружены успешно:", this.contacts);
+          })
+          .catch(error => {
+            console.error("contacts", error);
+          });
+    },
   }
 })
 </script>
@@ -25,7 +56,7 @@ export default defineComponent({
           </svg>
         </div>
         <div>
-          {{location}}
+          {{contacts.address}}
         </div>
       </div>
       <div class="line">
@@ -34,20 +65,21 @@ export default defineComponent({
             <path d="M19.7624 14.1333L15.3874 12.2583C15.2005 12.1787 14.9928 12.1619 14.7956 12.2105C14.5983 12.2591 14.4222 12.3705 14.2937 12.5279L12.3562 14.8951C9.31545 13.4614 6.86837 11.0143 5.43469 7.97358L7.80188 6.03608C7.95957 5.90783 8.07117 5.73169 8.11981 5.53434C8.16844 5.33699 8.15145 5.12916 8.07141 4.94233L6.19641 0.567328C6.10856 0.365925 5.9532 0.201486 5.7571 0.102366C5.561 0.0032464 5.33645 -0.0243417 5.12219 0.0243589L1.05969 0.961859C0.853118 1.00956 0.668812 1.12587 0.536855 1.29181C0.404898 1.45775 0.333082 1.66352 0.33313 1.87553C0.33313 11.8951 8.45422 20.0005 18.4581 20.0005C18.6702 20.0007 18.8761 19.9289 19.0421 19.7969C19.2081 19.665 19.3245 19.4806 19.3722 19.274L20.3097 15.2115C20.3581 14.9962 20.3299 14.7707 20.23 14.5739C20.1301 14.3772 19.9648 14.2214 19.7624 14.1333Z" fill="#0072AB"/>
           </svg>
         </div>
-        <div>
-          {{phone}}
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <p style="margin: 0">{{ contacts.phone1 }}</p>
+          <p style="margin: 0">{{ contacts.phone1 }}</p>
         </div>
       </div>
-      <div class="line">
-        <div>
+      <a class="line" :href="`mailto:${contacts.email}`" target="_blank" style="text-decoration: none; color: #333333">
+        <div >
           <svg width="28" height="22" viewBox="0 0 28 22" fill="#0072AB" xmlns="http://www.w3.org/2000/svg">
             <path d="M3.33366 0.333374C1.86033 0.333374 0.666992 1.52671 0.666992 3.00004V19C0.666992 20.4734 1.86033 21.6667 3.33366 21.6667H24.667C26.1403 21.6667 27.3337 20.4734 27.3337 19V3.00004C27.3337 1.52671 26.1403 0.333374 24.667 0.333374H3.33366ZM3.33366 3.00004H24.667V4.33598L14.0003 11L3.33366 4.33598V3.00004ZM3.33366 7.00264L14.0003 13.6667L24.667 7.00264V19H3.33366V7.00264Z" fill="#0072AB"/>
           </svg>
         </div>
         <div>
-          {{email}}
+          {{contacts.email}}
         </div>
-      </div>
+      </a>
       <div class="soc">
         <h4 class="font-gilroy" style="font-size: 24px; font-weight: 400;">Соц. сети</h4>
         <div style="display: flex; gap: 1.5rem">

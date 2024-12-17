@@ -4,7 +4,8 @@ export default {
   props: {
     title_button: {
       type: String,
-      required: true
+      required: true,
+      default: "Подробнее"
     },
     isBlue: {
       type: Boolean,
