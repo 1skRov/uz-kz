@@ -34,7 +34,9 @@ export default {
       for (const entry of entries) {
         if (entry.isIntersecting) {
           const sectionId = entry.target.id.split('-')[1];
-          this.currentSection = parseInt(sectionId);
+          if (!isNaN(sectionId)) {
+            this.currentSection = parseInt(sectionId);
+          }
         }
       }
     },
