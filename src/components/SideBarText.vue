@@ -12,15 +12,22 @@ export default {
 </script>
 
 <template>
-  <aside class="side-bar" :style="{ backgroundColor: isBackground ? '#0072AB' : 'white' }">
-    <p class="font-gilroy mx-auto" :style="{ color: isBackground ? 'white' : '#CFD3DA' }">{{ title }}</p>
+  <aside
+      class="side-bar"
+      :style="{ backgroundColor: isBackground ? '#0072AB' : 'white' }"
+  >
+    <p
+        class="font-gilroy mx-auto"
+        :style="{ color: isBackground ? 'white' : '#CFD3DA' }"
+    >
+      {{ title }}
+    </p>
   </aside>
 </template>
 
 <style scoped>
 .side-bar {
   width: 160px;
-  height: 100%;
   border-right: 1px solid #EBEEF0;
   position: relative;
 

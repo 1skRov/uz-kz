@@ -29,7 +29,6 @@ export default {
 <style scoped>
 .documents {
   width: 65%;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
 }
 </style>
