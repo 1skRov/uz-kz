@@ -1,13 +1,14 @@
 <script>
 export default {
   name: "Navigation",
+  props:{
+    menuItems:{
+      type: Array,
+      required: true
+    }
+  },
   data(){
     return {
-      menuItems: [
-        { name: 'Руководство', icon: 'home', route: '/regions/guide' },
-        { name: 'Информация', icon: 'info-circle', route: '/regions/info' },
-        { name: 'Контакты', icon: 'phone-square', route: '/regions/regions-contacts' }
-      ]
     }
   },
   methods: {

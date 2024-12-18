@@ -50,6 +50,24 @@ const routes = [
         component: () => import(/* webpackChunkName: "about" */ '@/pages/Presscenter/PressCenter.vue')
       },
       {
+        path: '/contacts',
+        name: 'Contacts',
+        redirect: '/contacts/republic',
+        component: () => import(/* webpackChunkName: "about" */ '@/pages/Contacts/Contacts.vue'),
+        children: [
+          {
+            path: 'republic',
+            name: 'republic',
+            component: () => import(/* webpackChunkName: "about" */ '@/pages/Regions/Contacts.vue'),
+          },
+          {
+            path: 'regions',
+            name: 'regions',
+            component: () => import(/* webpackChunkName: "about" */ '@/pages/Regions/Contacts.vue'),
+          },
+        ]
+      },
+      {
         path:'/member-association',
         name:'MemberAssociation',
         component: () => import(/* webpackChunkName: "about" */ '@/components/Dialog.vue')

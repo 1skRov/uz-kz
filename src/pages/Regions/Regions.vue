@@ -9,7 +9,12 @@ export default {
   data(){
     return {
       title: "Этнокультурный центр узбеков Казахстана",
-      page_title: "Регионы"
+      page_title: "Регионы",
+      menuItems: [
+        { name: 'Руководство', icon: 'home', route: '/regions/guide' },
+        { name: 'Информация', icon: 'info-circle', route: '/regions/info' },
+        { name: 'Контакты', icon: 'phone-square', route: '/regions/regions-contacts' }
+      ]
     }
   }
 }
@@ -30,7 +35,7 @@ export default {
         </div>
       </template>
     </sections>
-    <navigation/>
+    <navigation :menuItems="menuItems"/>
     <div style="padding: 50px 0;">
       <router-view></router-view>
     </div>
