@@ -22,7 +22,7 @@ export default {
 <template>
   <div class="main">
     <side-bar :title="page_title"/>
-    <div style="width: 65%; margin: 0 auto;">
+    <div style="width: 65%; margin: 0 auto; padding-bottom: 50px;">
       <latest-news></latest-news>
       <video-materials></video-materials>
       <photo-gallery></photo-gallery>
