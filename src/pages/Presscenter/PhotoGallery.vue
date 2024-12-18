@@ -10,34 +10,21 @@ export default {
     return {
       title: "Фотогалерея",
       allCards: [
-        {
-          description: "Dota 2 is a multipLorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa doloremque eos esse magnam mollitia nihil odio quibusdam ratione saepe veniam. A consectetur id neque. Deserunt doloremque possimus quas quidem repellat. Cumque dolorem, fuga ipsum nisi porro praesentium quidem ratione totam ut vel. Aliquid asperiores atque debitis dicta, doloremque earum enim exercitationem harum illo ipsa ipsam numquam praesentium quidem. Cupiditate fuga, id labore minus neque nihil nisi nostrum, officia optio perferendis quas repellendus sed similique soluta, ut? Iure molestias odio officiis quisquam rem, reprehenderit saepe soluta temporibus vitae? Ad adipisci esse harum laudantium quisquam, quo reiciendis rem repellendus, rerum voluptas voluptatem.layer online battle arena.",
-          image:"https://www.gazeta.uz/media/img/2022/01/ouPaAp16433889116473_l.jpg",
-        },
-        {
-          description: "The Witcher 3 is a role-playing game.",
-          image: require("@/assets/images/img.png"),
-        },
-        {
-          description: "RDR 2Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa doloremque eos esse magnam mollitia nihil odio quibusdam ratione saepe veniam. A consectetur id neque. Deserunt doloremque possimus quas quidem repellat. Cumque dolorem, fuga ipsum nisi porro praesentium quidem ratione totam ut vel. Aliquid asperiores atque debitis dicta, doloremque earum enim exercitationem harum illo ipsa ipsam numquam praesentium quidem. Cupiditate fuga, id labore minus neque nihil nisi nostrum, officia optio perferendis quas repellendus sed similique soluta, ut? Iure molestias odio officiis quisquam rem, reprehenderit saepe soluta temporibus vitae? Ad adipisci esse harum laudantium quisquam, quo reiciendis rem repellendus, rerum voluptas voluptatem. is an action-adventure game.",
-          image: "https://www.gazeta.uz/media/img/2017/04/V8lBRJ14912123189853_b.jpg",
-        },
-        {
-          description: "PUBG Mobile is a battle royale game.",
-          image: "https://img.championat.com/s/732x488/news/big/v/m/shavkat-rahmonov_1733492480660266478.jpg",
-        },
-        {
-          description: "Fortnite is a battle royale game.",
-          image: "https://kaztag.kz/upload/resize_cache/iblock/f64/881_500_2/1.jpg?173363672371421",
-        },
-        { description: "Description 6", image: require("@/assets/images/1.png") },
-        { description: "Description 7", image: require("@/assets/images/img.png") },
-        { description: "Description 8", image: require("@/assets/images/3.png") },
-        { description: "Description 9", image: require("@/assets/images/2.png") },
-        { description: "Description 10", image: require("@/assets/images/4.png") },
+        { description: "Dota 2", image: "https://www.gazeta.uz/media/img/2022/01/ouPaAp16433889116473_l.jpg" },
+        { description: "The Witcher 3", image: require("@/assets/images/img.png") },
+        { description: "RDR 2", image: "https://www.gazeta.uz/media/img/2017/04/V8lBRJ14912123189853_b.jpg" },
+        { description: "PUBG Mobile", image: "https://img.championat.com/s/732x488/news/big/v/m/shavkat-rahmonov_1733492480660266478.jpg" },
+        { description: "Fortnite", image: "https://kaztag.kz/upload/resize_cache/iblock/f64/881_500_2/1.jpg" },
+        { description: "Fortnite", image: "https://kaztag.kz/upload/resize_cache/iblock/f64/881_500_2/1.jpg" },
+        { description: "Fortnite", image: "https://kaztag.kz/upload/resize_cache/iblock/f64/881_500_2/1.jpg" },
+        { description: "Fortnite", image: "https://kaztag.kz/upload/resize_cache/iblock/f64/881_500_2/1.jpg" },
+        { description: "Fortnite", image: "https://kaztag.kz/upload/resize_cache/iblock/f64/881_500_2/1.jpg" },
+        { description: "Fortnite", image: "https://kaztag.kz/upload/resize_cache/iblock/f64/881_500_2/1.jpg" },
       ],
       currentIndex: 0,
       cardsPerPage: 6,
+      showModal: false,
+      modalImage: "",
     };
   },
   computed: {
@@ -59,6 +46,14 @@ export default {
         this.currentIndex += this.cardsPerPage;
       }
     },
+    openImage(image) {
+      this.modalImage = image;
+      this.showModal = true;
+    },
+    closeModal() {
+      this.showModal = false;
+      this.modalImage = "";
+    },
   },
 };
 </script>
@@ -74,17 +69,31 @@ export default {
         </div>
       </template>
       <template #content>
-          <div class="carousel-wrapper">
-            <div
-                class="carousel-slide"
-                v-for="(card, index) in visibleCards"
-                :key="index"
-            >
-              <div class="card">
-                  <img :src="card.image" alt="Новость" />
+        <div class="carousel-wrapper">
+          <div
+              class="carousel-slide"
+              v-for="(card, index) in visibleCards"
+              :key="index"
+          >
+            <div class="card" @click="openImage(card.image)">
+              <img :src="card.image" alt="Новость" />
+              <div class="overlay">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22 38C30.8366 38 38 30.8366 38 22C38 13.1634 30.8366 6 22 6C13.1634 6 6 13.1634 6 22C6 30.8366 13.1634 38 22 38Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M41.9998 42L33.2998 33.3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- Модальное окно -->
+        <div v-if="showModal" class="modal" @click.self="closeModal">
+          <div class="modal-content">
+            <button class="close-btn" @click="closeModal">&times;</button>
+            <img :src="modalImage" alt="Увеличенное фото" />
+          </div>
+        </div>
       </template>
     </sections>
   </div>
@@ -118,11 +127,26 @@ export default {
   border-radius: 8px;
 } */
 .card {
-  padding: 5px;
-  height: 100%;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 13rem;
+  background-color: rgba(0, 114, 171, 0.9);
+  border-radius: 8px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover .overlay {
+  opacity: 1;
 }
 
 .card img {
@@ -130,5 +154,41 @@ export default {
   border-radius: 8px;
   height: 13rem;
   object-fit: cover;
+}
+
+/* Модальное окно */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  position: relative;
+}
+
+.modal-content img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 30px;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
 }
 </style>
