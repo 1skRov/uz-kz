@@ -45,6 +45,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "about" */ '@/pages/Documents/Documents.vue')
       },
       {
+        path: '/press-center',
+        name: 'PressCenter',
+        component: () => import(/* webpackChunkName: "about" */ '@/pages/Presscenter/PressCenter.vue')
+      },
+      {
         path:'/member-association',
         name:'MemberAssociation',
         component: () => import(/* webpackChunkName: "about" */ '@/components/Dialog.vue')
