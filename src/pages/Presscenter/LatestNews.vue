@@ -133,7 +133,7 @@ export default {
 }
 .card {
   padding: 5px;
-  height: 100%;
+  height: 23rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

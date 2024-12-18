@@ -32,6 +32,7 @@ export default {
   position: relative;
 
   p {
+    width: 100%;
     text-align: center;
     font-size: 32px;
     font-weight: 500;
