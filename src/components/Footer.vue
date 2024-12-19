@@ -3,14 +3,44 @@ export default {
   name: "Footer",
   data() {
     return {
-      lists: ["О нас", "Регионы", "Документы", "Пресс Центр"],
-      contents1: ["История","Культура и традиции","Наука и литература","Известные личности","Молодежные организации","Образование"],
-      contents2: [],
-    }
+      aboutLinks: [
+        { text: "История", to: { name: 'AboutUs', hash: '#section-1' } },
+        { text: "Культура и традиции", to: { name: 'AboutUs', hash: '#section-2' } },
+        { text: "Наука и литература", to: { name: 'AboutUs', hash: '#section-?' } },
+        { text: "Известные личности", to: { name: 'AboutUs', hash: '#section-3' } },
+        { text: "Молодежные организации", to: { name: 'AboutUs', hash: '#section-4' } },
+        { text: "Образование", to: { name: 'AboutUs', hash: '#section-5' } },
+        { text: "Спорт", to: { name: 'AboutUs', hash: '#section-5' } },
+      ],
+      regionsLinks: [
+        { text: "Ассоциация узбеков РК 'Дустлик'", to: { name: 'Regions', hash: '#some-section' } },
+        { text: "АСТАНА Узбекский ЭКЦ г. Астаны", to: { name: 'Regions', hash: '#some-section' } },
+        { text: "АЛМАТЫ Узбекский ЭКЦ г. Алматы", to: { name: 'Regions', hash: '#some-section' } },
+        { text: "Узбекский ЭКЦ г. Шымкент", to: { name: 'Regions', hash: '#some-section' } },
+        { text: "Все регионы", to: { name: 'Regions', hash: '#guide' } },
+      ],
+      documentsLinks: [
+        { text: "Устав", to: { name: 'Documents', hash: '#charter' } },
+        { text: "План на 2018 год", to: { name: 'Documents', hash: '#plan2018' } },
+        { text: "Отчет за 2017 год", to: { name: 'Documents', hash: '#report2017' } },
+        { text: "Проекты", to: { name: 'Documents', hash: '#projects' } },
+      ],
+      pressCenterLinks: [
+        { text: "Последние новости", to: { name: 'PressCenter', hash: '#news' } },
+        { text: "Видео материалы", to: { name: 'PressCenter', hash: '#video' } },
+        { text: "Фотогалерея", to: { name: 'PressCenter', hash: '#gallery' } },
+        { text: "Интервью", to: { name: 'PressCenter', hash: '#interviews' } },
+        { text: "Благотворительная помощь", to: { name: 'PressCenter', hash: '#charity' } },
+      ],
+      contactsLinks: [
+        { text: "Центральные контакты", to: { name: 'Contacts', hash: '#republic' } },
+        { text: "Региональные контакты", to: { name: 'Contacts', hash: '#regions' } },
+      ]
+    };
   },
   methods: {
     openDonate() {
-      this.$router.push('/donates')
+      this.$router.push('/donates');
     },
     ReturnMainPage() {
       this.$router.push({ name: 'MainPage' });
@@ -24,49 +54,47 @@ export default {
     <div class="content">
       <div class="sandbars">
         <h2 class="main-text">О НАС</h2>
-        <p class="text">История</p>
-        <p class="text">Культура и традиции</p>
-        <p class="text">Наука и литература</p>
-        <p class="text">Известные личности</p>
-        <p class="text">Молодежные организации</p>
-        <p class="text">Образование</p>
-        <p class="text">Спорт</p>
+        <div v-for="(link, index) in aboutLinks" :key="'about-'+index">
+          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
+        </div>
       </div>
+
       <div class="sandbars">
         <h2 class="main-text">РЕГИОНЫ</h2>
-        <p class="text">Ассоциация узбеков РК "Дустлик"</p>
-        <p class="text">АСТАНА Узбекский ЭКЦ г. Астаны</p>
-        <p class="text">АЛМАТЫ Узбекский ЭКЦ г. Алматы</p>
-        <p class="text">Узбекский ЭКЦ г. Шымкент</p>
-        <p class="text">Все регионы</p>
+        <div v-for="(link, index) in regionsLinks" :key="'regions-'+index">
+          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
+        </div>
       </div>
+
       <div class="sandbars">
         <h2 class="main-text">ДОКУМЕНТЫ</h2>
-        <p class="text">Устав</p>
-        <p class="text">План Ассоциации узбеков РК Дустлик на 2018 год</p>
-        <p class="text">Отчет Узбекского ЭКЦ г. Астаны за 2017 год</p>
-        <p class="text">Проекты</p>
+        <div v-for="(link, index) in documentsLinks" :key="'documents-'+index">
+          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
+        </div>
       </div>
+
       <div class="sandbars">
         <h2 class="main-text">ПРЕСС ЦЕНТР</h2>
-        <p class="text">Последние новости</p>
-        <p class="text">Видео материалы</p>
-        <p class="text">Фотогалерея</p>
-        <p class="text">Интервью</p>
-        <p class="text">Благотворительная помощь</p>
+        <div v-for="(link, index) in pressCenterLinks" :key="'press-'+index">
+          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
+        </div>
       </div>
+
       <div class="sandbars">
         <h2 class="main-text">КОНТАКТЫ</h2>
-        <p class="text">Центральные контакты</p>
-        <p class="text">Региональные контакты</p>
+        <div v-for="(link, index) in contactsLinks" :key="'contacts-'+index">
+          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
+        </div>
         <h2 class="main-text">Известные личности</h2>
         <div @click="openDonate" class="btn">
-          донаты
+          Донаты
         </div>
       </div>
     </div>
+
     <div class="content-line">
-      <div @click="ReturnMainPage" style="cursor: pointer" class="icon">
+      <div @click="ReturnMainPage" class="icon" style="cursor: pointer;">
+        <!-- Ваш svg логотип -->
         <svg width="120" height="60" viewBox="0 0 160 80" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 0H160V80H0V0Z" fill="#0072AB"/>
           <path d="M28.744 48.16C27.576 48.16 26.568 48 25.72 47.68C24.872 47.344 24.168 46.888 23.608 46.312C23.064 45.72 22.656 45.024 22.384 44.224C22.128 43.408 22 42.512 22 41.536V31.192H25.744V41.224C25.744 41.896 25.816 42.472 25.96 42.952C26.12 43.416 26.328 43.8 26.584 44.104C26.856 44.392 27.176 44.6 27.544 44.728C27.928 44.856 28.344 44.92 28.792 44.92C29.704 44.92 30.44 44.64 31 44.08C31.576 43.52 31.864 42.568 31.864 41.224V31.192H35.608V41.536C35.608 42.512 35.472 43.408 35.2 44.224C34.928 45.04 34.512 45.744 33.952 46.336C33.392 46.912 32.68 47.36 31.816 47.68C30.952 48 29.928 48.16 28.744 48.16Z" fill="white"/>
@@ -81,12 +109,14 @@ export default {
       </div>
       <div class="item">
         <div class="item-in">
+          <!-- Адрес -->
           <svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M16.6663 2.67969C11.525 2.67969 7.34338 6.86388 7.34338 12.0052C7.34338 17.9825 15.299 27.6922 15.6377 28.1016L16.6663 29.349L17.6949 28.1016C18.0336 27.6909 25.9892 17.9825 25.9892 12.0052C25.9892 6.86254 21.8076 2.67969 16.6663 2.67969ZM16.6663 5.34635C20.337 5.34635 23.3226 8.33454 23.3226 12.0052C23.3225 15.6119 19.1703 21.8149 16.6663 25.1016C14.1623 21.8176 10.0101 15.6172 10.0101 12.0052C10.0101 8.33454 12.9956 5.34635 16.6663 5.34635ZM16.6663 8.66667C14.825 8.66667 13.333 10.1587 13.333 12C13.333 13.8413 14.825 15.3333 16.6663 15.3333C18.5076 15.3333 19.9996 13.8413 19.9996 12C19.9996 10.1587 18.5076 8.66667 16.6663 8.66667Z" fill="#CFD3DA"/>
           </svg>
           <p>addres</p>
         </div>
         <div class="item-in">
+          <!-- Телефон -->
           <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_345_284)">
               <path d="M19.7624 14.1333L15.3874 12.2583C15.2005 12.1787 14.9928 12.1619 14.7956 12.2105C14.5983 12.2591 14.4222 12.3705 14.2937 12.5279L12.3562 14.8951C9.31545 13.4614 6.86837 11.0143 5.43469 7.97358L7.80188 6.03608C7.95957 5.90783 8.07117 5.73169 8.11981 5.53434C8.16844 5.33699 8.15145 5.12916 8.07141 4.94233L6.19641 0.567328C6.10856 0.365925 5.9532 0.201486 5.7571 0.102366C5.561 0.0032464 5.33645 -0.0243417 5.12219 0.0243589L1.05969 0.961859C0.853118 1.00956 0.668812 1.12587 0.536855 1.29181C0.404898 1.45775 0.333082 1.66352 0.33313 1.87553C0.33313 11.8951 8.45422 20.0005 18.4581 20.0005C18.6702 20.0007 18.8761 19.9289 19.0421 19.7969C19.2081 19.665 19.3245 19.4806 19.3722 19.274L20.3097 15.2115C20.3581 14.9962 20.3299 14.7707 20.23 14.5739C20.1301 14.3772 19.9648 14.2214 19.7624 14.1333Z" fill="#CFD3DA"/>
@@ -101,6 +131,7 @@ export default {
         </div>
       </div>
     </div>
+
     <div class="text-line">
       <div class="text-end">© 2024 Единый Портал Узбеков Казахстана</div>
       <div class="text-line">
@@ -124,13 +155,19 @@ export default {
   justify-content: space-between;
 }
 .content .sandbars {
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   width: 20vw;
+  gap:1rem;
 }
 .sandbars .text {
   color: #9098A5;
+  display: block;
+  margin-bottom: 0.5rem;
+  text-decoration: none;
+}
+.sandbars .text:hover {
+  text-decoration: underline;
 }
 .sandbars .btn {
   background-color: #0072AB;
@@ -141,6 +178,7 @@ export default {
   text-align: center;
   border-radius: 6px;
   padding: 16px 24px;
+  cursor: pointer;
 }
 .main-text {
   font-size: 16px;
@@ -149,9 +187,8 @@ export default {
 }
 .main .content-line {
   display: flex;
-}
-
-.content-line {
+  align-items: center;
+  justify-content: space-between;
   border-top: 1px solid #EBEEF0;
   border-bottom: 1px solid #EBEEF0;
 }
@@ -162,15 +199,18 @@ export default {
 .item .item-in {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 1rem;
   width:40vw;
   margin: 0 auto;
 }
-
 .main .text-line {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+.text-line {
+  font-size:14px;
+  color:#575F6C;
 }
 .text-end + .text-end {
   margin-left: 3rem;

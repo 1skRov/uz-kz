@@ -38,6 +38,11 @@ export default {
       ],
     };
   },
+  methods:{
+    goToFamousPersons(){
+      this.$router.push('/famous-persons')
+    }
+  }
 };
 </script>
 
@@ -47,10 +52,10 @@ export default {
     <div class="content">
       <sections>
         <template #title>
-          О нас
+          Известные личности
         </template>
         <template #title-button>
-          <more />
+          <more @click="goToFamousPersons"/>
         </template>
         <template #content>
           <CardGrid :cards="cards"></CardGrid>

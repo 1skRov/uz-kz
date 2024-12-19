@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import FullMainPage from "@/pages/FullPage.vue";
+
 const routes = [
   {
     path: '/',
@@ -9,81 +10,98 @@ const routes = [
       {
         path: '',
         name: 'MainPage',
-        component: () => import(/* webpackChunkName: "about" */ '@/pages/Main/MainPage.vue')
+        component: () => import('@/pages/Main/MainPage.vue')
       },
       {
         path: '/about-us',
         name: 'AboutUs',
-        component: () => import(/* webpackChunkName: "about" */ '@/pages/aboutus/AboutUs.vue')
+        component: () => import('@/pages/aboutus/AboutUs.vue')
       },
       {
         path: '/regions',
         name: 'Regions',
-        component: () => import(/* webpackChunkName: "about" */ '@/pages/Regions/Regions.vue'),
+        component: () => import('@/pages/Regions/Regions.vue'),
         redirect: '/regions/guide',
         children: [
           {
             path: 'guide',
             name: 'guide',
-            component: () => import(/* webpackChunkName: "about" */ '@/pages/Regions/Guide.vue'),
+            component: () => import('@/pages/Regions/Guide.vue'),
           },
           {
             path: 'info',
             name: 'info',
-            component: () => import(/* webpackChunkName: "about" */ '@/pages/Regions/Informations.vue'),
+            component: () => import('@/pages/Regions/Informations.vue'),
           },
           {
             path: 'regions-contacts',
             name: 'regions-contacts',
-            component: () => import(/* webpackChunkName: "about" */ '@/pages/Regions/Contacts.vue'),
+            component: () => import('@/pages/Regions/Contacts.vue'),
           },
         ]
       },
       {
         path: '/documents',
         name: 'Documents',
-        component: () => import(/* webpackChunkName: "about" */ '@/pages/Documents/Documents.vue')
+        component: () => import('@/pages/Documents/Documents.vue')
       },
       {
         path: '/press-center',
         name: 'PressCenter',
-        component: () => import(/* webpackChunkName: "about" */ '@/pages/Presscenter/PressCenter.vue')
+        component: () => import('@/pages/Presscenter/PressCenter.vue')
       },
       {
         path: '/contacts',
         name: 'Contacts',
         redirect: '/contacts/republic',
-        component: () => import(/* webpackChunkName: "about" */ '@/pages/Contacts/Contacts.vue'),
+        component: () => import('@/pages/Contacts/Contacts.vue'),
         children: [
           {
             path: 'republic',
             name: 'republic',
-            component: () => import(/* webpackChunkName: "about" */ '@/pages/Regions/Contacts.vue'),
+            component: () => import('@/pages/Regions/Contacts.vue'),
           },
           {
             path: 'regions',
             name: 'regions',
-            component: () => import(/* webpackChunkName: "about" */ '@/pages/Regions/Contacts.vue'),
+            component: () => import('@/pages/Regions/Contacts.vue'),
           },
         ]
       },
       {
+        path:'/famous-persons',
+        name:'FamousPersons',
+        component: () => import('@/components/Dialog.vue')
+      },
+      {
         path:'/member-association',
         name:'MemberAssociation',
-        component: () => import(/* webpackChunkName: "about" */ '@/components/Dialog.vue')
+        component: () => import('@/components/Dialog.vue')
       }
     ]
   },
   {
     path: '/:pathMatch(.*)*',
     name: '404',
-    component: () => import(/* webpackChunkName: "about" */ '@/components/404Page.vue')
+    component: () => import('@/components/404Page.vue')
   }
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    }
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth'
+      }
+    }
+    return { top: 0 }
+  }
 })
 
 export default router

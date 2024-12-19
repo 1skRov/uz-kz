@@ -12,6 +12,11 @@ export default {
       title: "Этнокультурный центр узбеков Казахстана"
     }
   },
+  methods: {
+    goToRegions(){
+      this.$router.push("/regions");
+    }
+  }
 }
 </script>
 
@@ -24,7 +29,7 @@ export default {
           {{ title }}
         </template>
         <template #title-button>
-          <more/>
+          <more @click="goToRegions"/>
         </template>
         <template #content>
           <div style="position: relative">

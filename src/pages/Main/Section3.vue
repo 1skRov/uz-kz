@@ -13,6 +13,11 @@ export default {
       imgTitle:"Lorem ipsum.",
       imgDesc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, reiciendis!",
     };
+  },
+  methods: {
+    goToAboutUsSection() {
+      this.$router.push({ path: '/about-us', hash: '#section-2' })
+    }
   }
 }
 </script>
@@ -32,7 +37,7 @@ export default {
           {{ title }}
         </template>
         <template #title-button>
-          <more/>
+          <more @click="goToAboutUsSection"/>
         </template>
         <template #content>
           <div class="content-body">
