@@ -21,7 +21,7 @@ export default {
 
 <template>
 <div class="section">
-    <side-bar :page="page" :icon="false"/>
+    <side-bar :page="page" :icon="false" class="sidebar"/>
     <div class="content">
       <sections>
         <template #title>
@@ -50,5 +50,15 @@ export default {
   margin-right: auto;
   align-items: center;
   border-top: 1px solid #DDE2E4;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    display: none;
+  }
+
+  .content {
+    width: 90%;
+  }
 }
 </style>

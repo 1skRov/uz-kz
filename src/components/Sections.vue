@@ -53,4 +53,34 @@ export default {
 .end-button {
   margin-top: 72px;
 }
+
+@media (max-width: 1024px) {
+  .section  {
+    padding: 48px 0;
+  }
+  .header {
+    padding-bottom: 48px;
+  }
+  .header .title {
+    font-size: 28px;
+  }
+  .end-button {
+    margin-top: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section  {
+    padding: 32px 0;
+  }
+  .header {
+    padding-bottom: 32px;
+  }
+  .header .title {
+    font-size: 24px;
+  }
+  .end-button {
+    margin-top: 32px;
+  }
+}
 </style>

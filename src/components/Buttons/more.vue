@@ -36,4 +36,18 @@ button {
     color: #0072AB;
   };
 }
+
+@media (max-width: 1024px) {
+  svg {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (max-width: 768px) {
+  svg {
+    width: 32px;
+    height: 32px;
+  }
+}
 </style>
