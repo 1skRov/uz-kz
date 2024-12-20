@@ -22,15 +22,28 @@ export default {
 <template>
   <div class="main">
     <side-bar :title="page_title"/>
-    <div style="width: 65%; margin: 0 auto; padding-bottom: 50px;">
+    <div class="content">
       <latest-news></latest-news>
       <video-materials></video-materials>
       <photo-gallery></photo-gallery>
-      <interview></interview>
+<!--      <interview></interview>-->
     </div>
   </div>
 </template>
 
 <style scoped>
+.content {
+  width: 65%;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+@media (max-width: 1024px) {
+  .content {
+    width: 90%;
+  }
+}
 
+@media (max-width: 768px) {
+
+}
 </style>

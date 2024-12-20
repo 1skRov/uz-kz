@@ -168,4 +168,14 @@ export default {
   font-weight: 500;
   line-height: 28px;
 }
+
+@media (max-width: 1024px) {
+  .card {
+    height: 25rem;
+  }
+}
+
+@media (max-width: 768px) {
+
+}
 </style>

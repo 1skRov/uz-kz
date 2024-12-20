@@ -174,6 +174,9 @@ export default {
 
 .modal-content {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-content img {
