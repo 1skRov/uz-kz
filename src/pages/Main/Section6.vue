@@ -82,6 +82,10 @@ export default {
           </div>
         </transition-group>
       </div>
+      <div class="btns btn-mob">
+        <left @click="moveLeft" />
+        <right @click="moveRight" />
+      </div>
     </div>
   </div>
 </template>
@@ -123,6 +127,7 @@ export default {
   height: 100%;
   object-fit: contain;
   border-radius: 8px;
+
 }
 
 .level-2 {
@@ -179,6 +184,9 @@ export default {
 .noselect {
   user-select: none;
 }
+.btn-mob {
+  display: none;
+}
 
 @media (max-width: 1024px) {
   .content {
@@ -187,6 +195,11 @@ export default {
 }
 
 @media (max-width: 768px) {
-
+  .btn-mob {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin: 1.5rem 0;
+  }
 }
 </style>
