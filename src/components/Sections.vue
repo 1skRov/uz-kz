@@ -69,6 +69,7 @@ export default {
 }
 .header .title {
   font-size: 40px;
+  font-weight: 500;
 }
 .content{
   line-height: 30px;

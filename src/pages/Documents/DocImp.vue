@@ -31,4 +31,13 @@ export default {
   width: 65%;
   margin: 0 auto;
 }
+@media (max-width: 1024px) {
+  .documents {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+
+}
 </style>

@@ -131,17 +131,38 @@ export default {
 }
 
 .item-desc {
-  padding: 15px;
+  padding: 10px 15px;
   background-color: #fff;
   border-radius: 8px 0 0 0;
   color: #333;
   position: absolute;
   bottom: 0;
   right:0;
-  width: 30%;
+  max-width: 45%;
+  max-height: 45%;
   z-index: 2;
 }
 h3 {
-  font-size: 24px;
+  font-size: 18px;
+  margin: 0;
+}
+p {
+  margin: 0
+}
+@media (max-width: 1024px) {
+  .content {
+    width: 90%;
+  }
+  .carousel-container .item {
+    width: 40vw;
+    height: 250px;
+  }
+  h3 {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+
 }
 </style>
