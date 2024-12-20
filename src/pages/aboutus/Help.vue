@@ -46,6 +46,7 @@ export default {
 .title {
   font-size: 40px;
   line-height: 42px;
+  font-weight: 500;
 }
 
 .text {
@@ -68,5 +69,19 @@ export default {
 .responsive-image {
   width: auto;
   height: auto;
+}
+@media (max-width: 1024px) {
+  .title {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .text {
+    line-height: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+
 }
 </style>

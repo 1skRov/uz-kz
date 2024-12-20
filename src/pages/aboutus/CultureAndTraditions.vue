@@ -114,4 +114,18 @@ export default {
   color: #666;
   line-height: 40px;
 }
+
+@media (max-width: 1024px) {
+  .carousel-caption h3 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+  .carousel-caption p {
+    line-height: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+
+}
 </style>

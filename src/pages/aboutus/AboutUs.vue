@@ -56,10 +56,9 @@ export default {
         </ul>
       </div>
     </div>
-
-      <div class="text-box hid">
-        {{ sections[currentSection] }}
-      </div>
+    <div class="text-box hid">
+      {{ sections[currentSection] }}
+    </div>
     <div style="width: 100%">
       <div id="section-0" class="section">
         <WhoWeaAre/>
@@ -157,5 +156,17 @@ ul {
   width: 65%;
   margin-left: auto;
   margin-right: auto;
+}
+@media (max-width: 1024px) {
+  .section {
+    width: 90%;
+  }
+  .hid {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+
 }
 </style>

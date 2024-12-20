@@ -16,14 +16,14 @@
 @font-face {
     font-family: 'Gilroy';
     src: url('@/assets/fonts/Gilroy-Regular.woff') format('woff'),
-    url('@/assets/fonts/Ubuntu-Regular.woff2') format('woff2');
+    url('@/assets/fonts/Gilroy-Regular.woff2') format('woff2');
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: 'Gilroy';
     src: url('@/assets/fonts/Gilroy-Medium.woff') format('woff'),
-    url('@/assets/fonts/Ubuntu-Medium.woff2') format('woff2');
+    url('@/assets/fonts/Gilroy-Medium.woff2') format('woff2');
     font-weight: 500;
     font-style: normal;
 }

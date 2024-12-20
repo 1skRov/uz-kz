@@ -204,4 +204,17 @@ export default {
 .dots span.active {
   background: #0072AB;
 }
+@media (max-width: 1024px) {
+  .carousel-container .item {
+    width: 350px;
+    height: 350px;
+  }
+  .carousel-container .item.active {
+    width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+
+}
 </style>

@@ -90,4 +90,18 @@ export default {
 .text {
   line-height: 38px;
 }
+
+@media (max-width: 1024px) {
+  .title {
+    font-size: 28px;
+    line-height: 32px;
+  }
+  .text {
+    line-height: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+
+}
 </style>
