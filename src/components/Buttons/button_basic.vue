@@ -47,4 +47,15 @@ export default {
 .btn-blue:hover {
   background: #0056b3;
 }
+@media (max-width: 1024px) {
+  .btn {
+    padding: 16px 26px;
+  }
+}
+
+@media (max-width: 768px) {
+  .btn {
+    padding: 10px 20px;
+  }
+}
 </style>

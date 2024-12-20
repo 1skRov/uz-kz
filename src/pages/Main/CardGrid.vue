@@ -11,46 +11,40 @@ export default {
 </script>
 
 <template>
-<div>
-  <section class="hero-section">
+  <div class="hero-section">
     <div class="card-grid">
-      <div class="card" v-for="card in cards" :key="card.id">
+      <div class="card" v-for="(card, index) in cards" :key="card.id">
         <div
             class="card__background"
             :style="{ backgroundImage: `url(${card.image})` }"
         ></div>
-        <div class="card__content">
-          <p class="card__category font-gilroy">{{ card.category }}</p>
-          <h3 class="card__heading">{{ card.heading }}</h3>
+        <div class="card__overlay">
+          <div class="card__content">
+            <div class="card__category font-gilroy">{{ card.category }}</div>
+            <div class="card__heading">{{ card.heading }}</div>
+          </div>
         </div>
       </div>
     </div>
-  </section>
-</div>
+  </div>
 </template>
 
 <style scoped>
 .hero-section {
-  align-items: flex-start;
   display: flex;
-  min-height: 100%;
   justify-content: center;
-  padding: var(--spacing-xxl) var(--spacing-l);
 }
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-column-gap: var(--spacing-l);
-  grid-row-gap: var(--spacing-l);
-  max-width: var(--width-container);
-  width: 100%;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
+  width: 100%;
 }
 
-@media (min-width: 540px) {
+@media (min-width: 540px) and (max-width: 959px) {
   .card-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
@@ -61,81 +55,72 @@ export default {
 }
 
 .card {
-  list-style: none;
   position: relative;
-}
-
-.card:before {
-  content: "";
-  display: block;
-  padding-bottom: 150%;
-  width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
 }
 
 .card__background {
   background-size: cover;
   background-position: center;
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  transform-origin: center;
-  transform: scale(1);
-  transition: transform 200ms linear;
-  border-radius: 8px;
+  width: 100%;
+  height: 0;
+  padding-bottom: 150%;
 }
 
-.card:hover .card__background {
-  transform: scale(1.05);
-  border-radius: 0;
-}
-.card:after {
-  content: "";
+.card__overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 114, 171, 0.6);
-  border-radius: var(--spacing-l);
-  transform: scale(1);
-  transform-origin: center;
+  background: rgba(0, 114, 171, 0.9);
   opacity: 0;
-  mix-blend-mode: normal;
-  transition: opacity 200ms linear, transform 200ms linear;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 8px;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.card:hover:after {
-  opacity: 1;
-  transform: scale(1.05);
+@media (min-width: 960px) {
+  .card:hover .card__overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media (max-width: 959px) {
+  .card__overlay {
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: rgba(0, 114, 171, 0.5);
+    padding: 10px;
+  }
+}
+
+@media (max-width: 539px) {
+  .card:nth-child(n+3) {
+    display: none;
+  }
 }
 
 .card__content {
-  left: 0;
-  padding: var(--spacing-l);
-  position: absolute;
-  bottom: 0;
-  opacity: 0;
-}
-.card:hover .card__content {
-  opacity: 1;
-  transition: opacity 200ms linear, transform 200ms linear;
+  width: 100%;
 }
 
 .card__category {
-  font-size: 1.5rem;
-  font-weight: 500;
-  margin-bottom: var(--spacing-s);
-  line-height: 31px;
+  font-size: 1.25rem;
+  margin-bottom: 5px;
   color: #fff;
-  mix-blend-mode: normal;
+  font-weight: 500;
 }
 
 .card__heading {
-  font-size: 14px;
-  text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
-  color: #fff !important;
-  mix-blend-mode: normal;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
 }
 </style>

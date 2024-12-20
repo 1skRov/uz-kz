@@ -43,11 +43,14 @@ export default {
           <div class="content-body">
             <div class="gradient-overlay"></div>
             <img src="@/assets/images/img.png" alt="culture and traditions" style="width: 100%; height: 100%;">
-            <div style="position: absolute; bottom: 0; left: 0; padding: 40px">
-              <div class="image-title">{{ imgTitle }}</div>
-              <div class="image-desc">{{ imgDesc }}</div>
+            <div class="abs-text">
+              <div class="image-title font-gilroy">{{ imgTitle }}</div>
+              <div class="image-desc truncate-text">{{ imgDesc }}</div>
             </div>
           </div>
+        </template>
+        <template #btn>
+          <more @click="goToAboutUsSection"/>
         </template>
       </sections>
     </div>
@@ -64,11 +67,13 @@ export default {
   position: absolute;
   bottom: 0;
   right: 0;
+  z-index: 2;
 }
 .section .icon-top {
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 2;
 }
 .content {
   width: 70%;
@@ -80,10 +85,16 @@ export default {
 }
 .content-body {
   width: 100%;
+  height: 85vh;
   position: relative;
   flex-shrink: 0;
   overflow: hidden;
   border-radius: 6px;
+}
+.abs-text {
+  position: absolute;
+  bottom: 0; left: 0;
+  padding: 40px;
 }
 .content-body .image-title {
     position: relative;
@@ -100,12 +111,57 @@ export default {
     color: rgba(255, 255, 255, 0.7);
   }
 .content-body .gradient-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
-    z-index: 1;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+  z-index: 1;
+}
+@media (max-width: 1024px) {
+  .content {
+    width: 90%;
   }
+  .content-body {
+    height: 40vh;
+  }
+  .icon-top {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .abs-text {
+    position: static;
+    padding: 20px 0 0 0;
+  }
+  .content-body .image-title {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  .content-body .image-desc {
+    color: #333333;
+  }
+
+  .content-body {
+    height: auto;
+  }
+
+  .gradient-overlay {
+    display: none;
+  }
+
+  .content-body img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px;
+  }
+  .icon-btm {
+    display: none;
+  }
+}
 </style>

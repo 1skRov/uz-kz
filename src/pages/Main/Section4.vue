@@ -60,6 +60,11 @@ export default {
         <template #content>
           <CardGrid :cards="cards"></CardGrid>
         </template>
+        <template #btn>
+          <div class="mob-has">
+            <more @click="goToFamousPersons"/>
+          </div>
+        </template>
       </sections>
     </div>
   </div>
@@ -76,7 +81,13 @@ export default {
   margin-left: auto;
   margin-right: auto;
   align-items: center;
-  border-top: 1px solid #dde2e4;
+}
+@media (max-width: 1024px) {
+  .content {
+    width: 90%;
+  }
 }
 
+@media (max-width: 768px) {
+}
 </style>

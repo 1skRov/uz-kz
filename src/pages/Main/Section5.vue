@@ -33,9 +33,12 @@ export default {
         </template>
         <template #content>
           <div style="position: relative">
-            <span style="position: absolute; top: 0; left: 0; width: 40%">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae corporis, ex numquam tempora totam vel vero. At beatae eos excepturi libero repudiandae soluta? Asperiores blanditiis deserunt dolor minima numquam, quas?</span>
-            <img src="@/assets/icons/1map.svg" alt="map">
+            <span style="position: absolute; top: 0; left: 0; width: 40%" class="truncate-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae corporis, ex numquam tempora totam vel vero. At beatae eos excepturi libero repudiandae soluta? Asperiores blanditiis deserunt dolor minima numquam, quas?</span>
+            <img src="@/assets/icons/1map.svg" alt="map" width="100%" height="100%">
           </div>
+        </template>
+        <template #btn>
+          <more @click="goToRegions"/>
         </template>
       </sections>
     </div>
@@ -53,6 +56,15 @@ export default {
   margin-left: auto;
   margin-right: auto;
   align-items: center;
-  border-top: 1px solid #DDE2E4;
+}
+
+@media (max-width: 1024px) {
+  .content {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+
 }
 </style>

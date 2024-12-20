@@ -11,7 +11,7 @@ export default {
       page: "01",
       title:"«Ассоциация этнокультурных объединений узбеков Республики Казахстан «Дустлик»",
       desc: "Для узбекской общины в Казахстане единство это основа нашего общего будущего и залог процветания и развития нашего народа.",
-      btn_title:"СТать членов ассоциации",
+      btn_title:"Стать членов ассоциации",
       images: [
         require("@/assets/images/help.png"),
         require("@/assets/images/help.png"),
@@ -44,11 +44,11 @@ export default {
         </div>
       </div>
       <div class="backdrop-blur-container">
-        <div style="position: relative; z-index: 40;">
-          <h1 class="font-gilroy" style="word-wrap: break-word;">
+        <div style="position: relative; z-index: 2;">
+          <h1 class="font-gilroy title" style="word-wrap: break-word;">
             {{ title }}
           </h1>
-          <p>
+          <p class="desc">
             {{ desc}}
           </p>
         </div>
@@ -123,18 +123,95 @@ export default {
     transform: translateY(-50%);
     width: 40%;
 
-    h1 {
+    .title {
       font-size: 40px;
       line-height: 52px;
       font-weight: 500;
     }
-    p {
+    .desc {
       font-size: 14px;
       margin-top: 24px;
       margin-bottom: 40px;
       color:#575F6C;
       line-height: 32px;
       word-wrap: break-word;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .content {
+    width: 90%;
+  }
+  .tablet-space {
+    .tablet-space-img {
+      padding: 40px 0;
+      .image-grid {
+        height: 100%;
+        width: 95%;
+      }
+    }
+  }
+  .tablet-space {
+    .backdrop-blur-container {
+      padding: 40px;
+      width: 60%;
+
+      .title {
+        font-size: 28px;
+        line-height: 36px;
+        margin: 0;
+      }
+
+      .desc {
+        font-size: 14px;
+        margin-top: 15px;
+        margin-bottom: 30px;
+        line-height: 28px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    width: 100%;
+  }
+  .tablet-space {
+    margin-bottom: 40vh;
+    .tablet-space-img {
+      padding: 0;
+      .image-grid {
+        grid-template-columns: 1fr;
+        width: 100%;
+      }
+
+      .small-images {
+        display: none;
+      }
+
+    }
+
+    .backdrop-blur-container {
+      left: 50% ;
+      transform: translateX(-50%);
+      padding: 30px 20px;
+      border-radius: 8px;
+      width: 75%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border: none;
+
+      .title {
+        font-size: 24px;
+        line-height: 40px;
+      }
+      .desc {
+        font-size: 12px;
+        margin: 20px 0;
+        line-height: 30px;
+      }
     }
   }
 }

@@ -1,11 +1,34 @@
 <script>
-import SideBar from "@/pages/Main/SideBar.vue";
-import More from "@/components/Buttons/more.vue";
-
 export default {
   name: "Sections",
-  components: {More, SideBar},
-}
+  props:{
+    isHad:{
+      type: Boolean,
+      default: false,
+    }
+  },
+  data() {
+    return {
+      windowWidth: window.innerWidth,
+    };
+  },
+  computed: {
+    isMobile() {
+      return (this.windowWidth <= 768 || this.isHad);
+    },
+  },
+  mounted() {
+    window.addEventListener('resize', this.updateWindowWidth);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.updateWindowWidth);
+  },
+  methods: {
+    updateWindowWidth() {
+      this.windowWidth = window.innerWidth;
+    },
+  },
+};
 </script>
 
 <template>
@@ -15,7 +38,7 @@ export default {
         <slot name="title">
         </slot>
       </div>
-      <div v-if="$slots['title-button']">
+      <div v-if="$slots['title-button'] && !isMobile">
         <slot name="title-button">
         </slot>
       </div>
@@ -24,7 +47,7 @@ export default {
       <slot name="content">
       </slot>
     </div>
-    <div class="end-button" v-if="$slots.btn">
+    <div class="end-button" v-if="isMobile && $slots.btn">
       <slot name="btn">
       </slot>
     </div>
@@ -74,13 +97,16 @@ export default {
     padding: 32px 0;
   }
   .header {
-    padding-bottom: 32px;
+    padding-bottom: 25px;
   }
   .header .title {
     font-size: 24px;
   }
   .end-button {
-    margin-top: 32px;
+    margin-top: 20px;
+  }
+  .content{
+    line-height: 25px;
   }
 }
 </style>

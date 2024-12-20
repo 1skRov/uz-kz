@@ -21,9 +21,9 @@ export default {
 
 <template>
 <div class="section">
-    <side-bar :page="page" :icon="false" class="sidebar"/>
+    <side-bar :page="page" :icon="false"/>
     <div class="content">
-      <sections>
+      <sections :is-had="true">
         <template #title>
           О нас
         </template>
@@ -45,20 +45,30 @@ export default {
 .content {
   width: 70%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
   align-items: center;
   border-top: 1px solid #DDE2E4;
 }
-
+.btn {
+  margin-top: 72px;
+  display: flex;
+  justify-content: left;
+}
 @media (max-width: 1024px) {
-  .sidebar {
-    display: none;
-  }
 
   .content {
     width: 90%;
+  }
+  .btn {
+    margin-top: 48px;
+  }
+}
+@media (max-width: 768px) {
+  .btn {
+    margin-top: 20px;
   }
 }
 </style>

@@ -43,4 +43,10 @@ export default {
     stroke-width: 2px;
   }
 }
+@media (max-width: 1024px) {
+  .side-bar {
+    display:none;
+  }
+}
+
 </style>

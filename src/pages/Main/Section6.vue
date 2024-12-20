@@ -1,3 +1,58 @@
+<script>
+import Sections from "@/components/Sections.vue";
+import SideBar from "@/pages/Main/SideBar.vue";
+import More from "@/components/Buttons/more.vue";
+import Left from "@/components/Buttons/left.vue";
+import Right from "@/components/Buttons/right.vue";
+
+export default {
+  name: "Section6",
+  components: { Right, Left, More, SideBar, Sections },
+  data() {
+    return {
+      title: "Наши партнеры",
+      page: "06",
+      images: [
+        { id: 1, src: require("@/assets/images/img.png"), alt: "Logo 1" },
+        { id: 2, src: require("@/assets/images/img.png"), alt: "Logo 2" },
+        { id: 3, src: require("@/assets/images/img.png"), alt: "Logo 3" },
+        { id: 4, src: require("@/assets/images/img.png"), alt: "Logo 4" },
+        { id: 5, src: require("@/assets/images/img.png"), alt: "Logo 5" },
+        { id: 6, src: require("@/assets/images/img.png"), alt: "Logo 6" },
+        { id: 7, src: require("@/assets/images/img.png"), alt: "Logo 7" },
+        { id: 8, src: require("@/assets/images/1.png"), alt: "Logo 8" },
+      ],
+      active: 0,
+      direction: "",
+    };
+  },
+  computed: {
+    visibleItems() {
+      const visible = [];
+      const len = this.images.length;
+      for (let i = -2; i <= 2; i++) {
+        let index = (this.active + i + len) % len;
+        visible.push(this.images[index]);
+      }
+      return visible;
+    },
+  },
+  methods: {
+    moveLeft() {
+      this.direction = "left";
+      this.active = (this.active - 1 + this.images.length) % this.images.length;
+    },
+    moveRight() {
+      this.direction = "right";
+      this.active = (this.active + 1) % this.images.length;
+    },
+    calculateLevel(index) {
+      return index - 2;
+    },
+  },
+};
+</script>
+
 <template>
   <div class="section">
     <side-bar :page="page" :icon="false" />
@@ -31,60 +86,6 @@
   </div>
 </template>
 
-<script>
-import Sections from "@/components/Sections.vue";
-import SideBar from "@/pages/Main/SideBar.vue";
-import More from "@/components/Buttons/more.vue";
-import Left from "@/components/Buttons/left.vue";
-import Right from "@/components/Buttons/right.vue";
-
-export default {
-  name: "Section6",
-  components: { Right, Left, More, SideBar, Sections },
-  data() {
-    return {
-      title: "Наши партнеры",
-      page: "06",
-      images: [
-        { id: 1, src: require("@/assets/images/img.png"), alt: "Logo 1" },
-        { id: 2, src: require("@/assets/images/img.png"), alt: "Logo 2" },
-        { id: 3, src: require("@/assets/images/img.png"), alt: "Logo 3" },
-        { id: 4, src: require("@/assets/images/img.png"), alt: "Logo 4" },
-        { id: 5, src: require("@/assets/images/img.png"), alt: "Logo 5" },
-        { id: 6, src: require("@/assets/images/img.png"), alt: "Logo 6" },
-        { id: 7, src: require("@/assets/images/img.png"), alt: "Logo 7" },
-        { id: 8, src: require("@/assets/images/img.png"), alt: "Logo 8" },
-      ],
-      active: 0,
-      direction: "",
-    };
-  },
-  computed: {
-    visibleItems() {
-      const visible = [];
-      const len = this.images.length;
-      for (let i = -2; i <= 2; i++) {
-        let index = (this.active + i + len) % len;
-        visible.push(this.images[index]);
-      }
-      return visible;
-    },
-  },
-  methods: {
-    moveLeft() {
-      this.direction = "left";
-      this.active = (this.active - 1 + this.images.length) % this.images.length;
-    },
-    moveRight() {
-      this.direction = "right";
-      this.active = (this.active + 1) % this.images.length;
-    },
-    calculateLevel(index) {
-      return index - 2;
-    },
-  },
-};
-</script>
 
 <style scoped>
 .section {
@@ -177,5 +178,15 @@ export default {
 
 .noselect {
   user-select: none;
+}
+
+@media (max-width: 1024px) {
+  .content {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+
 }
 </style>
