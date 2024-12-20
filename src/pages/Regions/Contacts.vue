@@ -49,6 +49,7 @@ export default defineComponent({
 <template>
   <div class="contacts">
     <div class="left">
+      <h4 class="font-gilroy">Контакты</h4>
       <div class="line">
         <div>
           <svg width="19" height="28" viewBox="0 0 19 28" fill="#0072AB" xmlns="http://www.w3.org/2000/svg">
@@ -81,7 +82,7 @@ export default defineComponent({
         </div>
       </a>
       <div class="soc">
-        <h4 class="font-gilroy" style="font-size: 24px; font-weight: 400;">Соц. сети</h4>
+        <h4 class="font-gilroy">Соц. сети</h4>
         <div style="display: flex; gap: 1.5rem">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_248_4912)">
@@ -143,5 +144,26 @@ export default defineComponent({
   display: flex;
   gap: 1rem;
   align-items: center;
+}
+h4 {
+  font-size: 24px;
+  font-weight: 400;
+}
+@media (max-width: 1024px) {
+  .contacts {
+    height: 40vh;
+    width: 100%;
+    color: #333;
+  }
+  .left {
+    padding: 0;
+  }
+  h4 {
+    margin: 0;
+    font-size: 20px;
+  }
+  .soc > h4 {
+    margin-bottom: 30px;
+  }
 }
 </style>

@@ -48,10 +48,14 @@ export default {
 </script>
 
 <template>
-  <div id="map" style="height: 500px; border-radius: 16px"></div>
+  <div id="map"></div>
 </template>
 
 <style scoped>
+#map {
+  height: 500px;
+  border-radius: 16px
+}
 .leaflet-popup-content-wrapper {
   background-color: #f8f9fa;
   border-radius: 16px;
@@ -78,5 +82,10 @@ export default {
   margin: 4px 0 0;
   font-size: 12px;
   color: #555;
+}
+@media (max-width: 1024px) {
+  #map {
+    height: 350px;
+  }
 }
 </style>

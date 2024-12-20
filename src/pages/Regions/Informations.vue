@@ -26,4 +26,13 @@ img {
 p {
   line-height: 40px;
 }
+
+@media (max-width: 1024px) {
+  p {
+    line-height: 28px;
+  }
+  img {
+    max-height: 35vh;
+  }
+}
 </style>

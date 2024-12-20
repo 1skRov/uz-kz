@@ -15,13 +15,13 @@ export default {
 
 <template>
 <div class="main">
-  <div style="width: 15%;">
+  <div class="left-img">
     <img src="@/assets/images/1.png" alt="" style="width: 100%; height: 100%">
   </div>
   <div style="display: flex; flex-direction: column; padding: 20px 35px; gap: 1rem">
-    <p class="font-gilroy" style="font-size: 32px; margin: 0; font-weight: 500;">{{name}}</p>
-    <span style="font-size: 18px; color: #575F6C">{{text}}</span>
-    <div>
+    <p class="font-gilroy">{{name}}</p>
+    <span>{{text}}</span>
+    <div class="btn">
       <basic-button :is-blue="true"/>
     </div>
   </div>
@@ -35,5 +35,38 @@ export default {
   background-color: #FAFCFD;
   border: 1px solid #EBEEF0;
   display: flex;
+}
+.left-img {
+  width: 15%;
+}
+p {
+  font-size: 32px;
+  margin: 0;
+  font-weight: 500;
+}
+span {
+  font-size: 18px;
+  color: #575F6C;
+}
+@media (max-width: 1024px) {
+  .left-img {
+    width: 20%;
+  }
+
+  p {
+    font-size: 28px;
+  }
+
+  span {
+    font-size: 14px;
+  }
+
+  .btn {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+
 }
 </style>

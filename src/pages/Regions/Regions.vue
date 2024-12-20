@@ -23,15 +23,15 @@ export default {
 <template>
 <div class="main">
   <side-bar :title="page_title"/>
-  <div style="width: 65%; margin-left: auto; margin-right: auto;">
+  <div class="content">
     <sections>
       <template #title>
         {{ title }}
       </template>
       <template #content>
         <div style="position: relative">
-          <span style="position: absolute; top: 0; left: 0; width: 40%">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae corporis, ex numquam tempora totam vel vero. At beatae eos excepturi libero repudiandae soluta? Asperiores blanditiis deserunt dolor minima numquam, quas?</span>
-          <img src="@/assets/icons/1map.svg" alt="map">
+          <span class="truncate-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae corporis, ex numquam tempora totam vel vero. At beatae eos excepturi libero repudiandae soluta? Asperiores blanditiis deserunt dolor minima numquam, quas?</span>
+          <img src="@/assets/icons/1map.svg" alt="map" style="width: 100%; height: 100%">
         </div>
       </template>
     </sections>
@@ -44,4 +44,26 @@ export default {
 </template>
 
 <style scoped>
+.content {
+  width: 65%;
+  margin: 0 auto;
+}
+span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+}
+@media (max-width: 1024px) {
+  .content {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  span {
+    position: relative;
+    width: 100%;
+  }
+}
 </style>

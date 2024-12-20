@@ -45,4 +45,13 @@ export default {
     transform: translateX(-50%) rotate(180deg);
   }
 }
+@media (max-width: 1024px) {
+  .side-bar {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+
+}
 </style>
