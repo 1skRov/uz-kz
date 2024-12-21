@@ -191,7 +191,7 @@ export default {
 }
 
 .slide-track .slide {
-  width: 250px;
+  width: 20vh;
   height: 10vh;
 }
 

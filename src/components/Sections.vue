@@ -33,8 +33,8 @@ export default {
 
 <template>
   <div class="section">
-    <div class="header">
-      <div class="title font-gilroy">
+    <div class="header" v-if="$slots.title || $slots['title-button']">
+      <div class="title font-gilroy" v-if="$slots.title">
         <slot name="title">
         </slot>
       </div>

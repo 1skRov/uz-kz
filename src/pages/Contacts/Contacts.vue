@@ -22,7 +22,7 @@ export default {
 <template>
   <div class="main">
     <side-bar :title="page_title"/>
-    <div style="width: 65%; margin: 0 auto; padding-bottom: 50px;">
+    <div class="content">
       <sections>
         <template #content>
           <navigation :menu-items="menuItems" style="margin-bottom: 40px;"/>
@@ -34,5 +34,19 @@ export default {
 </template>
 
 <style scoped>
+.content {
+  width: 65%;
+  margin: 0 auto;
+}
+@media (max-width: 1024px) {
+  .content {
+    width: 90%;
+    margin: 0 auto;
+    padding-bottom: 50px;
+  }
+}
 
+@media (max-width: 768px) {
+
+}
 </style>

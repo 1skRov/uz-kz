@@ -147,7 +147,6 @@ export default {
 }
 
 .card span {
-  font-size: 16px;
   color: #CFD3DA;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -155,7 +154,6 @@ export default {
 }
 
 .card p {
-  font-size: 16px;
   color: #333333;
   font-weight: 500;
   line-height: 28px;

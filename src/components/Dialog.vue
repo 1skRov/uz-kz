@@ -1,4 +1,5 @@
 <script>
+import MapFill from "@/components/MapFill.vue"
 export default {
   name: "Dialog",
   props: {
@@ -7,6 +8,7 @@ export default {
       required: true,
     },
   },
+  components:{MapFill},
   data() {
     return {
       form: {
@@ -33,7 +35,7 @@ export default {
         <button class="close-btn" @click="closeModal">&times;</button>
         <h1 class="dialog-title font-gilroy">Хотите стать членом нашей Ассоциации?</h1>
       </div>
-      <p style="font-size: 16px; color: #575F6C;">Заполните все формы ниже, и отправьте заявку.</p>
+      <p style="color: #575F6C;">Заполните все формы ниже, и отправьте заявку.</p>
       <div class="form-grid">
         <div class="form-group">
           <label for="name">ВАШЕ ФИО:</label>
@@ -53,8 +55,8 @@ export default {
         </div>
       </div>
       <h2>В КАКОМ ГОРОДЕ ВЫ НАХОДИТЕСЬ?</h2>
-      <div class="map-placeholder">
-        <img src="@/assets/icons/1map.svg" alt="Map of regions" />
+      <div>
+        <map-fill></map-fill>
       </div>
     </div>
   </div>
@@ -76,10 +78,12 @@ export default {
   background: white;
   border-radius: 8px;
   width: 80%;
-  max-width: 800px;
+  max-width: 80%;
+  max-height: 80vh;
   padding: 20px;
   position: relative;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
 }
 
 .close-btn {
@@ -93,7 +97,9 @@ export default {
 }
 
 .dialog-title {
-  font-weight: 500; font-size: 40px; line-height: 32px;
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 32px;
 }
 
 .form-grid {
@@ -109,7 +115,6 @@ export default {
 }
 
 .form-group label {
-  font-size: 16px;
   font-weight: 500;
   margin-bottom: 5px;
 }
@@ -119,22 +124,21 @@ export default {
   font-weight: 500;
   border: 1px solid #dde2e4;
   border-radius: 5px;
-  font-size: 16px;
   background-color: #f9fafb;
+  letter-spacing: 1.5px;
 }
 
-.map-placeholder {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.map-placeholder img {
-  width: 100%;
-  border-radius: 8px;
-}
 h2 {
-  font-size: 16px;
   font-weight: 500;
   line-height: 28px;
+}
+@media (max-width: 1024px) {
+  .dialog-title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+
 }
 </style>

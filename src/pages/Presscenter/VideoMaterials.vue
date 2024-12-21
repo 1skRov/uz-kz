@@ -156,14 +156,12 @@ export default {
   opacity: 1;
 }
 .card span {
-  font-size: 16px;
   color: #CFD3DA;
   letter-spacing: 2px;
   text-transform: uppercase;
   font-weight: 500;
 }
 .card p {
-  font-size: 16px;
   color: #333333;
   font-weight: 500;
   line-height: 28px;

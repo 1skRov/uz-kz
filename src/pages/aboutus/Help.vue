@@ -18,7 +18,8 @@ export default {
 
 <template>
   <div class="content">
-    <div style="display: flex; flex-direction: column; gap: 3.5rem; padding: 3rem; width: 50%">
+    <div style="display: flex; flex-direction: column; gap: 3.5rem; padding: 3rem; width: 50%;
+  overflow: hidden;">
       <div class="title font-gilroy">{{title}}</div>
       <div class="text"> {{text}}</div>
       <div class="btn">
@@ -41,6 +42,7 @@ export default {
   border-radius: 8px;
   display: flex;
   background-color: rgba(0, 114, 171, 0.02);
+  overflow: hidden;
 }
 
 .title {
@@ -62,13 +64,16 @@ export default {
 .image-container {
   width: 50%;
   display: flex;
-  flex-shrink:1;
   justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .responsive-image {
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-width: 100%;
 }
 @media (max-width: 1024px) {
   .title {
