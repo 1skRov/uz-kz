@@ -37,4 +37,9 @@ export default {
   border: 1px solid #EBEEF0;
   background-color: #FAFCFD;
 }
+@media (max-width: 768px) {
+  .doc {
+    width: 90%;
+  }
+}
 </style>

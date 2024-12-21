@@ -1,5 +1,4 @@
 <script>
-
 import {defineComponent} from "vue";
 import MapComponent from "@/pages/Regions/Map.vue";
 import api from "@/axios";
@@ -14,7 +13,13 @@ export default defineComponent({
         email: null,
         address: null
       },
+      windowWidth: window.innerWidth,
     }
+  },
+  computed: {
+    isMobile() {
+      return this.windowWidth <= 768;
+    },
   },
   mounted(){
     this.getContacts();
@@ -48,6 +53,9 @@ export default defineComponent({
 
 <template>
   <div class="contacts">
+    <div class="map-mobile" v-if="isMobile">
+      <map-component/>
+    </div>
     <div class="left">
       <h4 class="font-gilroy">Контакты</h4>
       <div class="line">
@@ -115,8 +123,8 @@ export default defineComponent({
         </div>
       </div>
     </div>
-    <div class="right">
-      <map-component />
+    <div class="right" v-if="!isMobile">
+      <map-component/>
     </div>
   </div>
 </template>
@@ -148,6 +156,7 @@ export default defineComponent({
 h4 {
   font-size: 24px;
   font-weight: 400;
+  margin: 0;
 }
 @media (max-width: 1024px) {
   .contacts {
@@ -164,6 +173,19 @@ h4 {
   }
   .soc > h4 {
     margin-bottom: 30px;
+  }
+}
+@media (max-width: 768px) {
+  .contacts {
+    flex-direction: column;
+    height: 80vh;
+  }
+  .map-mobile{
+    width: 100%;
+    height: auto;
+  }
+  .left {
+    width: 100%;
   }
 }
 </style>

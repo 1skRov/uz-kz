@@ -50,7 +50,7 @@ export default {
   methods: {
     scrollLeft() {
       const container = this.$el.querySelector('.carousel-container');
-      const cardWidth = container.querySelector('.item').offsetWidth + 20;
+      const cardWidth = container.querySelector('.item').offsetWidth;
       container.scrollBy({
         left: -cardWidth,
         behavior: 'smooth',
@@ -58,7 +58,7 @@ export default {
     },
     scrollRight() {
       const container = this.$el.querySelector('.carousel-container');
-      const cardWidth = container.querySelector('.item').offsetWidth + 20;
+      const cardWidth = container.querySelector('.item').offsetWidth;
       container.scrollBy({
         left: cardWidth,
         behavior: 'smooth',
@@ -95,6 +95,12 @@ export default {
             </div>
           </div>
         </template>
+        <template #btn>
+          <div class="btn">
+            <left @click="scrollLeft" />
+            <right @click="scrollRight" />
+          </div>
+        </template>
       </sections>
     </div>
   </div>
@@ -107,7 +113,6 @@ export default {
 }
 .btn {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 1em;
 }
@@ -163,6 +168,22 @@ p {
 }
 
 @media (max-width: 768px) {
-
+  .carousel-container {
+    gap: 0;
+  }
+  .carousel-container .item {
+    width: 100%;
+    height: 450px;
+    display: flex;
+    align-items: flex-end;
+    background: #343434 no-repeat center center / cover;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  .btn {
+    justify-content: center;
+  }
 }
 </style>

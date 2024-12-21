@@ -16,9 +16,9 @@ export default {
 <template>
 <div class="main">
   <div class="left-img">
-    <img src="@/assets/images/1.png" alt="" style="width: 100%; height: 100%">
+    <img src="@/assets/images/1.png" alt="" style="width: 100%; height: 100%;  object-fit: cover;">
   </div>
-  <div style="display: flex; flex-direction: column; padding: 20px 35px; gap: 1rem">
+  <div class="right-content">
     <p class="font-gilroy">{{name}}</p>
     <span>{{text}}</span>
     <div class="btn">
@@ -39,13 +39,15 @@ export default {
 .left-img {
   width: 15%;
 }
+.right-content {
+  display: flex; flex-direction: column; padding: 20px 35px; gap: 1rem
+}
 p {
   font-size: 32px;
   margin: 0;
   font-weight: 500;
 }
 span {
-  font-size: 18px;
   color: #575F6C;
 }
 @media (max-width: 1024px) {
@@ -57,16 +59,28 @@ span {
     font-size: 28px;
   }
 
-  span {
-    font-size: 14px;
-  }
-
   .btn {
     display: none;
   }
 }
 
 @media (max-width: 768px) {
-
+  .main {
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .left-img {
+    height: 15rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  p {
+    font-size: 18px;
+  }
+  .right-content {
+    padding: 15px 20px;
+  }
 }
 </style>
