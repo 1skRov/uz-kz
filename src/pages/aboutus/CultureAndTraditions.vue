@@ -68,6 +68,12 @@ export default {
           </div>
         </div>
       </template>
+      <template #btn>
+        <div class="btn">
+          <left @click="prevSlide" />
+          <right @click="nextSlide" />
+        </div>
+      </template>
     </sections>
   </div>
 </template>
@@ -75,7 +81,6 @@ export default {
 <style scoped>
 .btn {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 1em;
 }
@@ -126,6 +131,8 @@ export default {
 }
 
 @media (max-width: 768px) {
+  .btn {
 
+  }
 }
 </style>

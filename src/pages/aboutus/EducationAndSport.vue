@@ -71,7 +71,7 @@ export default {
   gap: 2rem;
 }
 .ed, .sp {
-  width: 100%;
+  width: 50%;
   border: 1px solid #EBEEF0;
   border-radius: 8px;
   position: relative;
@@ -102,6 +102,19 @@ export default {
 }
 
 @media (max-width: 768px) {
-
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .title {
+    font-size: 24px;
+    line-height: 28px;
+  }
+  .text {
+    line-height: 28px;
+  }
+  .ed, .sp {
+    width: 83%;
+  }
 }
 </style>

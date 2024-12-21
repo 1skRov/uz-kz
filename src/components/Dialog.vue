@@ -139,6 +139,8 @@ h2 {
 }
 
 @media (max-width: 768px) {
-
+  .form-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 </style>

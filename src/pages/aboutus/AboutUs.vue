@@ -167,6 +167,8 @@ ul {
 }
 
 @media (max-width: 768px) {
-
+  #section-1 {
+    width: 100%;
+  }
 }
 </style>

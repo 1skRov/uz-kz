@@ -2,10 +2,11 @@
 import Sections from "@/components/Sections.vue";
 import SideBar from "@/components/SideBarText.vue";
 import Navigation from "@/components/Navigation.vue";
+import SelectElement from "@/components/SelectElement.vue"
 
 export default {
   name: "Regions",
-  components: {Navigation, SideBar, Sections},
+  components: {Navigation, SideBar, Sections, SelectElement},
   data(){
     return {
       title: "Этнокультурный центр узбеков Казахстана",
@@ -35,7 +36,8 @@ export default {
         </div>
       </template>
     </sections>
-    <navigation :menuItems="menuItems"/>
+    <select-element :items="menuItems" class="mob-has"></select-element>
+    <navigation :menuItems="menuItems" class="mob-hidden"/>
     <div style="padding: 50px 0;">
       <router-view></router-view>
     </div>
@@ -59,11 +61,19 @@ span {
     width: 90%;
   }
 }
-
+.mob-has {
+  display: none;
+}
 @media (max-width: 768px) {
   span {
     position: relative;
     width: 100%;
+  }
+  .mob-hidden {
+    display: none;
+  }
+  .mob-has {
+    display: flex;
   }
 }
 </style>

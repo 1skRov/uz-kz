@@ -50,6 +50,9 @@ export default {
     <template #content>
      <CardGrid :cards="cards"></CardGrid>
     </template>
+    <template #btn>
+      <more/>
+    </template>
   </sections>
 </div>
 </template>

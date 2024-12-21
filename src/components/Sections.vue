@@ -5,7 +5,7 @@ export default {
     isHad:{
       type: Boolean,
       default: false,
-    }
+    },
   },
   data() {
     return {

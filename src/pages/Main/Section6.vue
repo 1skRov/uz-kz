@@ -212,5 +212,12 @@ export default {
     align-items: center;
     margin: 1.5rem 0;
   }
+  .btns {
+    margin-left: 20px;
+  }
+  #carousel::before,
+  #carousel::after {
+    width: 50px;
+  }
 }
 </style>

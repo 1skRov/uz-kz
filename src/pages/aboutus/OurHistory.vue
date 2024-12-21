@@ -42,7 +42,13 @@ export default {
         },
       ],
       activeIndex: 0,
+      windowWidth: window.innerWidth,
     };
+  },
+  computed: {
+    isMobile() {
+      return this.windowWidth <= 768;
+    },
   },
   methods: {
     setActive(index) {
@@ -65,20 +71,27 @@ export default {
   watch: {
     activeIndex(newIndex) {
       const container = this.$el.querySelector('.carousel-container');
-      const itemWidth = container.querySelector('.item').offsetWidth;
+      const itemWidth = this.isMobile
+          ? container.offsetWidth
+          : container.querySelector('.item').offsetWidth;
       container.scrollTo({
         left: newIndex * itemWidth,
         behavior: 'smooth',
       });
     },
   },
+  mounted() {
+    window.addEventListener("resize", () => {
+      this.windowWidth = window.innerWidth;
+    });
+  },
 };
 </script>
 
 <template>
   <div>
-    <sections>
-      <template #title>{{ title }}</template>
+    <sections class="mob-section">
+      <template #title v-if="!isMobile">{{ title }}</template>
       <template #title-button>
         <div class="btn">
           <left @click="scrollLeft" />
@@ -87,6 +100,10 @@ export default {
       </template>
       <template #content>
         <section class="game-section">
+          <div class="btn-mobile">
+            <left @click="scrollLeft" :is-white="true"/>
+            <right @click="scrollRight" :is-white="true"/>
+          </div>
           <div class="carousel-container">
             <div
                 class="item"
@@ -103,7 +120,7 @@ export default {
               </div>
             </div>
           </div>
-          <div class="dots">
+          <div class="dots" v-if="!isMobile">
             <span
                 v-for="(game, index) in games"
                 :key="index"
@@ -129,6 +146,9 @@ export default {
   gap: 20px;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 .carousel-container .item {
   flex: 0 0 auto;
@@ -213,8 +233,41 @@ export default {
     width: 400px;
   }
 }
-
 @media (max-width: 768px) {
-
+  .carousel-container .item {
+    flex: 0 0 100%;
+    height: 50vh;
+  }
+  .carousel-container .item.active {
+    width: 100%;
+  }
+  .item-desc {
+    padding: 20px;
+  }
+  .dots {
+    display: none;
+  }
+  .carousel-container .item {
+    border-radius: 0;
+  }
+  .carousel-container {
+    gap: 0;
+  }
+  .game-section {
+    position: relative;
+    background-color: red;
+  }
+  .btn-mobile {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    padding: 10px;
+    z-index: 100;
+    gap: 1.5rem;
+  }
+  .mob-section {
+    padding: 0;
+  }
 }
 </style>
