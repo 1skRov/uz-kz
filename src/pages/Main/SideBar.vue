@@ -24,7 +24,7 @@ export default {
 </template>
 <style scoped>
 .side-bar {
-  width: 160px;
+  width: 10%;
   padding: 4rem 0;
   border-right: 1px solid #EBEEF0;
   display: flex;

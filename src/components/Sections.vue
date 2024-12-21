@@ -43,7 +43,7 @@ export default {
         </slot>
       </div>
     </div>
-    <div class="content">
+    <div class="content" v-if="$slots.content">
       <slot name="content">
       </slot>
     </div>

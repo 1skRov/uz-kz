@@ -12,42 +12,71 @@ export default {
     return {
       title: "Наши партнеры",
       page: "06",
-      images: [
-        { id: 1, src: require("@/assets/images/img.png"), alt: "Logo 1" },
-        { id: 2, src: require("@/assets/images/img.png"), alt: "Logo 2" },
-        { id: 3, src: require("@/assets/images/img.png"), alt: "Logo 3" },
-        { id: 4, src: require("@/assets/images/img.png"), alt: "Logo 4" },
-        { id: 5, src: require("@/assets/images/img.png"), alt: "Logo 5" },
-        { id: 6, src: require("@/assets/images/img.png"), alt: "Logo 6" },
-        { id: 7, src: require("@/assets/images/img.png"), alt: "Logo 7" },
-        { id: 8, src: require("@/assets/images/1.png"), alt: "Logo 8" },
+      slidesOriginal: [
+        {id: 1, src: require("@/assets/images/img.png"), alt: "Logo 1"},
+        {id: 2, src: require("@/assets/images/img.png"), alt: "Logo 2"},
+        {id: 3, src: require("@/assets/images/img.png"), alt: "Logo 3"},
+        {id: 4, src: require("@/assets/images/img.png"), alt: "Logo 4"},
+        {id: 5, src: require("@/assets/images/img.png"), alt: "Logo 5"},
+        {id: 6, src: require("@/assets/images/img.png"), alt: "Logo 6"},
+        {id: 7, src: require("@/assets/images/img.png"), alt: "Logo 7"},
+        {id: 8, src: require("@/assets/images/1.png"), alt: "Logo 8"},
       ],
-      active: 0,
-      direction: "",
+      currentPosition: 0,
+      slideWidth: 250,
+      visibleSlides: 4,
+      disableTransition: false,
     };
   },
+
   computed: {
-    visibleItems() {
-      const visible = [];
-      const len = this.images.length;
-      for (let i = -2; i <= 2; i++) {
-        let index = (this.active + i + len) % len;
-        visible.push(this.images[index]);
-      }
-      return visible;
+    slidesDoubled() {
+      return [...this.slidesOriginal, ...this.slidesOriginal];
+    },
+    originalLength() {
+      return this.slidesOriginal.length;
+    },
+    doubledLength() {
+      return this.slidesDoubled.length;
+    },
+    trackStyles() {
+      const offset = this.currentPosition * this.slideWidth * -1;
+      const transitionStyle = this.disableTransition ? "none" : "0.3s";
+      return {
+        display: "flex",
+        transform: `translateX(${offset}px)`,
+        transition: transitionStyle,
+        width: `${this.doubledLength * this.slideWidth}px`,
+      };
     },
   },
+
   methods: {
     moveLeft() {
-      this.direction = "left";
-      this.active = (this.active - 1 + this.images.length) % this.images.length;
+      this.disableTransition = false;
+      this.currentPosition--;
+      this.$nextTick(() => {
+        this.checkEdges();
+      });
     },
     moveRight() {
-      this.direction = "right";
-      this.active = (this.active + 1) % this.images.length;
+      this.disableTransition = false;
+      this.currentPosition++;
+
+      this.$nextTick(() => {
+        this.checkEdges();
+      });
     },
-    calculateLevel(index) {
-      return index - 2;
+
+    checkEdges() {
+      if (this.currentPosition >= this.originalLength) {
+        this.disableTransition = true;
+        this.currentPosition = this.currentPosition - this.originalLength;
+      }
+      if (this.currentPosition < 0) {
+        this.disableTransition = true;
+        this.currentPosition = this.currentPosition + this.originalLength;
+      }
     },
   },
 };
@@ -55,141 +84,123 @@ export default {
 
 <template>
   <div class="section">
-    <side-bar :page="page" :icon="false" />
-    <div style="width: 100%">
-      <div class="content">
+    <side-bar :page="page" :icon="false"/>
+    <div class="right-content">
+      <div class="title-section">
         <sections>
           <template #title>
             {{ title }}
           </template>
           <template #title-button>
             <div class="btns">
-              <left @click="moveLeft" />
-              <right @click="moveRight" />
+              <left @click="moveLeft"/>
+              <right @click="moveRight"/>
             </div>
           </template>
         </sections>
       </div>
-
-      <div id="carousel" class="noselect">
-        <transition-group :name="direction" tag="div">
+      <div id="carousel" class="slider">
+        <div class="slide-track" :style="trackStyles">
           <div
-              v-for="(image, index) in visibleItems"
-              :key="image.id"
-              :class="['item', 'level' + calculateLevel(index)]"
+              v-for="(slide, index) in slidesDoubled"
+              :key="index"
+              class="slide"
           >
-            <img :src="image.src" :alt="image.alt" />
+            <img
+                :src="slide.src"
+                :alt="slide.alt"
+                width="100%"
+                height="100%"
+            />
           </div>
-        </transition-group>
+        </div>
       </div>
       <div class="btns btn-mob">
-        <left @click="moveLeft" />
-        <right @click="moveRight" />
+        <left @click="moveLeft"/>
+        <right @click="moveRight"/>
       </div>
     </div>
   </div>
 </template>
 
-
 <style scoped>
 .section {
   display: flex;
+  width: 100%;
 }
-.content {
-  width: 70%;
+
+.right-content {
+  width: 100%;
+  overflow: hidden;
+}
+
+.right-content .title-section {
+  width: 78%;
   display: flex;
   justify-content: center;
   margin: 0 auto;
   align-items: center;
 }
+
 .btns {
   display: flex;
   gap: 2rem;
   align-items: center;
 }
 
-#carousel {
+.right-content #carousel {
   position: relative;
-  height: 35vh;
+  height: 15vh;
   width: 100%;
   margin: 0;
   overflow: hidden;
 }
 
-.item {
+#carousel::before,
+#carousel::after {
+  content: "";
   position: absolute;
-  text-align: center;
-  transition: all 1s;
-}
-
-.item img {
-  width: 100%;
+  top: 0;
   height: 100%;
-  object-fit: contain;
-  border-radius: 8px;
-
+  width: 100px;
+  pointer-events: none;
+  z-index: 2;
 }
 
-.level-2 {
-  height: 150px;
-  width: 110px;
-  margin-top: 25px;
-  left: 5%;
+#carousel::before {
+  left: 0;
+  background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0) 100%
+  );
 }
 
-.level-1 {
-  height: 180px;
-  width: 130px;
-  margin-top: 10px;
-  left: 25%;
+#carousel::after {
+  right: 0;
+  background: linear-gradient(
+      to left,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0) 100%
+  );
 }
 
-.level0 {
-  height: 200px;
-  width: 150px;
-  left: 45%;
+.slider .slide-track {
+  display: flex;
+  gap: 20px;
 }
 
-.level1 {
-  height: 180px;
-  width: 130px;
-  margin-top: 10px;
-  left: 65%;
+.slide-track .slide {
+  width: 250px;
+  height: 10vh;
 }
 
-.level2 {
-  height: 150px;
-  width: 110px;
-  margin-top: 25px;
-  left: 85%;
-}
-
-.left-enter-active,
-.right-enter-active {
-  transition: transform 1s, opacity 1s;
-}
-
-.left-enter,
-.left-leave-to {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-
-.right-enter,
-.right-leave-to {
-  transform: translateX(100%);
-  opacity: 0;
-}
-
-.noselect {
-  user-select: none;
-}
 .btn-mob {
   display: none;
 }
 
 @media (max-width: 1024px) {
-  .content {
+  .right-content .title-section {
     width: 90%;
   }
 }
