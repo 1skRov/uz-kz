@@ -2,10 +2,11 @@
 import SideBar from "@/pages/Main/SideBar.vue";
 import Sections from "@/components/Sections.vue";
 import More from "@/components/Buttons/more.vue";
+import MapFill from "@/components/MapFill.vue";
 
 export default {
   name: "Section5",
-  components: {More, Sections, SideBar},
+  components: {MapFill, More, Sections, SideBar},
   data(){
     return {
       page: "05",
@@ -34,7 +35,9 @@ export default {
         <template #content>
           <div style="position: relative">
             <span class="truncate-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae corporis, ex numquam tempora totam vel vero. At beatae eos excepturi libero repudiandae soluta? Asperiores blanditiis deserunt dolor minima numquam, quas?</span>
-            <img src="@/assets/icons/1map.svg" alt="map" width="100%" height="100%">
+            <div style="width: 100%; height: 100%">
+              <map-fill></map-fill>
+            </div>
           </div>
         </template>
         <template #btn>
