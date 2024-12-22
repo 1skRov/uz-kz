@@ -17,7 +17,7 @@ export default {
   },
   data(){
     return {
-      to: ['/about-us', "/regions/guide", '/documents', '/press-center', '/famous-persons', '/contacts/republic-contacts'],
+      to: ['/about-us', "/regions/guide", '/documents', '/press-center', '/famous-persons', '/contacts/republic'],
       selectedLanguage: "RUS",
       isDropdownOpen: false,
       isMenuOpen: false,
