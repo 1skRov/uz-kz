@@ -75,6 +75,9 @@ export default {
     ReturnMainPage() {
       this.$router.push({ name: 'MainPage' });
     },
+    closeMenu() {
+      this.isMenuOpen = false;
+    },
   }
 }
 </script>
@@ -158,37 +161,37 @@ export default {
   <nav v-if="isMenuOpen" class="hidden-menu">
     <div class="content">
       <div class="sandbars">
-        <router-link to="about-us" style="text-decoration: none; color: #000" class="main-text font-gilroy">О НАС</router-link>
+        <router-link @click="closeMenu" :to="{ path: '/about-us' }" style="text-decoration: none; color: #000" class="main-text font-gilroy">О НАС</router-link>
         <div v-for="(link, index) in aboutLinks" :key="'about-'+index">
           <router-link class="text" :to="link.to">{{ link.text }}</router-link>
         </div>
       </div>
       <div class="sandbars">
-        <router-link to="regions" style="text-decoration: none; color: #000" class="main-text font-gilroy">РЕГИОНЫ</router-link>
+        <router-link @click="closeMenu" to="/regions" style="text-decoration: none; color: #000" class="main-text font-gilroy">РЕГИОНЫ</router-link>
         <div v-for="(link, index) in regionsLinks" :key="'regions-'+index">
           <router-link class="text" :to="link.to">{{ link.text }}</router-link>
         </div>
       </div>
       <div class="sandbars">
-        <router-link to="documents" style="text-decoration: none; color: #000" class="main-text font-gilroy">ДОКУМЕНТЫ</router-link>
+        <router-link @click="closeMenu" to="/documents" style="text-decoration: none; color: #000" class="main-text font-gilroy">ДОКУМЕНТЫ</router-link>
         <div v-for="(link, index) in documentsLinks" :key="'documents-'+index">
           <router-link class="text" :to="link.to">{{ link.text }}</router-link>
         </div>
       </div>
       <div class="sandbars">
-        <router-link to="press-centre" style="text-decoration: none; color: #000" class="main-text font-gilroy">ПРЕСС ЦЕНТР</router-link>
+        <router-link @click="closeMenu" to="/press-center" style="text-decoration: none; color: #000" class="main-text font-gilroy">ПРЕСС ЦЕНТР</router-link>
         <div v-for="(link, index) in pressCenterLinks" :key="'press-'+index">
           <router-link class="text" :to="link.to">{{ link.text }}</router-link>
         </div>
       </div>
       <div class="sandbars">
-        <router-link to="contacts" style="text-decoration: none; color: #000" class="main-text font-gilroy">КОНТАКТЫ</router-link>
+        <router-link @click="closeMenu" to="/contacts" style="text-decoration: none; color: #000" class="main-text font-gilroy">КОНТАКТЫ</router-link>
         <div v-for="(link, index) in contactsLinks" :key="'contacts-'+index">
           <router-link class="text" :to="link.to">{{ link.text }}</router-link>
         </div>
       </div>
       <div class="sandbars">
-        <router-link to="about-us" style="text-decoration: none; color: #000" class="main-text font-gilroy">Известные личности</router-link>
+        <router-link @click="closeMenu" to="/about-us" style="text-decoration: none; color: #000" class="main-text font-gilroy">Известные личности</router-link>
         <div @click="openDonate" class="btn">
           Донаты
         </div>
@@ -429,6 +432,15 @@ export default {
   }
 }
 @media (max-width: 768px) {
+  .header .localAndContacts {
+    display: none;
+  }
+  .header .langAndMail .lang, .mail {
+    display: none;
+  }
+  .header .langAndMail .mail {
+    display: none;
+  }
   .content {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
