@@ -92,6 +92,12 @@ export default {
           </div>
         </div>
       </template>
+      <template #btn>
+        <div class="btn">
+          <left @click="prevSlide" />
+          <right @click="nextSlide" />
+        </div>
+      </template>
     </sections>
   </div>
 </template>
@@ -99,7 +105,6 @@ export default {
 <style scoped>
 .btn {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 1em;
 }
@@ -166,6 +171,24 @@ export default {
 }
 
 @media (max-width: 768px) {
+  .carousel-wrapper {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Улучшение для iOS */
+  }
 
+  .carousel-slide {
+    flex: 0 0 100%; /* Показываем один элемент за раз */
+    margin-right: 10px; /* Расстояние между элементами */
+  }
+
+  .card {
+    height: auto; /* Автоматическая высота для лучшей адаптации */
+  }
+
+
+  .carousel-wrapper::-webkit-scrollbar {
+    display: none; /* Скрываем стандартный скроллбар */
+  }
 }
 </style>
