@@ -91,7 +91,7 @@ export default {
   <div class="main">
 <!--    <div v-for="c in lang">{{c}}</div>-->
     <div style="width: 100%">
-<!--      <Header :lists="navbars" :contacts="contacts" :lang="lang"/>-->
+      <Header :lists="navbars" :contacts="contacts" :lang="lang"/>
     </div>
     <div class="content">
       <transition name="fade" mode="out-in">
@@ -99,7 +99,7 @@ export default {
       </transition>
     </div>
     <div>
-<!--      <Footer/>-->
+      <Footer/>
     </div>
   </div>
 </template>

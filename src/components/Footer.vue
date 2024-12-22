@@ -207,10 +207,45 @@ export default {
   align-items: center;
 }
 .text-line {
-  font-size:14px;
   color:#575F6C;
 }
 .text-end + .text-end {
   margin-left: 3rem;
+}
+@media (max-width: 1024px) {
+  .main {
+    padding: 30px 50px;
+    gap: 1.5rem;
+  }
+  .main .content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,
+    minmax(230px, 1fr));
+    grid-gap: 10px;
+  }
+}
+@media (max-width: 768px) {
+  .content .sandbars {
+    gap:0;
+  }
+  .sandbars .text {
+    display: none;
+  }
+  .main .content-line {
+    display: none;
+  }
+  .sandbars .btn {
+    width: 100%;
+  }
+  .main .text-line {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    text-align: start;
+    gap: 10px;
+  }
+  .text-end + .text-end {
+    margin-left: 0;
+  }
 }
 </style>
