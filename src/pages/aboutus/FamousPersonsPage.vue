@@ -70,6 +70,12 @@ export default {
             />
           </div>
         </template>
+        <template #btn>
+          <div class="btn">
+            <left/>
+            <right/>
+          </div>
+        </template>
       </sections>
     </div>
   </div>
@@ -89,5 +95,14 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+@media (max-width: 1024px) {
+  .persons {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+
 }
 </style>
