@@ -46,6 +46,9 @@ export default {
 </template>
 
 <style scoped>
+.main {
+  display: flex;
+}
 .content {
   width: 65%;
   margin: 0 auto;

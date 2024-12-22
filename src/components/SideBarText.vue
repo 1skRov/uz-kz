@@ -17,7 +17,7 @@ export default {
       :style="{ backgroundColor: isBackground ? '#0072AB' : 'white' }"
   >
     <p
-        class="font-gilroy mx-auto"
+        class="font-gilroy"
         :style="{ color: isBackground ? 'white' : '#CFD3DA' }"
     >
       {{ title }}
@@ -32,17 +32,16 @@ export default {
   position: relative;
 
   p {
-    width: 100%;
     text-align: center;
     font-size: 32px;
     font-weight: 500;
     text-transform: uppercase;
     writing-mode: vertical-rl;
-    margin-bottom: 0;
     position: absolute;
     top: 64px;
     left: 50%;
     transform: translateX(-50%) rotate(180deg);
+    margin: 0 auto;
   }
 }
 @media (max-width: 1024px) {
