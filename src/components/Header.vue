@@ -20,11 +20,49 @@ export default {
       to: ['/about-us', "/regions/guide", '/documents', '/press-center', '/famous-persons', '/contacts/republic-contacts'],
       selectedLanguage: "RUS",
       isDropdownOpen: false,
+      isMenuOpen: false,
+      menu: ["О нас", "Регионы", "Документы", "Пресс Центр", "Личности", "Контакты"],
+      aboutLinks: [
+        { text: "История", to: { name: 'AboutUs', hash: '#section-1' } },
+        { text: "Культура и традиции", to: { name: 'AboutUs', hash: '#section-2' } },
+        { text: "Наука и литература", to: { name: 'AboutUs', hash: '#section-?' } },
+        { text: "Известные личности", to: { name: 'AboutUs', hash: '#section-3' } },
+        { text: "Молодежные организации", to: { name: 'AboutUs', hash: '#section-4' } },
+        { text: "Образование", to: { name: 'AboutUs', hash: '#section-5' } },
+        { text: "Спорт", to: { name: 'AboutUs', hash: '#section-5' } },
+      ],
+      regionsLinks: [
+        { text: "Ассоциация узбеков РК 'Дустлик'", to: { name: 'Regions', hash: '#some-section' } },
+        { text: "АСТАНА Узбекский ЭКЦ г. Астаны", to: { name: 'Regions', hash: '#some-section' } },
+        { text: "АЛМАТЫ Узбекский ЭКЦ г. Алматы", to: { name: 'Regions', hash: '#some-section' } },
+        { text: "Узбекский ЭКЦ г. Шымкент", to: { name: 'Regions', hash: '#some-section' } },
+        { text: "Все регионы", to: { name: 'Regions', hash: '#guide' } },
+      ],
+      documentsLinks: [
+        { text: "Устав", to: { name: 'Documents', hash: '#charter' } },
+        { text: "План на 2018 год", to: { name: 'Documents', hash: '#plan2018' } },
+        { text: "Отчет за 2017 год", to: { name: 'Documents', hash: '#report2017' } },
+        { text: "Проекты", to: { name: 'Documents', hash: '#projects' } },
+      ],
+      pressCenterLinks: [
+        { text: "Последние новости", to: { name: 'PressCenter', hash: '#news' } },
+        { text: "Видео материалы", to: { name: 'PressCenter', hash: '#video' } },
+        { text: "Фотогалерея", to: { name: 'PressCenter', hash: '#gallery' } },
+        { text: "Интервью", to: { name: 'PressCenter', hash: '#interviews' } },
+        { text: "Благотворительная помощь", to: { name: 'PressCenter', hash: '#charity' } },
+      ],
+      contactsLinks: [
+        { text: "Центральные контакты", to: { name: 'Contacts', hash: '#republic' } },
+        { text: "Региональные контакты", to: { name: 'Contacts', hash: '#regions' } },
+      ]
     }
   },
   methods: {
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
+    },
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
     },
     changeLanguage(language) {
       this.selectedLanguage = language;
@@ -58,8 +96,8 @@ export default {
   </nav>
   <nav class="menu">
     <ul class="list">
-      <li v-for="(list, id) in lists" :key="id" class="list-item">
-        <router-link :to="to[id]" :class="{ active: isActive(to[id]) }" style="text-decoration: none; color: #000">{{list.title}}</router-link>
+      <li v-for="(list, id) in menu" :key="id" class="list-item">
+        <router-link :to="to[id]" :class="{ active: isActive(to[id]) }" style="text-decoration: none; color: #000">{{list}}</router-link>
       </li>
     </ul>
   </nav>
@@ -111,11 +149,110 @@ export default {
         </svg>
       </a>
     </div>
+    <div class="menu-toggle" @click="toggleMenu">
+      <svg width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 6h16M4 12h16M4 18h16" stroke="#333" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </div>
+  </nav>
+  <nav v-if="isMenuOpen" class="hidden-menu">
+    <div class="content">
+      <div class="sandbars">
+        <router-link to="about-us" style="text-decoration: none; color: #000" class="main-text font-gilroy">О НАС</router-link>
+        <div v-for="(link, index) in aboutLinks" :key="'about-'+index">
+          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
+        </div>
+      </div>
+      <div class="sandbars">
+        <router-link to="regions" style="text-decoration: none; color: #000" class="main-text font-gilroy">РЕГИОНЫ</router-link>
+        <div v-for="(link, index) in regionsLinks" :key="'regions-'+index">
+          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
+        </div>
+      </div>
+      <div class="sandbars">
+        <router-link to="documents" style="text-decoration: none; color: #000" class="main-text font-gilroy">ДОКУМЕНТЫ</router-link>
+        <div v-for="(link, index) in documentsLinks" :key="'documents-'+index">
+          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
+        </div>
+      </div>
+      <div class="sandbars">
+        <router-link to="press-centre" style="text-decoration: none; color: #000" class="main-text font-gilroy">ПРЕСС ЦЕНТР</router-link>
+        <div v-for="(link, index) in pressCenterLinks" :key="'press-'+index">
+          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
+        </div>
+      </div>
+      <div class="sandbars">
+        <router-link to="contacts" style="text-decoration: none; color: #000" class="main-text font-gilroy">КОНТАКТЫ</router-link>
+        <div v-for="(link, index) in contactsLinks" :key="'contacts-'+index">
+          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
+        </div>
+      </div>
+      <div class="sandbars">
+        <router-link to="about-us" style="text-decoration: none; color: #000" class="main-text font-gilroy">Известные личности</router-link>
+        <div @click="openDonate" class="btn">
+          Донаты
+        </div>
+      </div>
+    </div>
+    <div class="for-mobile">
+      <nav class="langAndMail-mobile">
+        <div class="lang" @click="toggleDropdown">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.0003 0.666626C6.64833 0.666626 0.666992 6.64796 0.666992 14C0.666992 21.352 6.64833 27.3333 14.0003 27.3333C21.3523 27.3333 27.3337 21.352 27.3337 14C27.3337 6.64796 21.3523 0.666626 14.0003 0.666626ZM23.2243 8.66663H20.151C19.8217 7.06796 19.3443 5.64663 18.7483 4.46129C20.619 5.39729 22.1763 6.86396 23.2243 8.66663ZM24.667 14C24.667 14.9226 24.5377 15.812 24.3163 16.6666H20.543C20.623 15.8093 20.667 14.9186 20.667 14C20.667 13.0813 20.623 12.1906 20.543 11.3333H24.3163C24.5377 12.188 24.667 13.0773 24.667 14ZM14.0003 24.6666C12.8763 24.6666 11.4017 22.692 10.5937 19.3333H17.4057C16.599 22.692 15.1243 24.6666 14.0003 24.6666ZM10.1443 16.6666C10.055 15.828 10.0003 14.9426 10.0003 14C10.0003 13.0573 10.055 12.172 10.1443 11.3333H17.8563C17.9457 12.172 18.0003 13.0573 18.0003 14C18.0003 14.9426 17.9457 15.828 17.8563 16.6666H10.1443ZM3.33366 14C3.33366 13.0773 3.46299 12.188 3.68433 11.3333H7.45766C7.37766 12.1906 7.33366 13.0813 7.33366 14C7.33366 14.9186 7.37766 15.8093 7.45766 16.6666H3.68433C3.46299 15.812 3.33366 14.9226 3.33366 14ZM14.0003 3.33329C15.1243 3.33329 16.599 5.30796 17.407 8.66663H10.5937C11.4017 5.30796 12.8763 3.33329 14.0003 3.33329ZM9.25366 4.46129C8.65766 5.64663 8.18033 7.06796 7.85099 8.66663H4.77632C5.82433 6.86396 7.38166 5.39729 9.25366 4.46129ZM4.77632 19.3333H7.84966C8.17899 20.932 8.65633 22.3533 9.25233 23.5386C7.38166 22.6026 5.82433 21.136 4.77632 19.3333ZM18.747 23.5386C19.343 22.3533 19.819 20.932 20.1497 19.3333H23.223C22.1763 21.136 20.619 22.6026 18.747 23.5386Z" fill="#0072AB" fill-opacity="0.3"/>
+          </svg>
+          <p>{{ selectedLanguage }}</p>
+        </div>
+        <ul v-if="isDropdownOpen" class="dropdown">
+          <li
+              v-for="(language, index) in lang"
+              :key="index"
+              @click="changeLanguage(language.title)"
+              class="dropdown-item"
+          >
+            {{ language.title }}
+          </li>
+        </ul>
+        <div class="mail" :title="contacts.email">
+          <a :href="`mailto:${contacts.email}`" target="_blank">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.33366 5.33337C3.86033 5.33337 2.66699 6.52671 2.66699 8.00004V24C2.66699 25.4734 3.86033 26.6667 5.33366 26.6667H26.667C28.1403 26.6667 29.3337 25.4734 29.3337 24V8.00004C29.3337 6.52671 28.1403 5.33337 26.667 5.33337H5.33366ZM5.33366 8.00004H26.667V9.33598L16.0003 16L5.33366 9.33598V8.00004ZM5.33366 12.0026L16.0003 18.6667L26.667 12.0026V24H5.33366V12.0026Z" fill="#333333"/>
+            </svg>
+          </a>
+        </div>
+      </nav>
+      <nav class="localAndContacts-mobile">
+        <div class="local">
+          <svg width="43" height="43" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16.6663 2.67969C11.525 2.67969 7.34338 6.86388 7.34338 12.0052C7.34338 17.9825 15.299 27.6922 15.6377 28.1016L16.6663 29.349L17.6949 28.1016C18.0336 27.6909 25.9892 17.9825 25.9892 12.0052C25.9892 6.86254 21.8076 2.67969 16.6663 2.67969ZM16.6663 5.34635C20.337 5.34635 23.3226 8.33454 23.3226 12.0052C23.3225 15.6119 19.1703 21.8149 16.6663 25.1016C14.1623 21.8176 10.0101 15.6172 10.0101 12.0052C10.0101 8.33454 12.9956 5.34635 16.6663 5.34635ZM16.6663 8.66667C14.825 8.66667 13.333 10.1587 13.333 12C13.333 13.8413 14.825 15.3333 16.6663 15.3333C18.5076 15.3333 19.9996 13.8413 19.9996 12C19.9996 10.1587 18.5076 8.66667 16.6663 8.66667Z" fill="#CFD3DA"/>
+          </svg>
+          <p>{{ contacts.address }}</p>
+        </div>
+        <div class="contacts">
+          <svg width="21" height="21" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_345_284)">
+              <path d="M19.7624 14.1333L15.3874 12.2583C15.2005 12.1787 14.9928 12.1619 14.7956 12.2105C14.5983 12.2591 14.4222 12.3705 14.2937 12.5279L12.3562 14.8951C9.31545 13.4614 6.86837 11.0143 5.43469 7.97358L7.80188 6.03608C7.95957 5.90783 8.07117 5.73169 8.11981 5.53434C8.16844 5.33699 8.15145 5.12916 8.07141 4.94233L6.19641 0.567328C6.10856 0.365925 5.9532 0.201486 5.7571 0.102366C5.561 0.0032464 5.33645 -0.0243417 5.12219 0.0243589L1.05969 0.961859C0.853118 1.00956 0.668812 1.12587 0.536855 1.29181C0.404898 1.45775 0.333082 1.66352 0.33313 1.87553C0.33313 11.8951 8.45422 20.0005 18.4581 20.0005C18.6702 20.0007 18.8761 19.9289 19.0421 19.7969C19.2081 19.665 19.3245 19.4806 19.3722 19.274L20.3097 15.2115C20.3581 14.9962 20.3299 14.7707 20.23 14.5739C20.1301 14.3772 19.9648 14.2214 19.7624 14.1333Z" fill="#CFD3DA"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_345_284">
+                <rect width="20" height="20" fill="white" transform="translate(0.33313)"/>
+              </clipPath>
+            </defs>
+          </svg>
+          <div style="display: flex; flex-direction: column; gap: 5px;">
+            <p>{{ contacts.phone1 }}</p>
+            <p>{{ contacts.phone1 }}</p>
+          </div>
+        </div>
+      </nav>
+    </div>
   </nav>
 </div>
 </template>
 
 <style scoped>
+.menu-toggle {
+  display: none;
+}
 .header {
   width: 100%;
   height: 100%;
@@ -220,6 +357,178 @@ export default {
   }
   p {
     margin: 0;
+  }
+}
+@media (max-width: 1024px) {
+  .menu {
+    display: none;
+  }
+
+  .for-mobile {
+    display: none;
+  }
+
+  .menu-toggle {
+    cursor: pointer;
+    border-left: 1px solid #EBEEF0;
+    padding: 0 15px;
+    height: 80px;
+    align-items: center;
+    display: flex;
+  }
+
+  .hidden-menu {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background: white;
+    z-index: 3000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    box-sizing: border-box;
+    display: grid;
+    gap: 20px;
+    border-top: 1px solid #EBEEF0;
+  }
+  .content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,
+    minmax(230px, 1fr));
+    grid-gap: 10px
+  }
+
+  .content .sandbars {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .sandbars .text {
+    color: #9098A5;
+    display: block;
+    margin-bottom: 0.5rem;
+    text-decoration: none;
+  }
+
+  .sandbars .btn {
+    background-color: #0072AB;
+    color: #FFFFFF;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 6px;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+  }
+
+  .main-text {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 10px;
+  }
+}
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .content .sandbars {
+    gap:0;
+  }
+
+  .sandbars .text {
+    display: none;
+  }
+
+  .sandbars .btn {
+    background-color: #0072AB;
+    color: #FFFFFF;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 6px;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+  }
+
+  .main-text {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  .for-mobile {
+    display: flex;
+    flex-direction: column;
+    .langAndMail-mobile {
+      display: flex;
+      position: relative;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 10px ;
+      border-bottom: 1px solid #EBEEF0;
+      .lang {
+        display: flex;
+        align-items: center;
+        text-transform: uppercase;
+        border: 1px solid #EBEEF0;
+        padding: 15px;
+        gap: 0.8rem;
+        cursor: pointer;
+      }
+      .dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #fff;
+        border: 1px solid #0072AB;
+        border-radius: 5px;
+        width: 120px;
+        z-index: 10;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .dropdown-item {
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .dropdown-item:hover {
+        background: #f1f1f1;
+        color: #0072ab;
+      }
+      .mail {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border: 1px solid #EBEEF0;
+      }
+    }
+    .localAndContacts-mobile {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .local {
+        align-items: center;
+        display: flex;
+        gap: 0.5rem;
+        width: 50%;
+      }
+
+      .contacts {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+    }
   }
 }
 </style>

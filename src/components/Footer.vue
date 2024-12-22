@@ -172,16 +172,14 @@ export default {
 .sandbars .btn {
   background-color: #0072AB;
   color: #FFFFFF;
-  font-size: 16px;
   font-weight: 500;
   text-transform: uppercase;
   text-align: center;
   border-radius: 6px;
-  padding: 16px 24px;
+  padding: 1rem 1.5rem;
   cursor: pointer;
 }
 .main-text {
-  font-size: 16px;
   font-weight: 500;
   color: #333;
 }
