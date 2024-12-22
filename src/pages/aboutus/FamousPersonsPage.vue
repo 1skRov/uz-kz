@@ -10,6 +10,38 @@ export default {
   data(){
     return{
       title: "Известные личности",
+      persons: [
+        {
+          id: 1,
+          name: "Иван Иванов",
+          description: "Известный ученый, внесший большой вклад в развитие физики.внесший большой вклад в развитие физикивнесший большой вклад в развитие физикивнесший большой вклад в развитие физикивнесший большой вклад в развитие физикивнесший большой вклад в развитие физикивнесший большой вклад в развитие физики",
+          image: "@/assets/images/ivan.jpg"
+        },
+        {
+          id: 2,
+          name: "Мария Петрова",
+          description: "Выдающаяся художница, известная своими абстрактными картинами.",
+          image: "@/assets/images/maria.jpg"
+        },
+        {
+          id: 3,
+          name: "Алексей Сидоров",
+          description: "Талантливый музыкант, который получил мировое признание.",
+          image: "@/assets/images/alexey.jpg"
+        },
+        {
+          id: 4,
+          name: "Ольга Смирнова",
+          description: "Писательница, чьи романы переведены на десятки языков.",
+          image: "@/assets/images/olga.jpg"
+        },
+        {
+          id: 5,
+          name: "Дмитрий Кузнецов",
+          description: "Инноватор и предприниматель в области технологий.",
+          image: "@/assets/images/dmitry.jpg"
+        }
+      ]
     }
   }
 }
@@ -29,11 +61,13 @@ export default {
         </template>
         <template #content>
           <div class="content">
-            <popular-item></popular-item>
-            <popular-item></popular-item>
-            <popular-item></popular-item>
-            <popular-item></popular-item>
-            <popular-item></popular-item>
+            <popular-item
+                v-for="person in persons"
+                :key="person.id"
+                :id="person.id"
+                :name="person.name"
+                :text="person.description"
+            />
           </div>
         </template>
       </sections>

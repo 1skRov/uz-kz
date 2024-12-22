@@ -46,6 +46,13 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.truncate-text-line {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 @media (max-width: 1024px) {
     * {

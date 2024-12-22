@@ -3,29 +3,46 @@ import BasicButton from "@/components/Buttons/button_basic.vue";
 
 export default {
   name: "PopularItem",
-  components: {BasicButton},
-  data(){
-    return {
-      name: "Product Name",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    }
-  }
-}
+  components: { BasicButton },
+  props: {
+    id: {
+      type: Number,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    text: {
+      type: String,
+      required: true,
+    },
+  },
+  methods: {
+    openDetails() {
+      this.$router.push({
+        name: "FamousPersonDetails",
+        params: { id: this.id },
+        query: { name: this.name, text: this.text }
+      });
+    },
+  },
+};
 </script>
 
 <template>
-<div class="main">
-  <div class="left-img">
-    <img src="@/assets/images/1.png" alt="" style="width: 100%; height: 100%;  object-fit: cover;">
-  </div>
-  <div class="right-content">
-    <p class="font-gilroy">{{name}}</p>
-    <span>{{text}}</span>
-    <div class="btn">
-      <basic-button :is-blue="true"/>
+  <div class="main">
+    <div class="left-img">
+      <img src="@/assets/images/1.png" alt="Person Image" style="width: 100%; height: 100%; object-fit: cover;" />
+    </div>
+    <div class="right-content">
+      <p class="font-gilroy">{{ name }}</p>
+      <span class="truncate-text-line">{{ text }}</span>
+      <div class="btn">
+        <basic-button :is-blue="true" @click="openDetails" />
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <style scoped>
@@ -39,9 +56,16 @@ export default {
 }
 .left-img {
   width: 15%;
+  min-width: 15%;
+  max-width: 15%;
+  flex-shrink: 0;
+  height: auto;
 }
 .right-content {
-  display: flex; flex-direction: column; padding: 20px 35px; gap: 1rem
+  display: flex;
+  flex-direction: column;
+  padding: 20px 35px;
+  gap: 1rem;
 }
 p {
   font-size: 32px;

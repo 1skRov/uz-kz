@@ -74,6 +74,12 @@ const routes = [
         component: () => import('@/pages/aboutus/FamousPersonsPage.vue')
       },
       {
+        path: '/famous-persons/:id',
+        name: 'FamousPersonDetails',
+        component: () => import('@/pages/aboutus/PersonDetail.vue'),
+        props: true
+      },
+      {
         path:'/member-association',
         name:'MemberAssociation',
         component: () => import('@/components/Dialog.vue')
