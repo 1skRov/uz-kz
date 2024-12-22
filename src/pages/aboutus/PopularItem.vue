@@ -18,22 +18,50 @@ export default {
       required: true,
     },
   },
+  data(){
+    return {
+      windowWidth: window.innerWidth,
+    }
+  },
+  computed: {
+    isMobile() {
+      return this.windowWidth <= 1024;
+    },
+  },
   methods: {
+    handleMainClick() {
+      if (this.isMobile) {
+        this.openDetails();
+      }
+    },
     openDetails() {
       this.$router.push({
         name: "FamousPersonDetails",
         params: { id: this.id },
-        query: { name: this.name, text: this.text }
+        query: { name: this.name, text: this.text },
       });
     },
+    updateWindowWidth() {
+      this.windowWidth = window.innerWidth;
+    },
+  },
+  mounted() {
+    window.addEventListener("resize", this.updateWindowWidth);
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.updateWindowWidth);
   },
 };
 </script>
 
 <template>
-  <div class="main">
+  <div class="main" @click="handleMainClick">
     <div class="left-img">
-      <img src="@/assets/images/1.png" alt="Person Image" style="width: 100%; height: 100%; object-fit: cover;" />
+      <img
+          src="@/assets/images/1.png"
+          alt="Person Image"
+          style="width: 100%; height: 100%; object-fit: cover;"
+      />
     </div>
     <div class="right-content">
       <p class="font-gilroy">{{ name }}</p>
@@ -57,7 +85,7 @@ export default {
 .left-img {
   width: 15%;
   min-width: 15%;
-  max-width: 15%;
+  max-width: 25%;
   flex-shrink: 0;
   height: auto;
 }
@@ -97,6 +125,8 @@ span {
   .left-img {
     height: 15rem;
     width: 100%;
+    max-width: 100%;
+    min-width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
