@@ -29,7 +29,7 @@ export default {
           <img src="@/assets/images/img.png" alt="person" />
         </div>
       </div>
-      <div class="right" style="margin-top: 30px;">
+      <div class="right">
         <button class="close-btn" @click="closeModal">&times;</button>
         <div class="over">
           <div class="dialog-title font-gilroy">{{ name }}</div>
@@ -57,7 +57,7 @@ export default {
   background: white;
   border-radius: 8px;
   width: 80%;
-  max-width: 1200px;
+  max-width: 80vw;
   max-height: 70vh;
   padding: 20px;
   position: relative;
@@ -97,6 +97,7 @@ export default {
   padding: 10px;
   overflow-y: auto;
   max-height: 60vh;
+  margin-top: 30px;
 }
 
 .close-btn {
@@ -119,8 +120,42 @@ export default {
 }
 
 .dialog-text {
-  font-size: 16px;
   line-height: 2rem;
   color: #333;
+}
+@media (max-width: 1024px) {
+  .dialog-title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dialog-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .left {
+    padding: 20px 0 0 0;
+  }
+
+  .left-image {
+    width: 100%;
+    height: 20vh;
+  }
+
+  .right {
+    flex-basis: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow-y: auto;
+    max-height: 60vh;
+    margin-top: 10px;
+  }
+  .dialog-title {
+    font-size: 24px;
+  }
 }
 </style>
