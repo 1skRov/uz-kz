@@ -36,6 +36,11 @@ export default {
         },
       ],
     }
+  },
+  methods:{
+    goToFamousPersons(){
+      this.$router.push('/famous-persons')
+    }
   }
 }
 </script>
@@ -45,7 +50,7 @@ export default {
   <sections>
     <template #title>{{title}}</template>
     <template #title-button>
-      <more/>
+      <more @click="goToFamousPersons"/>
     </template>
     <template #content>
      <CardGrid :cards="cards"></CardGrid>

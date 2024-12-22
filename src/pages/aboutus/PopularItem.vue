@@ -35,6 +35,7 @@ export default {
   background-color: #FAFCFD;
   border: 1px solid #EBEEF0;
   display: flex;
+  overflow: hidden;
 }
 .left-img {
   width: 15%;
