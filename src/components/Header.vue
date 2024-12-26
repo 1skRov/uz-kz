@@ -109,7 +109,9 @@ export default {
   <nav class="menu">
     <ul class="list">
       <li v-for="(list, id) in lists" :key="id" class="list-item">
-        <router-link :to="to[id]" :class="{ active: isActive(to[id]) }" style="text-decoration: none; color: #000">{{list.title}}</router-link>
+        <router-link :to="to[id]" :class="{ active: isActive(to[id]) }" style="text-decoration: none; color: #000" class="list-item"
+                     exact-active-class="router-link-exact-active"
+                     active-class="router-link-active">{{list.title}}</router-link>
       </li>
     </ul>
   </nav>
@@ -266,6 +268,12 @@ export default {
 <style scoped>
 .menu-toggle {
   display: none;
+}
+.list-item .router-link-exact-active {
+  font-weight: bold;
+  color: #0072AB;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #0072AB;
 }
 .header {
   width: 100%;
