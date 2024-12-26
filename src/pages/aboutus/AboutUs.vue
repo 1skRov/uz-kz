@@ -8,6 +8,8 @@ import PopularPersons from "@/pages/aboutus/PopularPersons.vue";
 import YouthOrganization from "@/pages/aboutus/YouthOrganization.vue";
 import EducationAndSport from "@/pages/aboutus/EducationAndSport.vue";
 import Help from "@/pages/aboutus/Help.vue";
+import api from "@/axios";
+import {mapGetters} from "vuex";
 
 export default {
   name: "AboutUs",
@@ -19,9 +21,25 @@ export default {
     return {
       sections: ['кто мы','наша история','культура','личности','молодежные организации','образование и спорт','помощь',],
       currentSection: 0,
+      who_we_are: {},
+      our_history:[],
+      culture: [],
+      famous:[],
+      ed:{},
+      sp:{},
+      help:{},
     }
   },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getAboutUs();
+    },
+  },
   mounted() {
+    this.getAboutUs();
     const observer = new IntersectionObserver(this.handleIntersection, {
       threshold: 0.3,
     });
@@ -39,6 +57,29 @@ export default {
           }
         }
       }
+    },
+    getAboutUs() {
+      api.get(`/informations/?lang_code=${this.currentLanguage}`, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        },
+      })
+          .then(response => {
+            const data = response.data;
+
+            this.who_we_are = data.find(item => item.category_id === 10) || {};
+            this.our_history = data.filter(item => item.category_id === 11) || [];
+            this.culture = data.filter(item => item.category_id === 4) || [];
+            this.famous = data.filter(item => item.category_id === 5) || [];
+            this.ed = data.find(item => item.category_id === 13) || {};
+            this.sp = data.find(item => item.category_id === 14) || {};
+            this.help = data.find(item => item.category_id === 15) || {};
+
+            console.log("Данные загружены и распределены по секциям");
+          })
+          .catch(error => {
+            console.error("Ошибка при загрузке данных:", error);
+          });
     },
   }
 }
@@ -61,10 +102,10 @@ export default {
     </div>
     <div style="width: 100%">
       <div id="section-0" class="section">
-        <WhoWeaAre/>
+        <WhoWeaAre :data="who_we_are"/>
       </div>
       <div id="section-1" class="section">
-        <OurHistory/>
+        <OurHistory :data="our_history"/>
       </div>
       <div style="position: relative; width: 100%; background-color: #F7F8FA">
         <div style="position: absolute; bottom:0; right: 0">
@@ -74,20 +115,20 @@ export default {
           <img src="@/assets/images/cult-top.png" alt="">
         </div>
         <div id="section-2" class="section">
-          <CultureAndTraditions/>
+          <CultureAndTraditions :data="culture"/>
         </div>
       </div>
       <div id="section-3" class="section">
-        <PopularPersons/>
+        <PopularPersons :data="famous"/>
       </div>
       <div id="section-4" class="section">
 <!--        <YouthOrganization/>-->
       </div>
       <div id="section-5" class="section">
-        <EducationAndSport/>
+        <EducationAndSport :data_ed="ed" :data_sp="sp"/>
       </div>
       <div id="section-6" class="section" style="padding-bottom: 60px;">
-        <Help />
+        <Help :data="help"/>
       </div>
     </div>
   </div>

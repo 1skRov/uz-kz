@@ -6,12 +6,23 @@ import BasicButton from "@/components/Buttons/button_basic.vue";
 export default {
   name: "Help",
   components: {BasicButton, Right, Left},
+  props:{
+    data: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
       title: "Помощь нуждающимся",
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis consectetur nisi, vel bibendum arcu. Nulla facilisi. Sed condimentum, neque vel bibendum fermentum, lectus massa eleifend ex, vel sagittis nisi arcu ac arcu.",
       bth_title: "подробнее"
     };
+  },
+  methods:{
+    goToDonate() {
+      this.$router.push('/donates')
+    }
   }
 }
 </script>
@@ -19,10 +30,10 @@ export default {
 <template>
   <div class="content">
     <div class="text-container">
-      <div class="title font-gilroy">{{title}}</div>
-      <div class="text"> {{text}}</div>
+      <div class="title font-gilroy">{{data.title}}</div>
+      <div class="text"> {{data.mini_desc}}</div>
       <div class="btn">
-        <basic-button :title_button="bth_title" :is-blue="true"/>
+        <basic-button :title_button="data.buttons_title" :is-blue="true" @click="goToDonate"/>
         <div style="display: flex; gap: 1rem">
           <left/>
           <right/>
@@ -30,7 +41,7 @@ export default {
       </div>
     </div>
     <div class="image-container">
-      <img src="@/assets/images/help.png" alt="help" class="responsive-image">
+      <img :src="data.image" alt="help" class="responsive-image">
     </div>
   </div>
 </template>

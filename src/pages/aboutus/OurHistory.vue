@@ -6,6 +6,12 @@ import Right from "@/components/Buttons/right.vue";
 export default {
   name: "OurHistory",
   components: { Right, Left, Sections },
+  props:{
+    data: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
       title: "Наша история",
@@ -49,6 +55,12 @@ export default {
     isMobile() {
       return this.windowWidth <= 768;
     },
+    firstTitle() {
+      return this.data.find(item => item.title)?.title || null;
+    },
+    firstButtonsTitle() {
+      return this.data.find(item => item.buttons_title)?.buttons_title || null;
+    },
   },
   methods: {
     setActive(index) {
@@ -63,7 +75,7 @@ export default {
       }
     },
     scrollRight() {
-      if (this.activeIndex < this.games.length - 1) {
+      if (this.activeIndex < this.data.length - 1) {
         this.setActive(this.activeIndex + 1);
       }
     },
@@ -91,7 +103,7 @@ export default {
 <template>
   <div>
     <sections class="mob-section">
-      <template #title v-if="!isMobile">{{ title }}</template>
+      <template #title v-if="!isMobile">{{firstTitle}}</template>
       <template #title-button>
         <div class="btn">
           <left @click="scrollLeft" />
@@ -107,7 +119,7 @@ export default {
           <div class="carousel-container">
             <div
                 class="item"
-                v-for="(game, index) in games"
+                v-for="(game, index) in data"
                 :key="index"
                 :style="{ backgroundImage: `url(${game.image})` }"
                 :class="{ active: activeIndex === index }"
@@ -115,14 +127,14 @@ export default {
             >
               <div class="overlay" v-if="activeIndex === index"></div>
               <div class="item-desc">
-                <h3>{{ game.title }}</h3>
-                <p>{{ game.description }}</p>
+                <h3>{{ game.mini_desc }}</h3>
+                <p>{{ game.full_desc }}</p>
               </div>
             </div>
           </div>
           <div class="dots" v-if="!isMobile">
             <span
-                v-for="(game, index) in games"
+                v-for="(game, index) in data"
                 :key="index"
                 :class="{ active: activeIndex === index }"
                 @click="setActive(index)"

@@ -6,6 +6,12 @@ import Left from "@/components/Buttons/left.vue";
 export default {
   name: "CultureAndTraditions",
   components: { Left, Right, Sections },
+  props:{
+    data: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
       title: "Культура и традиция",
@@ -32,11 +38,11 @@ export default {
   methods: {
     prevSlide() {
       this.activeIndex =
-          this.activeIndex === 0 ? this.slides.length - 1 : this.activeIndex - 1;
+          this.activeIndex === 0 ? this.data  .length - 1 : this.activeIndex - 1;
     },
     nextSlide() {
       this.activeIndex =
-          this.activeIndex === this.slides.length - 1 ? 0 : this.activeIndex + 1;
+          this.activeIndex === this.data.length - 1 ? 0 : this.activeIndex + 1;
     },
   },
 };
@@ -56,14 +62,14 @@ export default {
         <div class="fade-carousel">
           <div
               class="carousel-item"
-              v-for="(slide, index) in slides"
+              v-for="(slide, index) in data"
               :key="index"
               :class="{ active: activeIndex === index }"
           >
-            <img :src="slide.image" alt="Slide image" class="carousel-image" />
+            <img :src="slide.image" :alt="slide.image" class="carousel-image" />
             <div class="carousel-caption">
               <h3 class="font-gilroy">{{ slide.title }}</h3>
-              <p>{{ slide.description }}</p>
+              <p>{{ slide.full_desc }}</p>
             </div>
           </div>
         </div>

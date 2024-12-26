@@ -26,14 +26,14 @@ export default {
   },
   watch: {
     currentLanguage(newLang) {
-      this.gatData();
+      this.getData();
     },
   },
   mounted() {
-    this.gatData();
+    this.getData();
   },
   methods:{
-    gatData() {
+    getData() {
       api.get(`/informations/?lang_code=${this.currentLanguage}`, {
         headers: {
           'ngrok-skip-browser-warning': 'true',

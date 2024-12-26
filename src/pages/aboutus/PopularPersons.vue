@@ -6,6 +6,12 @@ import CardGrid from "@/pages/Main/CardGrid.vue";
 export default {
   name: "PopularPersons",
   components: {CardGrid, More, Sections},
+  props:{
+    data: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
       title: "Известные личности",
@@ -41,6 +47,14 @@ export default {
     goToFamousPersons(){
       this.$router.push('/famous-persons')
     }
+  },
+  computed:{
+    firstTitle() {
+      return this.data.find(item => item.title)?.title || null;
+    },
+    firstButtonsTitle() {
+      return this.data.find(item => item.buttons_title)?.buttons_title || null;
+    },
   }
 }
 </script>
@@ -48,15 +62,15 @@ export default {
 <template>
 <div>
   <sections>
-    <template #title>{{title}}</template>
+    <template #title>{{firstTitle}}</template>
     <template #title-button>
-      <more @click="goToFamousPersons"/>
+      <more @click="goToFamousPersons" :title="firstButtonsTitle"/>
     </template>
     <template #content>
-     <CardGrid :cards="cards"></CardGrid>
+     <CardGrid :cards="data"></CardGrid>
     </template>
     <template #btn>
-      <more/>
+      <more :title="firstButtonsTitle" @click="goToFamousPersons"/>
     </template>
   </sections>
 </div>

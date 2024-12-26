@@ -4,6 +4,12 @@ import Sections from "@/components/Sections.vue";
 export default {
   name: "WhoWeaAre",
   components: {Sections},
+  props:{
+    data: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
       title:"Кто мы?",
@@ -16,8 +22,8 @@ export default {
 <template>
   <div>
     <sections>
-      <template #title>{{ title }}</template>
-      <template #content>{{ content }}</template>
+      <template #title>{{ data.title || title }}</template>
+      <template #content>{{ data.mini_desc || content }}</template>
     </sections>
   </div>
 </template>

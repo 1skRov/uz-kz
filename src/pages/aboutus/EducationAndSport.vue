@@ -4,6 +4,16 @@ import buttonBasic from "@/components/Buttons/button_basic.vue"
 export default {
   name: "EducationAndSport",
   components: {Sections, buttonBasic},
+  props:{
+    data_ed: {
+      type: Object,
+      required: true
+    },
+    data_sp: {
+      type: Object,
+      required: true
+    },
+  },
   data() {
     return{
       title_btn:"подробнее",
@@ -35,10 +45,10 @@ export default {
             </svg>
           </div>
           <div style="display: flex; flex-direction: column; gap: 2rem">
-            <div class="title font-gilroy">{{title_ed}}</div>
-            <div class="text">{{subTitle_ed}}</div>
+            <div class="title font-gilroy">{{data_ed.title}}</div>
+            <div class="text">{{data_ed.full_desc}}</div>
             <div class="btn">
-              <buttonBasic :title_button="title_btn" :is-blue="true"></buttonBasic>
+              <buttonBasic :title_button="data_ed.buttons_title" :is-blue="true"></buttonBasic>
             </div>
           </div>
         </div>
@@ -51,10 +61,10 @@ export default {
             </svg>
           </div>
           <div style="display: flex; flex-direction: column; gap: 2rem">
-            <div class="title font-gilroy">{{title_sp}}</div>
-            <div class="text">{{subTitle_sp}}</div>
+            <div class="title font-gilroy">{{data_sp.title}}</div>
+            <div class="text">{{data_sp.full_desc}}</div>
             <div class="btn">
-              <buttonBasic :title_button="title_btn" :is-blue="true"></buttonBasic>
+              <buttonBasic :title_button="data_sp.buttons_title" :is-blue="true"></buttonBasic>
             </div>
           </div>
         </div>
