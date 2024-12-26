@@ -31,13 +31,13 @@ export default {
     <div class="content">
       <sections :is-had="true">
         <template #title>
-          О нас
+          {{ data.title }}
         </template>
         <template #content>
-          <p>Идея создания и разработка данного Портала принадлежит председателю узбекского этнокультурного центра города Астана Ш.Пулатову при непосредственной поддержки спонсоров и партнеров из числа ниже указанных компаний и организаций. Отельную благодарность выражаем этнокультурному центру города Алматы в лице председателя А.Исматуллаева за поддержку и выражение солидарности в воплощении данной инициативы.</p>
+          <p>{{data.mini_desc}}</p>
         </template>
         <template #btn>
-          <more @click="goToAboutUS"/>
+          <more @click="goToAboutUS" :title="data.buttons_title"/>
         </template>
       </sections>
   </div>

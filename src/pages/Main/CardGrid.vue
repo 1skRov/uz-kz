@@ -14,14 +14,15 @@ export default {
   <div class="hero-section">
     <div class="card-grid">
       <div class="card" v-for="(card, index) in cards" :key="card.id">
+        {{card.image}}
         <div
             class="card__background"
             :style="{ backgroundImage: `url(${card.image})` }"
         ></div>
         <div class="card__overlay">
           <div class="card__content">
-            <div class="card__category font-gilroy">{{ card.category }}</div>
-            <div class="card__heading">{{ card.heading }}</div>
+            <div class="card__category font-gilroy">{{ card.mini_desc }}</div>
+            <div class="card__heading">{{ card.job }}</div>
           </div>
         </div>
       </div>

@@ -16,7 +16,7 @@ export default {
       section1: {},
       section2: {},
       section3: {},
-      section4: {},
+      section4: [],
       section5: {},
       section6: {},
     }
@@ -40,13 +40,12 @@ export default {
         },
       })
           .then(response => {
-            // Фильтрация данных для каждой секции по category_id
             const data = response.data;
 
             this.section1 = data.find(item => item.category_id === 2) || {};
             this.section2 = data.find(item => item.category_id === 3) || {};
             this.section3 = data.find(item => item.category_id === 4) || {};
-            this.section4 = data.find(item => item.category_id === 5) || {};
+            this.section4 = data.filter(item => item.category_id === 5) || [];
             this.section5 = data.find(item => item.category_id === 6) || {};
             this.section6 = data.find(item => item.category_id === 9) || {};
 

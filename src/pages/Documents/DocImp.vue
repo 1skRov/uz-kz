@@ -6,6 +6,20 @@ import SideBar from "@/components/SideBarText.vue";
 export default {
   name: "DocImp",
   components: {SideBar, Important, Articles},
+  props:{
+    important:{
+      type: Object,
+      required: true,
+    },
+    charters:{
+      type: Array,
+      required: true,
+    },
+    plans:{
+      type: Array,
+      required: true,
+    },
+  },
   data(){
     return{
       title1: "Уставы",
@@ -19,7 +33,7 @@ export default {
   <div style="display: flex">
     <side-bar :title="title1"></side-bar>
     <div class="documents">
-      <important/>
+      <important :data="important"/>
       <articles :title="title1"/>
       <articles :title="title2"/>
     </div>

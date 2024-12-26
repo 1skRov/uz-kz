@@ -7,6 +7,12 @@ import CardGrid from "@/pages/Main/CardGrid.vue";
 export default {
   name: "Section4",
   components: {CardGrid, More, Sections, SideBar},
+  props:{
+    data:{
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
       page: "04",
@@ -42,7 +48,15 @@ export default {
     goToFamousPersons(){
       this.$router.push('/famous-persons')
     }
-  }
+  },
+ computed:{
+   firstTitle() {
+     return this.data.find(item => item.title)?.title || null;
+   },
+   firstButtonsTitle() {
+     return this.data.find(item => item.buttons_title)?.buttons_title || null;
+   },
+ }
 };
 </script>
 
@@ -52,13 +66,13 @@ export default {
     <div class="content">
       <sections>
         <template #title>
-          Известные личности
+          {{firstTitle}}
         </template>
         <template #title-button>
-          <more @click="goToFamousPersons"/>
+          <more @click="goToFamousPersons" :title="firstButtonsTitle"/>
         </template>
         <template #content>
-          <CardGrid :cards="cards"></CardGrid>
+          <CardGrid :cards="data"></CardGrid>
         </template>
         <template #btn>
           <div class="mob-has">

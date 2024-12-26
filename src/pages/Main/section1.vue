@@ -15,9 +15,6 @@ export default {
   data() {
     return {
       page: "01",
-      title:"«Ассоциация этнокультурных объединений узбеков Республики Казахстан «Дустлик»",
-      desc: "Для узбекской общины в Казахстане единство это основа нашего общего будущего и залог процветания и развития нашего народа.",
-      btn_title:"Стать членов ассоциации",
       images: [
         require("@/assets/images/help.png"),
         require("@/assets/images/help.png"),
@@ -52,14 +49,14 @@ export default {
       <div class="backdrop-blur-container">
         <div style="position: relative; z-index: 2;">
           <h1 class="font-gilroy title" style="word-wrap: break-word;">
-            {{ title }}
+            {{ data.title }}
           </h1>
           <p class="desc">
-            {{ desc}}
+            {{ data.mini_desc}}
           </p>
         </div>
         <div>
-          <Button_basic :title_button="btn_title" @click="openModal"/>
+          <Button_basic :title_button="data.buttons_title" @click="openModal"/>
         </div>
       </div>
     </div>

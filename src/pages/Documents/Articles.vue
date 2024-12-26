@@ -19,7 +19,7 @@ export default {
     <template #title>{{title}}</template>
     <template #content>
       <div style="display: flex; flex-direction: column; gap: 1rem">
-        <document-item/>
+        <document-item />
         <document-item/>
         <document-item/>
         <document-item/>

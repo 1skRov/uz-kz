@@ -6,12 +6,15 @@ import More from "@/components/Buttons/more.vue";
 export default {
   name: "Section3",
   components: {More, SideBar, Sections},
+  props: {
+    data:{
+      type: Object,
+      required: true,
+    }
+  },
   data() {
     return {
       page: "03",
-      title: "Культура и традиция",
-      imgTitle:"Lorem ipsum.",
-      imgDesc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, reiciendis!",
     };
   },
   methods: {
@@ -34,23 +37,23 @@ export default {
     <div class="content">
       <sections>
         <template #title>
-          {{ title }}
+          {{ data.title }}
         </template>
         <template #title-button>
-          <more @click="goToAboutUsSection"/>
+          <more @click="goToAboutUsSection" :title="data.buttons_title"/>
         </template>
         <template #content>
           <div class="content-body">
             <div class="gradient-overlay"></div>
             <img src="@/assets/images/img.png" alt="culture and traditions" style="width: 100%; height: 100%;">
             <div class="abs-text">
-              <div class="image-title font-gilroy">{{ imgTitle }}</div>
-              <div class="image-desc truncate-text">{{ imgDesc }}</div>
+              <div class="image-title font-gilroy">{{ data.title }}</div>
+              <div class="image-desc truncate-text">{{ data.mini_desc	 }}</div>
             </div>
           </div>
         </template>
         <template #btn>
-          <more @click="goToAboutUsSection"/>
+          <more @click="goToAboutUsSection" :title="data.buttons_title"/>
         </template>
       </sections>
     </div>
