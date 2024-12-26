@@ -17,6 +17,9 @@ export default {
       type: String,
       required: true,
     },
+    btn_title: {
+      type: String,
+    },
   },
   data(){
     return {

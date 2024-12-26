@@ -156,7 +156,7 @@ export default defineComponent({
 h4 {
   font-size: 24px;
   font-weight: 400;
-  margin: 0;
+  margin: 0 0 1rem 0;
 }
 @media (max-width: 1024px) {
   .contacts {

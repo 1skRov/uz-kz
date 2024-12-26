@@ -4,13 +4,15 @@ import Sections from "@/components/Sections.vue";
 import Left from "@/components/Buttons/left.vue";
 import Right from "@/components/Buttons/right.vue";
 import PopularItem from "@/pages/aboutus/PopularItem.vue";
+import api from "@/axios";
+import {mapGetters} from "vuex";
 export default {
   name: "FamousPersonsPage",
   components: {PopularItem, SideBar, Left, Right, Sections},
   data(){
     return{
       title: "Известные личности",
-      persons: [
+      persons_plh: [
         {
           id: 1,
           name: "Иван Иванов",
@@ -35,14 +37,57 @@ export default {
           description: "Писательница, чьи романы переведены на десятки языков.",
           image: "@/assets/images/olga.jpg"
         },
-        {
-          id: 5,
-          name: "Дмитрий Кузнецов",
-          description: "Инноватор и предприниматель в области технологий.",
-          image: "@/assets/images/dmitry.jpg"
-        }
-      ]
+      ],
+      persons:[],
+      currentPage: 0,
+      itemsPerPage: 3,
     }
+  },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+    paginatedPersons() {
+      const start = this.currentPage * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.persons.slice(start, end);
+    },
+    totalPages() {
+      return Math.ceil(this.persons.length / this.itemsPerPage);
+    },
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getPersons();
+    },
+  },
+  mounted() {
+    this.getPersons();
+  },
+  methods:{
+    getPersons() {
+      api.get(`/famous/?lang_code=${this.currentLanguage}`, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        },
+      })
+          .then(response => {
+            const data = response.data;
+            this.persons = data || this.persons_plh;
+            this.currentPage = parseInt(this.$route.query.page) || 0;
+          })
+          .catch(error => {
+            console.error("Ошибка при загрузке данных:", error);
+          });
+    },
+    prevPage() {
+      if (this.currentPage > 0) {
+        this.currentPage--;
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages - 1) {
+        this.currentPage++;
+      }
+    },
   }
 }
 </script>
@@ -55,25 +100,26 @@ export default {
         <template #title>{{title}}</template>
         <template #title-button>
           <div class="btn">
-            <left/>
-            <right/>
+            <left @click="prevPage"/>
+            <right @click="nextPage"/>
           </div>
         </template>
         <template #content>
           <div class="content">
             <popular-item
-                v-for="person in persons"
+                v-for="person in paginatedPersons"
                 :key="person.id"
                 :id="person.id"
-                :name="person.name"
-                :text="person.description"
+                :name="person.title"
+                :text="person.desc"
+                :btn_title="person.buttons_title"
             />
           </div>
         </template>
         <template #btn>
           <div class="btn">
-            <left/>
-            <right/>
+            <left @click="prevPage"/>
+            <right  @click="nextPage"/>
           </div>
         </template>
       </sections>
