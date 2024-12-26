@@ -6,6 +6,12 @@ import Sections from "@/components/Sections.vue";
 export default {
   name: "section2",
   components: {Sections, More, SideBar},
+  props:{
+    data: {
+      type: Object,
+      required: true,
+    }
+  },
   data(){
     return {
       page: "02",

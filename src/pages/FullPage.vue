@@ -1,4 +1,5 @@
 <script>
+import { mapGetters } from 'vuex';
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import api from "@/axios";
@@ -17,6 +18,16 @@ export default {
       },
       lang: [],
   }},
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getNav();
+      this.getContacts();
+      this.getLang();
+    },
+  },
   mounted() {
     this.getNav();
     this.getContacts();
@@ -24,7 +35,7 @@ export default {
   },
   methods: {
     getNav() {
-      api.get('/navbars/', {
+      api.get(`/navbars/?lang_code=${this.currentLanguage}`, {
         headers: {
           'ngrok-skip-browser-warning': 'true'
         }
@@ -40,13 +51,13 @@ export default {
             console.error("navbars", error);
           });
     },
-    getContacts(){
-      api.get('/contacts/', {
+    getContacts() {
+      api.get(`/contacts/?lang_code=${this.currentLanguage}`, {
         headers: {
-          'ngrok-skip-browser-warning': 'true'
-        }
+          'ngrok-skip-browser-warning': 'true',
+        },
       })
-          .then(response => {
+          .then((response) => {
             const data = response.data[0];
             if (data) {
               this.contacts = {
@@ -56,10 +67,9 @@ export default {
                 email: data.email,
               };
             }
-            console.log("contacts загружены успешно:", this.contacts);
           })
-          .catch(error => {
-            console.error("contacts", error);
+          .catch((error) => {
+            console.error('Ошибка при загрузке contacts:', error);
           });
     },
     getLang() {

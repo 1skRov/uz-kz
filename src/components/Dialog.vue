@@ -1,4 +1,5 @@
 <script>
+import api from "@/axios";
 import MapFill from "@/components/MapFill.vue"
 export default {
   name: "Dialog",
@@ -12,17 +13,71 @@ export default {
   data() {
     return {
       form: {
-        name: "ПУЛАТОВ ШЕРЗОД АББОЗОВИЧ",
-        birthDate: "20.10.1000",
-        iin: "2314123123123",
-        phone: "+777777777",
+        name: "",
+        birthDate: "",
+        iin: "",
+        phone: "",
         city: "",
       },
+      errors: {
+        name: null,
+        birthDate: null,
+        iin: null,
+        phone: null,
+      },
+      submitting: false,
     };
   },
   methods: {
     closeModal() {
       this.$router.push('/')
+    },
+    validateIIN() {
+      this.form.iin = this.form.iin.replace(/\D/g, "").slice(0, 12);
+    },
+    validateForm() {
+      let isValid = true;
+      this.errors = {
+        name: !this.form.name ? "ФИО обязательно." : null,
+        birthDate: !this.form.birthDate ? "Дата рождения обязательна." : null,
+        iin: !this.form.iin ? "ИИН обязателен." : null,
+        phone: !this.form.phone ? "Телефон обязателен." : null,
+      };
+      for (const key in this.errors) {
+        if (this.errors[key]) {
+          isValid = false;
+        }
+      }
+      return isValid;
+    },
+    async submitForm() {
+      if (!this.validateForm()) {
+        return;
+      }
+
+      const payload = {
+        name: this.form.name,
+        iin: this.form.iin,
+        date_birth: this.form.birthDate,
+        phone_number: this.form.phone,
+      };
+
+      this.submitting = true;
+      try {
+        const response = await api.post("/jointogroups/", payload, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("Успешно отправлено:", response.data);
+        alert("Ваша заявка успешно отправлена!");
+        this.closeModal();
+      } catch (error) {
+        console.error("Ошибка при отправке заявки:", error);
+        alert("Произошла ошибка при отправке заявки. Попробуйте позже.");
+      } finally {
+        this.submitting = false;
+      }
     },
   }
 }
@@ -35,28 +90,43 @@ export default {
         <button class="close-btn" @click="closeModal">&times;</button>
         <h1 class="dialog-title font-gilroy">Хотите стать членом нашей Ассоциации?</h1>
       </div>
-      <p style="color: #575F6C;">Заполните все формы ниже, и отправьте заявку.</p>
+      <p style="color: #575F6C; margin-bottom: 2rem;">Заполните все формы ниже, и отправьте заявку.</p>
       <div class="form-grid">
         <div class="form-group">
           <label for="name">ВАШЕ ФИО:</label>
           <input type="text" id="name" v-model="form.name" />
+          <span class="error-message" v-if="errors.name">{{ errors.name }}</span>
         </div>
         <div class="form-group">
           <label for="birthDate">ДАТА РОЖДЕНИЯ:</label>
-          <input type="text" id="birthDate" v-model="form.birthDate" />
+          <input type="date" id="birthDate" v-model="form.birthDate" />
+          <span class="error-message" v-if="errors.birthDate">{{ errors.birthDate }}</span>
         </div>
         <div class="form-group">
           <label for="iin">ВАШ ИИН:</label>
-          <input type="text" id="iin" v-model="form.iin" />
+          <input
+              type="text"
+              id="iin"
+              v-model="form.iin"
+              maxlength="12"
+              @input="validateIIN"
+          />
+          <span class="error-message" v-if="errors.iin">{{ errors.iin }}</span>
         </div>
         <div class="form-group">
           <label for="phone">ВАШ ТЕЛЕФОН НОМЕР:</label>
           <input type="text" id="phone" v-model="form.phone" />
+          <span class="error-message" v-if="errors.phone">{{ errors.phone }}</span>
         </div>
       </div>
-      <h2>В КАКОМ ГОРОДЕ ВЫ НАХОДИТЕСЬ?</h2>
+      <div class="city">В КАКОМ ГОРОДЕ ВЫ НАХОДИТЕСЬ?</div>
       <div>
         <map-fill></map-fill>
+      </div>
+      <div style="width: 100%; display: flex; justify-content: end;">
+        <button :disabled="submitting" @click="submitForm" class="submit-btn font-gilroy">
+          {{ submitting ? "Отправка..." : "Отправить заявку" }}
+        </button>
       </div>
     </div>
   </div>
@@ -94,12 +164,14 @@ export default {
   border: none;
   font-size: 24px;
   cursor: pointer;
+  color: #0072AB;
 }
 
 .dialog-title {
   font-weight: 500;
   font-size: 40px;
   line-height: 32px;
+  margin-bottom: 0;
 }
 
 .form-grid {
@@ -117,6 +189,7 @@ export default {
 .form-group label {
   font-weight: 500;
   margin-bottom: 5px;
+  color: #333333;
 }
 
 .form-group input {
@@ -128,9 +201,37 @@ export default {
   letter-spacing: 1.5px;
 }
 
-h2 {
+.city {
   font-weight: 500;
   line-height: 28px;
+  margin: 2rem 0 0;
+  color: #333333;
+}
+.submit-btn {
+  display: block;
+  margin: 2rem 0;
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+  background-color: #0072AB;
+  color: white;
+  border: 1px solid #CFD3DA;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submit-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background-color: #005f8b;
+}
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
 }
 @media (max-width: 1024px) {
   .dialog-title {

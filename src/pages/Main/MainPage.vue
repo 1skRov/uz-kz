@@ -1,4 +1,5 @@
 <script>
+import { mapGetters } from 'vuex';
 import Section2 from "@/pages/Main/section2.vue";
 import Section3 from "@/pages/Main/Section3.vue";
 import Section6 from "@/pages/Main/Section6.vue";
@@ -20,37 +21,48 @@ export default {
       section6: {},
     }
   },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.gatData();
+    },
+  },
   mounted() {
-    // this.gatData();
+    this.gatData();
   },
   methods:{
-    gatData(){
-      api.get('/informations/', {
+    gatData() {
+      api.get(`/informations/?lang_code=${this.currentLanguage}`, {
         headers: {
-          'ngrok-skip-browser-warning': 'true'
-        }
+          'ngrok-skip-browser-warning': 'true',
+        },
       })
           .then(response => {
-            const groupedData = response.data.reduce((acc, item) => {
-              if (!acc[item.category_id]) {
-                acc[item.category_id] = [];
-              }
-              acc[item.category_id].push(item);
-              return acc;
-            }, {});
+            // Фильтрация данных для каждой секции по category_id
+            const data = response.data;
 
-            this.section1 = groupedData[2] ? groupedData[2][0] : {};
-            this.section2 = groupedData[3] ? groupedData[3][0] : {};
-            this.section3 = groupedData[4] ? groupedData[4][0] : {};
-            this.section4 = groupedData[5] ? groupedData[5] : [];
-            this.section5 = groupedData[6] ? groupedData[6][0] : {};
-            this.section6 = groupedData[9] ? groupedData[9][0] : {};
-            console.log("s1--->", this.section1);
+            this.section1 = data.find(item => item.category_id === 2) || {};
+            this.section2 = data.find(item => item.category_id === 3) || {};
+            this.section3 = data.find(item => item.category_id === 4) || {};
+            this.section4 = data.find(item => item.category_id === 5) || {};
+            this.section5 = data.find(item => item.category_id === 6) || {};
+            this.section6 = data.find(item => item.category_id === 9) || {};
+
+            console.log("Данные загружены и распределены по секциям", {
+              section1: this.section1,
+              section2: this.section2,
+              section3: this.section3,
+              section4: this.section4,
+              section5: this.section5,
+              section6: this.section6,
+            });
           })
           .catch(error => {
-              console.error("Request setup error:", error);
-          })
-    }
+            console.error("Ошибка при загрузке данных:", error);
+          });
+    },
   },
 }
 </script>
@@ -58,12 +70,12 @@ export default {
 <template>
   <div class="main">
     <div class="sections">
-      <section1/>
-      <section2/>
-      <section3/>
-      <section4/>
-      <section5/>
-      <section6/>
+      <section1 :data="section1"/>
+      <section2 :data="section2"/>
+      <section3 :data="section3"/>
+      <section4 :data="section4"/>
+      <section5 :data="section5"/>
+      <section6 :data="section6"/>
     </div>
   </div>
 </template>

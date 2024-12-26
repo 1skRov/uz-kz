@@ -6,6 +6,12 @@ import Dialog from "@/components/Dialog.vue";
 export default {
   name: "section1",
   components: {Dialog, Button_basic, SideBar},
+  props:{
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       page: "01",
