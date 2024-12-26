@@ -69,6 +69,24 @@ const routes = [
         ]
       },
       {
+        path: '/donates',
+        name: 'Donates',
+        redirect: '/donates/card',
+        component: () => import('@/pages/Donates/Donates.vue'),
+        children: [
+          {
+            path: 'card',
+            name: 'card',
+            component: () => import('@/pages/Donates/DonatesCard.vue'),
+          },
+          {
+            path: 'qr',
+            name: 'qr',
+            component: () => import('@/pages/Donates/DonatesQr.vue'),
+          },
+        ]
+      },
+      {
         path:'/famous-persons',
         name:'FamousPersons',
         component: () => import('@/pages/aboutus/FamousPersonsPage.vue')

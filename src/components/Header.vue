@@ -81,6 +81,10 @@ export default {
     closeMenu() {
       this.isMenuOpen = false;
     },
+    openDonate() {
+      this.$router.push('/donates');
+      this.isMenuOpen = false;
+    },
   }
 }
 </script>

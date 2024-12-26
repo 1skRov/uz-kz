@@ -182,6 +182,7 @@ export default {
 .main-text {
   font-weight: 500;
   color: #333;
+  font-size: 1rem;
 }
 .main .content-line {
   display: flex;
