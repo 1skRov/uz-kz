@@ -8,6 +8,12 @@ import Right from "@/components/Buttons/right.vue";
 export default {
   name: "Section6",
   components: { Right, Left, More, SideBar, Sections },
+  props:{
+    data: {
+      type: Array,
+      required: true,
+    }
+  },
   data() {
     return {
       title: "Наши партнеры",
@@ -49,6 +55,9 @@ export default {
         width: `${this.doubledLength * this.slideWidth}px`,
       };
     },
+    firstTitle() {
+      return this.data.find(item => item.title)?.title || null;
+    },
   },
 
   methods: {
@@ -89,7 +98,7 @@ export default {
       <div class="title-section">
         <sections>
           <template #title>
-            {{ title }}
+            {{firstTitle}}
           </template>
           <template #title-button>
             <div class="btns">
@@ -102,13 +111,13 @@ export default {
       <div id="carousel" class="slider">
         <div class="slide-track" :style="trackStyles">
           <div
-              v-for="(slide, index) in slidesDoubled"
+              v-for="(slide, index) in data"
               :key="index"
               class="slide"
           >
             <img
-                :src="slide.src"
-                :alt="slide.alt"
+                :src="slide.image"
+                :alt="slide.image"
                 width="100%"
                 height="100%"
             />

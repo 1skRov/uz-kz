@@ -76,7 +76,7 @@ export default {
         </template>
         <template #btn>
           <div class="mob-has">
-            <more @click="goToFamousPersons"/>
+            <more @click="goToFamousPersons" :title="firstButtonsTitle"/>
           </div>
         </template>
       </sections>

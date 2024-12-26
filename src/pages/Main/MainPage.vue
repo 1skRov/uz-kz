@@ -18,7 +18,7 @@ export default {
       section3: {},
       section4: [],
       section5: {},
-      section6: {},
+      section6: [],
     }
   },
   computed: {
@@ -47,7 +47,7 @@ export default {
             this.section3 = data.find(item => item.category_id === 4) || {};
             this.section4 = data.filter(item => item.category_id === 5) || [];
             this.section5 = data.find(item => item.category_id === 6) || {};
-            this.section6 = data.find(item => item.category_id === 9) || {};
+            this.section6 = data.filter(item => item.category_id === 9) || [];
 
             console.log("Данные загружены и распределены по секциям", {
               section1: this.section1,

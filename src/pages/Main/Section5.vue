@@ -7,6 +7,12 @@ import MapFill from "@/components/MapFill.vue";
 export default {
   name: "Section5",
   components: {MapFill, More, Sections, SideBar},
+  props:{
+    data: {
+      type: Object,
+      required: true
+    }
+  },
   data(){
     return {
       page: "05",
@@ -27,21 +33,21 @@ export default {
     <div class="content">
       <sections>
         <template #title>
-          {{ title }}
+          {{ data.title }}
         </template>
         <template #title-button>
-          <more @click="goToRegions"/>
+          <more @click="goToRegions" :title="data.buttons_title"/>
         </template>
         <template #content>
           <div style="position: relative">
-            <span class="truncate-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae corporis, ex numquam tempora totam vel vero. At beatae eos excepturi libero repudiandae soluta? Asperiores blanditiis deserunt dolor minima numquam, quas?</span>
+            <span class="truncate-text">{{data.mini_desc}}</span>
             <div style="width: 100%; height: 100%">
               <map-fill></map-fill>
             </div>
           </div>
         </template>
         <template #btn>
-          <more @click="goToRegions"/>
+          <more @click="goToRegions" :title="data.buttons_title"/>
         </template>
       </sections>
     </div>
