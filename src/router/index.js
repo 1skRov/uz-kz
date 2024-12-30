@@ -98,6 +98,26 @@ const routes = [
         props: true
       },
       {
+        path:'/sport',
+        name:'Sport',
+        component: () => import('@/pages/Regions/Sport.vue')
+      },
+      {
+        path:'/education',
+        name:'Education',
+        component: () => import('@/pages/Regions/Education.vue')
+      },
+      // {
+      //   path:'/project',
+      //   name:'Project',
+      //   component: () => import('@/pages/Regions/Project.vue')
+      // },
+      // {
+      //   path:'/organization',
+      //   name:'Sport',
+      //   component: () => import('@/pages/Regions/Sport.vue')
+      // },
+      {
         path:'/member-association',
         name:'MemberAssociation',
         component: () => import('@/components/Dialog.vue')

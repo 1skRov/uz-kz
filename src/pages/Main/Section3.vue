@@ -2,22 +2,55 @@
 import Sections from "@/components/Sections.vue";
 import SideBar from "@/pages/Main/SideBar.vue";
 import More from "@/components/Buttons/more.vue";
+import api from "@/axios";
+import {mapGetters} from "vuex";
 
 export default {
   name: "Section3",
   components: {More, SideBar, Sections},
   props: {
-    data:{
-      type: Object,
+    title: {
+      type: String,
       required: true,
+      default: "{{ culture_traditions }}"
+    },
+    btn_title: {
+      type: String,
+      default: "{{ learn_more }}"
     }
   },
   data() {
     return {
       page: "03",
+      culture:{},
     };
   },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getCulture();
+    },
+  },
+  mounted() {
+    this.getCulture();
+  },
   methods: {
+    getCulture() {
+      api.get(`/traditions/?lang_code=${this.currentLanguage}`, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true'
+        }
+      })
+          .then((response) => {
+            const cultureArray = response.data;
+            this.culture = cultureArray[0];
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
     goToAboutUsSection() {
       this.$router.push({ path: '/about-us', hash: '#section-2' })
     }
@@ -28,32 +61,32 @@ export default {
 <template>
   <div class="section">
     <div class="icon-top">
-      <img src="@/assets/images/cult-top.png" alt="">
+      <img src="@/assets/images/cult-top.png" alt="icon top">
     </div>
     <div class="icon-btm">
-      <img src="@/assets/images/cult-bottom.png" alt="">
+      <img src="@/assets/images/cult-bottom.png" alt="icon bottom">
     </div>
     <side-bar :page="page" :is-background="true"/>
     <div class="content">
       <sections>
         <template #title>
-          {{ data.title }}
+          {{ title }}
         </template>
         <template #title-button>
-          <more @click="goToAboutUsSection" :title="data.buttons_title"/>
+          <more @click="goToAboutUsSection" :title="btn_title"/>
         </template>
         <template #content>
           <div class="content-body">
             <div class="gradient-overlay"></div>
             <img src="@/assets/images/img.png" alt="culture and traditions" style="width: 100%; height: 100%;">
             <div class="abs-text">
-              <div class="image-title font-gilroy">{{ data.title }}</div>
-              <div class="image-desc truncate-text">{{ data.mini_desc	 }}</div>
+              <div class="image-title font-gilroy">{{culture.title2}}</div>
+              <div class="image-desc truncate-text">{{culture.mini_desc}}</div>
             </div>
           </div>
         </template>
         <template #btn>
-          <more @click="goToAboutUsSection" :title="data.buttons_title"/>
+          <more @click="goToAboutUsSection" :title="btn_title"/>
         </template>
       </sections>
     </div>

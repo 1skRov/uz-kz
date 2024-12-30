@@ -23,6 +23,14 @@ export default {
       subTitle_sp: "Идея создания и разработка данного Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium debitis ipsum necessitatibus placeat vel? Aliquam asperiores consequatur distinctio labore molestiae non nulla numquam qui similique voluptate. Ab aliquid blanditiis consequatur eius error et fugit illum laboriosam laborum maiores nesciunt, quae quaerat quas quo quos sint sit ut voluptate? Dolore, ipsum! Портала принадлежит председателю узбекского этнокультурного центра города Астана Ш.Пулатову при непосредственной поддержки спонсоров и партнеров из числа ниже указанных компаний и организаций. Отельную благодарность выражаем этнокультурному центру города Алматы в лице председателя А.Исматуллаева за поддержку и выражение солидарности в воплощении данной инициативы. Идея создания и разработка данного Портала принадлежит председателю узбекского этнокультурного центра города Астана Ш.Пулатову при непосредственной поддержки спонсоров и партнеров из числа ниже указанных компаний и организаций. Отельную благодарность выражаем этнокультурному центру города Алматы в лице председателя А.Исматуллаева за поддержку и выражение солидарности в воплощении данной инициативы.",
       color:"#000",
     }
+  },
+  methods: {
+    goToEducation() {
+      this.$router.push('/education')
+    },
+    goToSport() {
+      this.$router.push('/sport')
+    }
   }
 }
 </script>
@@ -48,7 +56,7 @@ export default {
             <div class="title font-gilroy">{{data_ed.title}}</div>
             <div class="text">{{data_ed.full_desc}}</div>
             <div class="btn">
-              <buttonBasic :title_button="data_ed.buttons_title" :is-blue="true"></buttonBasic>
+              <buttonBasic :title_button="data_ed.buttons_title" :is-blue="true" @click="goToEducation"></buttonBasic>
             </div>
           </div>
         </div>
@@ -64,7 +72,7 @@ export default {
             <div class="title font-gilroy">{{data_sp.title}}</div>
             <div class="text">{{data_sp.full_desc}}</div>
             <div class="btn">
-              <buttonBasic :title_button="data_sp.buttons_title" :is-blue="true"></buttonBasic>
+              <buttonBasic :title_button="data_sp.buttons_title" :is-blue="true" @click="goToSport"></buttonBasic>
             </div>
           </div>
         </div>

@@ -3,19 +3,27 @@ import SideBar from "@/pages/Main/SideBar.vue";
 import Sections from "@/components/Sections.vue";
 import More from "@/components/Buttons/more.vue";
 import CardGrid from "@/pages/Main/CardGrid.vue";
+import api from "@/axios";
+import {mapGetters} from "vuex";
 
 export default {
   name: "Section4",
   components: {CardGrid, More, Sections, SideBar},
   props:{
-    data:{
-      type: Array,
-      required: true
+    title: {
+      type: String,
+      required: true,
+      default: "{{ popular_persons }}"
+    },
+    btn_title: {
+      type: String,
+      default: "{{ learn_more }}"
     }
   },
   data() {
     return {
       page: "04",
+      persons:[],
       cards: [
         {
           id: 1,
@@ -44,19 +52,35 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getCulture();
+    },
+  },
+  mounted() {
+    this.getCulture();
+  },
   methods:{
+    getCulture() {
+      api.get(`/famous-persons/?lang_code=${this.currentLanguage}`, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true'
+        }
+      })
+          .then((response) => {
+            this.persons = response.data;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
     goToFamousPersons(){
       this.$router.push('/famous-persons')
     }
   },
- computed:{
-   firstTitle() {
-     return this.data.find(item => item.title)?.title || null;
-   },
-   firstButtonsTitle() {
-     return this.data.find(item => item.buttons_title)?.buttons_title || null;
-   },
- }
 };
 </script>
 
@@ -66,17 +90,17 @@ export default {
     <div class="content">
       <sections>
         <template #title>
-          {{firstTitle}}
+          {{title}}
         </template>
         <template #title-button>
-          <more @click="goToFamousPersons" :title="firstButtonsTitle"/>
+          <more @click="goToFamousPersons" :title="btn_title"/>
         </template>
         <template #content>
-          <CardGrid :cards="data"></CardGrid>
+          <CardGrid :cards="persons"></CardGrid>
         </template>
         <template #btn>
           <div class="mob-has">
-            <more @click="goToFamousPersons" :title="firstButtonsTitle"/>
+            <more @click="goToFamousPersons" :title="btn_title"/>
           </div>
         </template>
       </sections>

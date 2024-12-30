@@ -9,14 +9,14 @@ export default {
   name: "Section6",
   components: { Right, Left, More, SideBar, Sections },
   props:{
-    data: {
-      type: Array,
+    title: {
+      type: String,
       required: true,
-    }
+      default: "{{ partners }}"
+    },
   },
   data() {
     return {
-      title: "Наши партнеры",
       page: "06",
       slidesOriginal: [
         {id: 1, src: require("@/assets/images/img.png"), alt: "Logo 1"},
@@ -54,9 +54,6 @@ export default {
         transition: transitionStyle,
         width: `${this.doubledLength * this.slideWidth}px`,
       };
-    },
-    firstTitle() {
-      return this.data.find(item => item.title)?.title || null;
     },
   },
 
@@ -98,7 +95,7 @@ export default {
       <div class="title-section">
         <sections>
           <template #title>
-            {{firstTitle}}
+            {{title}}
           </template>
           <template #title-button>
             <div class="btns">
@@ -111,7 +108,7 @@ export default {
       <div id="carousel" class="slider">
         <div class="slide-track" :style="trackStyles">
           <div
-              v-for="(slide, index) in data"
+              v-for="(slide, index) in slidesOriginal"
               :key="index"
               class="slide"
           >

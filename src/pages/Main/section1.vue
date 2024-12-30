@@ -2,19 +2,28 @@
 import SideBar from "@/pages/Main/SideBar.vue";
 import Button_basic from "@/components/Buttons/button_basic.vue";
 import Dialog from "@/components/Dialog.vue";
+import api from "@/axios";
+import {mapGetters} from "vuex";
 
 export default {
   name: "section1",
   components: {Dialog, Button_basic, SideBar},
   props:{
-    data: {
-      type: Object,
+    title:{
+      type: String,
       required: true,
+      default: "{{ main_title }}"
     },
+    btn_title:{
+      type: String,
+      required: true,
+      default: "{{ join_button }}"
+    }
   },
   data() {
     return {
       page: "01",
+      list: {},
       images: [
         require("@/assets/images/help.png"),
         require("@/assets/images/help.png"),
@@ -23,7 +32,32 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getMain();
+    },
+  },
+  mounted() {
+    this.getMain();
+  },
   methods: {
+    getMain() {
+      api.get(`/association/?lang_code=${this.currentLanguage}`, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true'
+        }
+      })
+          .then((response) => {
+            const arr = response.data;
+            this.list = arr[0];
+          })
+          .catch((error) => {
+            console.error("Ошибка при загрузке данных About Us:", error);
+          });
+    },
     openModal() {
       this.$router.push('/member-association')
     },
@@ -49,14 +83,14 @@ export default {
       <div class="backdrop-blur-container">
         <div style="position: relative; z-index: 2;">
           <h1 class="font-gilroy title" style="word-wrap: break-word;">
-            {{ data.title }}
+            {{ title }}
           </h1>
           <p class="desc">
-            {{ data.mini_desc}}
+            ....
           </p>
         </div>
         <div>
-          <Button_basic :title_button="data.buttons_title" @click="openModal"/>
+          <Button_basic :title_button="btn_title" @click="openModal"/>
         </div>
       </div>
     </div>

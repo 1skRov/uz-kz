@@ -8,15 +8,19 @@ export default {
   name: "Section5",
   components: {MapFill, More, Sections, SideBar},
   props:{
-    data: {
-      type: Object,
-      required: true
+    title: {
+      type: String,
+      required: true,
+      default: "{{ ethno_center }}"
+    },
+    btn_title: {
+      type: String,
+      default: "{{ learn_more }}"
     }
   },
   data(){
     return {
       page: "05",
-      title: "Этнокультурный центр узбеков Казахстана"
     }
   },
   methods: {
@@ -33,21 +37,21 @@ export default {
     <div class="content">
       <sections>
         <template #title>
-          {{ data.title }}
+          {{ title }}
         </template>
         <template #title-button>
-          <more @click="goToRegions" :title="data.buttons_title"/>
+          <more @click="goToRegions" :title="btn_title"/>
         </template>
         <template #content>
           <div style="position: relative">
-            <span class="truncate-text">{{data.mini_desc}}</span>
+            <span class="truncate-text"> data.mini_desc}}</span>
             <div style="width: 100%; height: 100%">
               <map-fill></map-fill>
             </div>
           </div>
         </template>
         <template #btn>
-          <more @click="goToRegions" :title="data.buttons_title"/>
+          <more @click="goToRegions" :title="btn_title"/>
         </template>
       </sections>
     </div>

@@ -13,12 +13,7 @@ export default {
   components: {Section1, Section5, Section4, Section6, Section2, Section3},
   data() {
     return {
-      section1: {},
-      section2: {},
-      section3: {},
-      section4: [],
-      section5: {},
-      section6: [],
+      translations: {},
     }
   },
   computed: {
@@ -26,40 +21,29 @@ export default {
   },
   watch: {
     currentLanguage(newLang) {
-      this.getData();
+      this.getTranslations();
     },
   },
   mounted() {
-    this.getData();
+    this.getTranslations();
   },
   methods:{
-    getData() {
-      api.get(`/informations/?lang_code=${this.currentLanguage}`, {
-        headers: {
-          'ngrok-skip-browser-warning': 'true',
-        },
-      })
-          .then(response => {
-            const data = response.data;
-
-            this.section1 = data.find(item => item.category_id === 2) || {};
-            this.section2 = data.find(item => item.category_id === 3) || {};
-            this.section3 = data.find(item => item.category_id === 4) || {};
-            this.section4 = data.filter(item => item.category_id === 5) || [];
-            this.section5 = data.find(item => item.category_id === 6) || {};
-            this.section6 = data.filter(item => item.category_id === 9) || [];
-
-            console.log("Данные загружены и распределены по секциям", {
-              section1: this.section1,
-              section2: this.section2,
-              section3: this.section3,
-              section4: this.section4,
-              section5: this.section5,
-              section6: this.section6,
-            });
+    getTranslations() {
+      api.get('/trans/')
+          .then((response) => {
+            const translations = response.data;
+            console.log("data", translations)
+            const currentLang = this.currentLanguage;
+            console.log("lang", this.currentLanguage)
+            if (translations[currentLang]) {
+              this.translations = translations[currentLang];
+              console.log("data in lang", this.translations)
+            } else {
+              console.error(`Переводы для языка "${currentLang}" не найдены`);
+            }
           })
-          .catch(error => {
-            console.error("Ошибка при загрузке данных:", error);
+          .catch((error) => {
+            console.error("Ошибка при загрузке переводов:", error);
           });
     },
   },
@@ -69,12 +53,12 @@ export default {
 <template>
   <div class="main">
     <div class="sections">
-      <section1 :data="section1"/>
-      <section2 :data="section2"/>
-      <section3 :data="section3"/>
-      <section4 :data="section4"/>
-      <section5 :data="section5"/>
-      <section6 :data="section6"/>
+      <section1 :title="translations.main_title" :btn_title="translations.join_button"/>
+      <section2 :title="translations.about_us" :btn_title="translations.more_detail"/>
+      <section3 :title="translations.culture_traditions" :btn_title="translations.learn_more"/>
+      <section4 :title="translations.popular_persons" :btn_title="translations.learn_more"/>
+      <section5 :title="translations.ethno_center" :btn_title="translations.learn_more"/>
+      <section6 :title="translations.partners"/>
     </div>
   </div>
 </template>

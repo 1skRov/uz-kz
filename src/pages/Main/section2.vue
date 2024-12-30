@@ -2,22 +2,55 @@
 import SideBar from "@/pages/Main/SideBar.vue";
 import More from "@/components/Buttons/more.vue";
 import Sections from "@/components/Sections.vue";
+import api from "@/axios";
+import {mapGetters} from "vuex";
 
 export default {
   name: "section2",
   components: {Sections, More, SideBar},
   props:{
-    data: {
-      type: Object,
+    title: {
+      type: String,
       required: true,
+      default: "{{ about_us }}"
+    },
+    btn_title: {
+      type: String,
+      default: "{{ more_detail }}"
     }
   },
   data(){
     return {
       page: "02",
+      about: {},
     }
   },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getAboutUS();
+    },
+  },
+  mounted() {
+    this.getAboutUS();
+  },
   methods: {
+    getAboutUS() {
+      api.get(`/about-us/?lang_code=${this.currentLanguage}`, {
+        headers: {
+          'ngrok-skip-browser-warning': 'true'
+        }
+      })
+          .then((response) => {
+            const aboutAray = response.data;
+            this.about = aboutAray[0];
+          })
+          .catch((error) => {
+            console.error("Ошибка при загрузке данных About Us:", error);
+          });
+    },
     goToAboutUS() {
       this.$router.push('/about-us')
     }
@@ -31,13 +64,13 @@ export default {
     <div class="content">
       <sections :is-had="true">
         <template #title>
-          {{ data.title }}
+          {{ title }}
         </template>
         <template #content>
-          <p>{{data.mini_desc}}</p>
+          <p v-html="about.desc"></p>
         </template>
         <template #btn>
-          <more @click="goToAboutUS" :title="data.buttons_title"/>
+          <more @click="goToAboutUS" :title="btn_title"/>
         </template>
       </sections>
   </div>
