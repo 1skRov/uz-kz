@@ -32,12 +32,9 @@ export default {
       api.get('/trans/')
           .then((response) => {
             const translations = response.data;
-            console.log("data", translations)
             const currentLang = this.currentLanguage;
-            console.log("lang", this.currentLanguage)
             if (translations[currentLang]) {
               this.translations = translations[currentLang];
-              console.log("data in lang", this.translations)
             } else {
               console.error(`Переводы для языка "${currentLang}" не найдены`);
             }
