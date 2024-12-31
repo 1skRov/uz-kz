@@ -2,7 +2,7 @@
 import SideBar from "@/pages/Main/SideBar.vue";
 import Button_basic from "@/components/Buttons/button_basic.vue";
 import Dialog from "@/components/Dialog.vue";
-import api from "@/axios";
+import api, { BASE_URL }  from "@/axios";
 import {mapGetters} from "vuex";
 
 export default {
@@ -24,12 +24,6 @@ export default {
     return {
       page: "01",
       list: {},
-      images: [
-        require("@/assets/images/help.png"),
-        require("@/assets/images/help.png"),
-        require("@/assets/images/help.png"),
-        require("@/assets/images/help.png"),
-      ],
     };
   },
   computed: {
@@ -52,10 +46,16 @@ export default {
       })
           .then((response) => {
             const arr = response.data;
-            this.list = arr[0];
+            this.list = {
+              ...arr[0],
+              image1: `${BASE_URL}/media/${arr[0].image1}`,
+              image2: `${BASE_URL}/media/${arr[0].image2}`,
+              image3: `${BASE_URL}/media/${arr[0].image3}`,
+              image4: `${BASE_URL}/media/${arr[0].image4}`,
+            };
           })
           .catch((error) => {
-            console.error("Ошибка при загрузке данных About Us:", error);
+            console.error(error);
           });
     },
     openModal() {
@@ -73,10 +73,12 @@ export default {
       <div class="tablet-space-img">
         <div class="image-grid">
           <div class="large-image">
-            <img :src="images[0]" alt="Large image" />
+            <img :src="list.image1" alt="Large image" />
           </div>
           <div class="small-images">
-            <img v-for="(image, index) in images.slice(1, 4)" :key="index" :src="image" alt="Small image" />
+            <img :src="list.image2" alt="Small image" />
+            <img :src="list.image3" alt="Small image" />
+            <img :src="list.image4" alt="Small image" />
           </div>
         </div>
       </div>
@@ -85,9 +87,7 @@ export default {
           <h1 class="font-gilroy title" style="word-wrap: break-word;">
             {{ title }}
           </h1>
-          <p class="desc">
-            ....
-          </p>
+          <p class="desc" v-html="list.desc"></p>
         </div>
         <div>
           <Button_basic :title_button="btn_title" @click="openModal"/>
