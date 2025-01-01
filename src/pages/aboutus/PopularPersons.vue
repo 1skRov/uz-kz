@@ -2,75 +2,68 @@
 import Sections from "@/components/Sections.vue";
 import More from "@/components/Buttons/more.vue";
 import CardGrid from "@/pages/Main/CardGrid.vue";
+import {mapGetters} from "vuex";
+import api from "@/axios";
 
 export default {
   name: "PopularPersons",
   components: {CardGrid, More, Sections},
   props:{
-    data: {
-      type: Object,
-      required: true
+    title: {
+      type: String,
+      required: true,
+      default: "{{ popular_persons }}"
+    },
+    btn_title: {
+      type: String,
+      default: "{{ learn_more }}"
     }
   },
   data() {
     return {
-      title: "Известные личности",
-      cards: [
-        {
-          id: 1,
-          category: "Category 1",
-          heading: "Example Card Heading 1",
-          image: "https://images.unsplash.com/photo-1557177324-56c542165309?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-        },
-        {
-          id: 2,
-          category: "Category 2",
-          heading: "Example Card Heading 2",
-          image: "https://images.unsplash.com/photo-1557187666-4fd70cf76254?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-        },
-        {
-          id: 3,
-          category: "Category 3",
-          heading: "Example Card Heading 3",
-          image: "https://images.unsplash.com/photo-1556680262-9990363a3e6d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-        },
-        {
-          id: 4,
-          category: "Category 4",
-          heading: "Example Card Heading 4",
-          image: "https://images.unsplash.com/photo-1557004396-66e4174d7bf6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-        },
-      ],
+      cards: [],
     }
   },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getCulture();
+    },
+  },
+  mounted() {
+    this.getCulture();
+  },
   methods:{
+    getCulture() {
+      api.get(`/famous-persons/?lang_code=${this.currentLanguage}`)
+          .then((response) => {
+            this.cards = response.data;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
     goToFamousPersons(){
       this.$router.push('/famous-persons')
     }
   },
-  computed:{
-    firstTitle() {
-      return this.data.find(item => item.title)?.title || null;
-    },
-    firstButtonsTitle() {
-      return this.data.find(item => item.buttons_title)?.buttons_title || null;
-    },
-  }
 }
 </script>
 
 <template>
 <div>
   <sections>
-    <template #title>{{firstTitle}}</template>
+    <template #title>{{ title }}</template>
     <template #title-button>
-      <more @click="goToFamousPersons" :title="firstButtonsTitle"/>
+      <more @click="goToFamousPersons" :title="btn_title"/>
     </template>
     <template #content>
-     <CardGrid :cards="data"></CardGrid>
+     <CardGrid :cards="cards"></CardGrid>
     </template>
     <template #btn>
-      <more :title="firstButtonsTitle" @click="goToFamousPersons"/>
+      <more :title="btn_title" @click="goToFamousPersons"/>
     </template>
   </sections>
 </div>
