@@ -81,7 +81,7 @@ export default {
             <img src="@/assets/images/img.png" alt="culture and traditions" style="width: 100%; height: 100%;">
             <div class="abs-text">
               <div class="image-title font-gilroy">{{culture.title2}}</div>
-              <div class="image-desc truncate-text">{{culture.mini_desc}}</div>
+              <div class="image-desc truncate-text" v-html="culture.mini_desc"></div>
             </div>
           </div>
         </template>
@@ -115,8 +115,7 @@ export default {
   width: 70%;
   display: flex;
   justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
   align-items: center;
 }
 .content-body {
@@ -129,23 +128,27 @@ export default {
 }
 .abs-text {
   position: absolute;
-  bottom: 0; left: 0;
+  bottom: 0;
+  left: 0;
   padding: 40px;
 }
 .content-body .image-title {
-    position: relative;
-    color: #fff;
-    font-size: 24px;
-    font-weight: 500;
-    margin-bottom: 16px;
-    z-index:10;
-  }
+  position: relative;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  z-index: 10;
+}
 .content-body .image-desc {
-    position: relative;
-    line-height: 2rem;
-    z-index:10;
-    color: rgba(255, 255, 255, 0.7);
-  }
+  position: relative;
+  line-height: 2rem;
+  z-index: 10;
+  color: rgba(255, 255, 255, 0.7);
+}
+.content-body .image-desc > p {
+  margin: 0 !important;
+}
 .content-body .gradient-overlay {
   position: absolute;
   bottom: 0;
@@ -159,9 +162,11 @@ export default {
   .content {
     width: 90%;
   }
+
   .content-body {
     height: 40vh;
   }
+
   .icon-top {
     display: none;
   }
@@ -172,11 +177,13 @@ export default {
     position: static;
     padding: 20px 0 0 0;
   }
+
   .content-body .image-title {
     color: #333;
     font-size: 18px;
     margin-bottom: 10px;
   }
+
   .content-body .image-desc {
     color: #333333;
   }
@@ -196,6 +203,7 @@ export default {
     display: block;
     border-radius: 8px;
   }
+
   .icon-btm {
     display: none;
   }
