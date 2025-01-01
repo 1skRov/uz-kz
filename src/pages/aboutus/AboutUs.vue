@@ -8,24 +8,28 @@ import YouthOrganization from "@/pages/aboutus/YouthOrganization.vue";
 import EducationAndSport from "@/pages/aboutus/EducationAndSport.vue";
 import Help from "@/pages/aboutus/Help.vue";
 import api from "@/axios";
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "AboutUs",
   components: {
     Help,
     EducationAndSport,
-    YouthOrganization, PopularPersons, CultureAndTraditions, OurHistory, WhoWeaAre, Sections},
+    YouthOrganization,
+    PopularPersons,
+    CultureAndTraditions,
+    OurHistory,
+    WhoWeaAre,
+    Sections},
   data () {
     return {
-      // sections: ['кто мы', 'наша история', 'культура', 'личности', 'молодежные организации', 'образование и спорт', 'помощь',],
-      sections: ['кто мы', 'наша история', 'культура', 'личности', 'молодежные организации', 'образование и спорт', 'помощь',],
+      sections: [],
       currentSection: 0,
       translate: {},
     }
   },
   computed: {
-    ...mapGetters(['currentLanguage']),
+    ...mapGetters(["currentLanguage"]),
   },
   watch: {
     currentLanguage(newLang) {
@@ -38,14 +42,14 @@ export default {
       threshold: 0.3,
     });
 
-    const sectionElements = document.querySelectorAll('.section');
+    const sectionElements = document.querySelectorAll(".section");
     sectionElements.forEach((section) => observer.observe(section));
   },
-  methods:{
+  methods: {
     handleIntersection(entries) {
       for (const entry of entries) {
         if (entry.isIntersecting) {
-          const sectionId = entry.target.id.split('-')[1];
+          const sectionId = entry.target.id.split("-")[1];
           if (!isNaN(sectionId)) {
             this.currentSection = parseInt(sectionId);
           }
@@ -53,12 +57,14 @@ export default {
       }
     },
     getAboutUsTranslate() {
-      api.get('/trans/')
+      api
+          .get("/trans/")
           .then((response) => {
             const translations = response.data;
             const currentLang = this.currentLanguage;
             if (translations[currentLang]) {
               this.translate = translations[currentLang];
+              this.populateSections();
             } else {
               console.error(`Переводы для языка "${currentLang}" не найдены`);
             }
@@ -67,54 +73,69 @@ export default {
             console.error("Ошибка при загрузке переводов:", error);
           });
     },
-  }
-}
+    populateSections() {
+      this.sections = [
+        this.translate.who_we_are,
+        this.translate.our_history,
+        this.translate.culture_traditions,
+        this.translate.popular_persons,
+        this.translate.youth_organizations,
+        this.translate.education,
+        this.translate.help,
+      ];
+    },
+  },
+};
 </script>
 
 <template>
   <div class="main">
-    <div style="width: 160px; height: 100%; border-right: 1px solid #EBEEF0; position: absolute; top:0; z-index:1000" class="hid">
-      <div style="position: sticky; top:120px;">
+    <div
+        style="width: 160px; height: 100%; border-right: 1px solid #EBEEF0; position: absolute; top: 0; z-index: 1000"
+        class="hid"
+    >
+      <div style="position: sticky; top: 120px;">
         <ul>
           <li v-for="(section, index) in sections" :key="index" style="cursor: pointer">
-            <div :class="['circle', { active: currentSection === index }]">
-            </div>
+            <div :class="['circle', { active: currentSection === index }]"></div>
           </li>
         </ul>
       </div>
     </div>
-    <div class="text-box hid">
-      {{ sections[currentSection] }}
-    </div>
+    <div class="text-box hid">{{ sections[currentSection] }}</div>
     <div style="width: 100%">
       <div id="section-0" class="section">
-        <WhoWeaAre :title="translate.who_we_are"/>
+        <WhoWeaAre :title="translate.who_we_are" />
       </div>
       <div id="section-1" class="section">
-        <OurHistory :title="translate.our_history"/>
+        <OurHistory :title="translate.our_history" />
       </div>
       <div style="position: relative; width: 100%; background-color: #F7F8FA">
-        <div style="position: absolute; bottom:0; right: 0">
-          <img src="@/assets/images/cult-bottom.png" alt="">
+        <div style="position: absolute; bottom: 0; right: 0">
+          <img src="@/assets/images/cult-bottom.png" alt="" />
         </div>
-        <div style="position: absolute; top:0; right: 0">
-          <img src="@/assets/images/cult-top.png" alt="">
+        <div style="position: absolute; top: 0; right: 0">
+          <img src="@/assets/images/cult-top.png" alt="" />
         </div>
         <div id="section-2" class="section">
-          <CultureAndTraditions :title="translate.culture_traditions"/>
+          <CultureAndTraditions :title="translate.culture_traditions" />
         </div>
       </div>
       <div id="section-3" class="section">
-        <PopularPersons :title="translate.popular_persons" :btn_title="translate.learn_more"/>
+        <PopularPersons :title="translate.popular_persons" :btn_title="translate.learn_more" />
       </div>
       <div id="section-4" class="section">
-        <YouthOrganization :title="translate.youth_organizations" :btn_title="translate.more_detail"/>
+        <YouthOrganization :title="translate.youth_organizations" :btn_title="translate.more_detail" />
       </div>
       <div id="section-5" class="section">
-        <EducationAndSport :data_ed="translate.education" :data_sp="translate.sport" :btn_title="translate.more_detail"/>
+        <EducationAndSport
+            :data_ed="translate.education"
+            :data_sp="translate.sport"
+            :btn_title="translate.more_detail"
+        />
       </div>
       <div id="section-6" class="section" style="padding-bottom: 60px;">
-        <Help :title="translate.help" :btn_title="translate.more_detail"/>
+        <Help :title="translate.help" :btn_title="translate.more_detail" />
       </div>
     </div>
   </div>

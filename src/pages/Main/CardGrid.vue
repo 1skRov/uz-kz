@@ -108,7 +108,7 @@ export default {
   .card__overlay {
     opacity: 1 !important;
     visibility: visible !important;
-    background: rgba(0, 114, 171, 0.5);
+    background: linear-gradient(to top, rgba(0, 114, 171, 0.7) 0%, rgba(0, 114, 171, 0) 100%);
     padding: 10px;
   }
 }
