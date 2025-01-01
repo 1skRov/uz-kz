@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkuzbek"]=self["webpackChunkuzbek"]||[]).push([[29],{2205:function(e,t,n){n.r(t),n.d(t,{default:function(){return k}});var r=n(6768),s=n.p+"img/kaspi.3e493751.jpg";const a={class:"qr"};function u(e,t,n,u,i,c){return(0,r.uX)(),(0,r.CE)("div",a,t[0]||(t[0]=[(0,r.Lk)("div",{style:{width:"50vh"}},[(0,r.Lk)("img",{src:s,alt:"qr",width:"100%",height:"100%"})],-1)]))}var i={name:"DonatesQr"},c=n(1241);const d=(0,c.A)(i,[["render",u],["__scopeId","data-v-571fe290"]]);var k=d}}]);
+//# sourceMappingURL=29.202dd0d1.js.map
