@@ -50,7 +50,7 @@ export default {
   <sections>
     <template #title>{{ title }}</template>
     <template #content>
-      <div v-html="content.desc"></div>
+      <div v-html="content?.desc"></div>
     </template>
   </sections>
 </div>
