@@ -1,20 +1,46 @@
 <script>
 import Sections from "@/components/Sections.vue";
+import api from "@/axios";
+import {mapGetters} from "vuex";
 
 export default {
   name: "WhoWeaAre",
   components: {Sections},
   props:{
-    data: {
-      type: Object,
-      required: true
+    title: {
+      type: String,
+      required: true,
+      default: "{{ who_we_are }}"
     }
   },
   data() {
     return {
-      title:"Кто мы?",
-      content:"Идея создания и разработка данного Портала принадлежит председателю узбекского этнокультурного центра города Астана Ш.Пулатову при непосредственной поддержки спонсоров и партнеров из числа ниже указанных компаний и организаций. Отельную благодарность выражаем этнокультурному центру города Алматы в лице председателя А.Исматуллаева за поддержку и выражение солидарности в воплощении данной инициативы.",
+      content: null,
+
     }
+  },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getData();
+    },
+  },
+  mounted() {
+    this.getData();
+  },
+  methods:{
+    getData() {
+      api.get(`/who-are-we/?lang_code=${this.currentLanguage}`)
+          .then((response) => {
+            const arr = response.data;
+            this.content = arr[0].desc;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
   }
 }
 </script>
@@ -22,8 +48,10 @@ export default {
 <template>
   <div>
     <sections>
-      <template #title>{{ data.title || title }}</template>
-      <template #content>{{ data.mini_desc || content }}</template>
+      <template #title>{{ title }}</template>
+      <template #content>
+        <div v-html="content"></div>
+      </template>
     </sections>
   </div>
 </template>
