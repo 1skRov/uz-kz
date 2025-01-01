@@ -39,11 +39,7 @@ export default {
   },
   methods: {
     getMain() {
-      api.get(`/association/?lang_code=${this.currentLanguage}`, {
-        headers: {
-          'ngrok-skip-browser-warning': 'true'
-        }
-      })
+      api.get(`/association/?lang_code=${this.currentLanguage}`)
           .then((response) => {
             const arr = response.data;
             this.list = {

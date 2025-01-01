@@ -38,11 +38,7 @@ export default {
   },
   methods: {
     getCulture() {
-      api.get(`/traditions/?lang_code=${this.currentLanguage}`, {
-        headers: {
-          'ngrok-skip-browser-warning': 'true'
-        }
-      })
+      api.get(`/traditions/?lang_code=${this.currentLanguage}`)
           .then((response) => {
             const cultureArray = response.data;
             this.culture = cultureArray[0];
@@ -162,11 +158,9 @@ export default {
   .content {
     width: 90%;
   }
-
   .content-body {
     height: 40vh;
   }
-
   .icon-top {
     display: none;
   }

@@ -38,11 +38,7 @@ export default {
   },
   methods: {
     getAboutUS() {
-      api.get(`/about-us/?lang_code=${this.currentLanguage}`, {
-        headers: {
-          'ngrok-skip-browser-warning': 'true'
-        }
-      })
+      api.get(`/about-us/?lang_code=${this.currentLanguage}`)
           .then((response) => {
             const aboutAray = response.data;
             this.about = aboutAray[0];
