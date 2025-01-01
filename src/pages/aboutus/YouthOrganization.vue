@@ -1,109 +1,173 @@
 <script>
 import Sections from "@/components/Sections.vue";
+import api, {BASE_URL} from "@/axios";
+import {mapGetters} from "vuex";
 export default {
   name: "YouthOrganization",
-  components: {Sections},
+  components: { Sections },
+  props: {
+    title: {
+      type: String,
+      required: true,
+      default: "{{ youth_organizations }}"
+    },
+    btn_title: {
+      type: String,
+      default: "{{ more_detail }}"
+    }
+  },
   data() {
     return {
-      games: [
-        {
-          image: require("@/assets/images/3.png"),
-          title: "Организация 'Текст'",
-          description: "Единый портал Узбекистана...",
-        },
-        {
-          image: require("@/assets/images/3.png"),
-          title: "Другая организация",
-          description: "Описание другой организации...",
-        },
-        {
-          image: require("@/assets/images/3.png"),
-          title: "Третья организация",
-          description: "Описание третьей организации...",
-        },
-        {
-          image: require("@/assets/images/3.png"),
-          title: "Третья организация",
-          description: "Описание третьей организации...",
-        },
-        {
-          image: require("@/assets/images/3.png"),
-          title: "Третья организация",
-          description: "Описание третьей организации...",
-        },
-      ],
-      expandedIndex: null,
+      cards: [],
+      BASE_URL
     };
   },
-  methods: {
-    onMoreInfo(id) {
-      console.log(`Подробнее о карточке с ID: ${id}`);
-      // Добавьте логику перехода или отображения деталей
-    },
-    toggleExpand(index) {
-      this.expandedIndex = this.expandedIndex === index ? null : index;
-    },
-    showMore(game) {
-      alert(`More details about ${game.title}`);
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getOrganization();
     },
   },
-  // async mounted() {
-  //   // Simulating server response
-  //   const response = await fetch("/api/games");
-  //   this.games = await response.json();
-  // },
-}
+  mounted() {
+    this.getOrganization();
+  },
+  methods:{
+    getOrganization() {
+      api.get(`/youth-organizations/?lang_code=${this.currentLanguage}`)
+          .then((response) => {
+            this.cards = response.data;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
+  }
+};
 </script>
+
 
 <template>
   <div>
     <sections>
-      <template #title>Организации</template>
+      <template #title>{{ title }}</template>
       <template #content>
-        <section class="image-grid">
-          <!-- Отображаем все изображения из games -->
-          <div
-              v-for="(game, index) in games"
-              :key="index"
-              :class="['grid-item', { 'top-item': index < 2, 'bottom-item': index >= 2 }]"
-          >
-            <img :src="game.image" :alt="game.title" />
+        <div class="cards-container">
+          <div class="row">
+            <div v-for="(card, index) in cards.slice(0, 2)" :key="index" class="card">
+              <img :src="BASE_URL + card.image" alt="card.title" class="card-image" style="width: 100%; height: 100%"/>
+              <div class="card-overlay">
+                <div style="padding: 2rem">
+                  <div class="card-title font-gilroy">{{ card.title }}</div>
+                  <div class="card-description" v-html="card.desc"></div>
+                  <button class="card-button">{{ btn_title }}</button>
+                </div>
+              </div>
+            </div>
           </div>
-        </section>
+          <div class="row">
+            <div v-for="(card, index) in cards.slice(2, 5)" :key="index" class="card">
+              <img :src="BASE_URL + card.image" alt="card.title" class="card-image" style="width: 100%; height: 100%"/>
+              <div class="card-overlay">
+                <div style="padding: 2rem;">
+                  <div class="card-title font-gilroy">{{ card.title }}</div>
+                  <div class="card-description truncate-text" v-html="card.desc"></div>
+                  <button class="card-button">{{ btn_title }}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </template>
     </sections>
   </div>
 </template>
 
 <style scoped>
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Две колонки */
-  grid-template-rows: auto auto; /* Две строки */
-  gap: 16px; /* Отступы между элементами */
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.grid-item {
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.row + .row {
+  margin-top: 1rem;
+}
+
+.card {
   position: relative;
-  overflow: hidden;
+  width: 50%;
+  height: 25rem;
   border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.grid-item img {
+.card:nth-child(3),
+.card:nth-child(4),
+.card:nth-child(5) {
+  width: 50%;
+}
+
+.card:hover {
+  transform: scale(1.015);
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  background: rgba(0, 114, 171, 0.7);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-/* Первые два элемента сверху */
-.top-item {
-  grid-column: span 1; /* Каждое изображение занимает одну колонку */
-  height: 250px; /* Высота для верхних изображений */
+.card:hover .card-overlay {
+  opacity: 1;
 }
 
-/* Три изображения снизу */
-.bottom-item {
-  grid-column: span 1; /* Каждое изображение занимает одну колонку */
-  height: 200px; /* Высота для нижних изображений */
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #FFFFFF;
 }
+
+.card-description {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.card-button {
+  background: #fff;
+  color: black;
+  border: none;
+  border-radius: 6px;
+  padding: 0.9rem 1.5rem;
+  cursor: pointer;
+  max-width: 12rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
 </style>
