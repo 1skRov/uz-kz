@@ -1,30 +1,72 @@
 <script>
 import Sections from "@/components/Sections.vue";
 import buttonBasic from "@/components/Buttons/button_basic.vue"
+import api, {BASE_URL} from "@/axios";
+import {mapGetters} from "vuex";
 export default {
   name: "EducationAndSport",
   components: {Sections, buttonBasic},
   props:{
     data_ed: {
-      type: Object,
-      required: true
+      type: String,
+      required: true,
+      default: "{{ education }}"
     },
     data_sp: {
-      type: Object,
-      required: true
+      type: String,
+      required: true,
+      default: "{{ sport }}"
     },
+    btn_title: {
+      type: String,
+      default: "{{ learn_more }}"
+    }
   },
   data() {
     return{
-      title_btn:"подробнее",
-      title_ed: "Образование",
-      title_sp: "Спорт",
-      subTitle_ed: "Идея создания и разработка данного Портала принадлежит председателю узбекского этнокультурного центра города Астана Ш.Пулатову при непосредственной поддержки спонсоров и партнеров из числа ниже указанных компаний и организаций. Отельную благодарность выражаем этнокультурному центру города Алматы в лице председателя А.Исматуллаева за поддержку и выражение солидарности в воплощении данной инициативы. Идея создания и разработка данного Портала принадлежит председателю узбекского этнокультурного центра города Астана Ш.Пулатову при непосредственной поддержки спонсоров и партнеров из числа ниже указанных компаний и организаций. Отельную благодарность выражаем этнокультурному центру города Алматы в лице председателя А.Исматуллаева за поддержку и выражение солидарности в воплощении данной инициативы.",
-      subTitle_sp: "Идея создания и разработка данного Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium debitis ipsum necessitatibus placeat vel? Aliquam asperiores consequatur distinctio labore molestiae non nulla numquam qui similique voluptate. Ab aliquid blanditiis consequatur eius error et fugit illum laboriosam laborum maiores nesciunt, quae quaerat quas quo quos sint sit ut voluptate? Dolore, ipsum! Портала принадлежит председателю узбекского этнокультурного центра города Астана Ш.Пулатову при непосредственной поддержки спонсоров и партнеров из числа ниже указанных компаний и организаций. Отельную благодарность выражаем этнокультурному центру города Алматы в лице председателя А.Исматуллаева за поддержку и выражение солидарности в воплощении данной инициативы. Идея создания и разработка данного Портала принадлежит председателю узбекского этнокультурного центра города Астана Ш.Пулатову при непосредственной поддержки спонсоров и партнеров из числа ниже указанных компаний и организаций. Отельную благодарность выражаем этнокультурному центру города Алматы в лице председателя А.Исматуллаева за поддержку и выражение солидарности в воплощении данной инициативы.",
       color:"#000",
+      ed: {},
+      sp: {},
     }
   },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getEducation();
+      this.getSport();
+    },
+  },
+  mounted() {
+    this.getEducation();
+    this.getSport();
+  },
   methods: {
+    getEducation() {
+      api.get(`/education/?lang_code=${this.currentLanguage}`)
+          .then((response) => {
+            const arr = response.data;
+            if (Array.isArray(arr) && arr.length > 0) {
+              this.ed = arr[0];
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
+    getSport() {
+      api.get(`/sport/?lang_code=${this.currentLanguage}`)
+          .then((response) => {
+            const arr = response.data;
+            if (Array.isArray(arr) && arr.length > 0) {
+              this.sp = arr[0];
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
     goToEducation() {
       this.$router.push('/education')
     },
@@ -53,10 +95,10 @@ export default {
             </svg>
           </div>
           <div style="display: flex; flex-direction: column; gap: 2rem">
-            <div class="title font-gilroy">{{data_ed.title}}</div>
-            <div class="text">{{data_ed.full_desc}}</div>
+            <div class="title font-gilroy">{{data_ed}}</div>
+            <div class="text" v-html="ed.mini_desc"></div>
             <div class="btn">
-              <buttonBasic :title_button="data_ed.buttons_title" :is-blue="true" @click="goToEducation"></buttonBasic>
+              <buttonBasic :title_button="btn_title" :is-blue="true" @click="goToEducation"></buttonBasic>
             </div>
           </div>
         </div>
@@ -69,10 +111,10 @@ export default {
             </svg>
           </div>
           <div style="display: flex; flex-direction: column; gap: 2rem">
-            <div class="title font-gilroy">{{data_sp.title}}</div>
-            <div class="text">{{data_sp.full_desc}}</div>
+            <div class="title font-gilroy">{{data_sp}}</div>
+            <div class="text" v-html="sp.mini_desc"></div>
             <div class="btn">
-              <buttonBasic :title_button="data_sp.buttons_title" :is-blue="true" @click="goToSport"></buttonBasic>
+              <buttonBasic :title_button="btn_title" :is-blue="true" @click="goToSport"></buttonBasic>
             </div>
           </div>
         </div>
