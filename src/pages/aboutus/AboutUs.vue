@@ -1,5 +1,4 @@
 <script>
-
 import Sections from "@/components/Sections.vue";
 import WhoWeaAre from "@/pages/aboutus/WhoWeaAre.vue";
 import OurHistory from "@/pages/aboutus/OurHistory.vue";
@@ -17,17 +16,12 @@ export default {
     Help,
     EducationAndSport,
     YouthOrganization, PopularPersons, CultureAndTraditions, OurHistory, WhoWeaAre, Sections},
-  data (){
+  data () {
     return {
-      sections: ['кто мы','наша история','культура','личности','молодежные организации','образование и спорт','помощь',],
+      // sections: ['кто мы', 'наша история', 'культура', 'личности', 'молодежные организации', 'образование и спорт', 'помощь',],
+      sections: ['кто мы', 'наша история', 'культура', 'личности', 'молодежные организации', 'образование и спорт', 'помощь',],
       currentSection: 0,
-      who_we_are: {},
-      our_history:[],
-      culture: [],
-      famous:[],
-      ed:{},
-      sp:{},
-      help:{},
+      translate: {},
     }
   },
   computed: {
@@ -35,11 +29,11 @@ export default {
   },
   watch: {
     currentLanguage(newLang) {
-      this.getAboutUs();
+      this.getAboutUsTranslate();
     },
   },
   mounted() {
-    this.getAboutUs();
+    this.getAboutUsTranslate();
     const observer = new IntersectionObserver(this.handleIntersection, {
       threshold: 0.3,
     });
@@ -58,27 +52,19 @@ export default {
         }
       }
     },
-    getAboutUs() {
-      api.get(`/informations/?lang_code=${this.currentLanguage}`, {
-        headers: {
-          'ngrok-skip-browser-warning': 'true',
-        },
-      })
-          .then(response => {
-            const data = response.data;
-
-            this.who_we_are = data.find(item => item.category_id === 10) || {};
-            this.our_history = data.filter(item => item.category_id === 11) || [];
-            this.culture = data.filter(item => item.category_id === 4) || [];
-            this.famous = data.filter(item => item.category_id === 5) || [];
-            this.ed = data.find(item => item.category_id === 13) || {};
-            this.sp = data.find(item => item.category_id === 14) || {};
-            this.help = data.find(item => item.category_id === 15) || {};
-
-            console.log("Данные загружены и распределены по секциям");
+    getAboutUsTranslate() {
+      api.get('/trans/')
+          .then((response) => {
+            const translations = response.data;
+            const currentLang = this.currentLanguage;
+            if (translations[currentLang]) {
+              this.translate = translations[currentLang];
+            } else {
+              console.error(`Переводы для языка "${currentLang}" не найдены`);
+            }
           })
-          .catch(error => {
-            console.error("Ошибка при загрузке данных:", error);
+          .catch((error) => {
+            console.error("Ошибка при загрузке переводов:", error);
           });
     },
   }
@@ -102,10 +88,10 @@ export default {
     </div>
     <div style="width: 100%">
       <div id="section-0" class="section">
-        <WhoWeaAre :data="who_we_are"/>
+        <WhoWeaAre :title="translate.who_we_are"/>
       </div>
       <div id="section-1" class="section">
-        <OurHistory :data="our_history"/>
+        <OurHistory :title="translate.our_history"/>
       </div>
       <div style="position: relative; width: 100%; background-color: #F7F8FA">
         <div style="position: absolute; bottom:0; right: 0">
@@ -115,20 +101,20 @@ export default {
           <img src="@/assets/images/cult-top.png" alt="">
         </div>
         <div id="section-2" class="section">
-          <CultureAndTraditions :data="culture"/>
+          <CultureAndTraditions :title="translate.culture_traditions"/>
         </div>
       </div>
       <div id="section-3" class="section">
-        <PopularPersons :data="famous"/>
+        <PopularPersons :title="translate.popular_persons" :btn_title="translate.learn_more"/>
       </div>
       <div id="section-4" class="section">
-<!--        <YouthOrganization/>-->
+        <YouthOrganization :title="translate.youth_organizations" :btn_title="translate.more_detail"/>
       </div>
       <div id="section-5" class="section">
-        <EducationAndSport :data_ed="ed" :data_sp="sp"/>
+        <EducationAndSport :data_ed="translate.education" :data_sp="translate.sport" :btn_title="translate.more_detail"/>
       </div>
       <div id="section-6" class="section" style="padding-bottom: 60px;">
-        <Help :data="help"/>
+        <Help :title="translate.help" :btn_title="translate.more_detail"/>
       </div>
     </div>
   </div>
