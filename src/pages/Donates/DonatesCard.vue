@@ -1,11 +1,13 @@
 <script>
 
 import api from "@/axios";
+import {mapGetters} from "vuex";
 
 export default {
   name: "DonatesCard",
   data() {
     return {
+      translations: {},
       form: {
         number_card: "",
         name_card: "",
@@ -16,40 +18,39 @@ export default {
       submitting: false,
     };
   },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getTranslations();
+    },
+  },
+  mounted() {
+    this.getTranslations();
+  },
   methods: {
-    validateForm() {
-      const { number_card, name_card, cvv, price } = this.form;
-      if (!number_card || !name_card || !cvv || !price) {
-        alert("Все поля должны быть заполнены.");
-        return false;
-      }
-      if (number_card.length !== 16 || isNaN(Number(number_card))) {
-        alert("Номер карты должен состоять из 16 цифр.");
-        return false;
-      }
-      if (cvv.toString().length !== 3 || isNaN(Number(cvv))) {
-        alert("CVV должен состоять из 3 цифр.");
-        return false;
-      }
-      if (isNaN(Number(price)) || Number(price) <= 0) {
-        alert("Сумма должна быть положительным числом.");
-        return false;
-      }
-      return true;
+    getTranslations() {
+      api.get('/trans/')
+          .then((response) => {
+            const translations = response.data;
+            const currentLang = this.currentLanguage;
+            if (translations[currentLang]) {
+              this.translations = translations[currentLang];
+            } else {
+              console.error(`Переводы для языка "${currentLang}" не найдены`);
+            }
+          })
+          .catch((error) => {
+            console.error("Ошибка при загрузке переводов:", error);
+          });
     },
     async submitForm() {
-
-      const payload = { ...this.form };
-
+      const payload = {...this.form};
       this.submitting = true;
       try {
-        const response = await api.post("/donates/", payload, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await api.post("/donates/", payload);
         console.log("Успешно отправлено:", response.data);
-        alert("Ваша заявка успешно отправлена!");
         this.closeModal();
       } catch (error) {
         console.error("Ошибка при отправке заявки:", error);
@@ -65,12 +66,12 @@ export default {
 <template>
   <div class="dialog-content">
     <div style="display: flex; flex-direction: column;">
-      <div class="dialog-title font-gilroy">Хотите помочь нуждающимся?</div>
-      <p style="color: #575F6C; margin-bottom: 2rem;">Заполните все формы ниже, и отправьте донат.</p>
+      <div class="dialog-title font-gilroy">{{ translations.donate_title || '{ donate_title }' }}</div>
+      <p style="color: #575F6C; margin-bottom: 2rem;">{{ translations.donate_description || '{ donate_description }' }}</p>
     </div>
     <div class="form-grid">
       <div class="form-group">
-        <label for="number_card">Номер карты</label>
+        <label for="number_card">{{ translations.card_number || '{ card_number }' }}</label>
         <input
             type="number"
             id="number_card"
@@ -81,7 +82,7 @@ export default {
         />
       </div>
       <div class="form-group">
-        <label for="cvv">CVV</label>
+        <label for="cvv">{{ translations.cvv || '{ cvv }' }}</label>
         <input
             type="number"
             id="cvv"
@@ -92,11 +93,11 @@ export default {
         />
       </div>
       <div class="form-group">
-        <label for="name_card">Имя на карте</label>
+        <label for="name_card">{{ translations.card_name || '{ card_name }' }}</label>
         <input type="text" id="name_card" v-model="form.name_card" />
       </div>
       <div class="form-group">
-        <label for="price">Сумма</label>
+        <label for="price">{{ translations.summ || '{ summ }' }}</label>
         <input
             type="number"
             id="price"
@@ -112,12 +113,12 @@ export default {
         <span class="checkmark"></span>
       </label>
       <span style="margin-left: 10px; font-weight: 500; letter-spacing: 2px; color: #333333">
-        Я подтверждаю, что ознакомлен <a href="#" style="color: #333333; text-decoration: none; border-bottom: 1px solid rgba(136,134,134,0.7)">с правилами внесения пожертвований.</a>
+       {{ translations.confirm || '{ confirm }' }}
       </span>
     </div>
     <div style="width: 100%;">
       <button :disabled="submitting || !form.confirmation" @click="submitForm" class="submit-btn font-gilroy">
-        {{ submitting ? "Отправка..." : "Отправить заявку" }}
+        {{ submitting ? "..." : (translations.send_donate_btn || '{ send_donate_btn }') }}
       </button>
     </div>
   </div>
@@ -194,6 +195,7 @@ export default {
   font-weight: 500;
   margin-bottom: 5px;
   color: #333333;
+  text-transform: uppercase;
 }
 
 .form-group input {
@@ -217,6 +219,7 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  text-transform: uppercase;
 }
 
 .submit-btn:disabled {

@@ -1,6 +1,34 @@
 <script>
+import api, {BASE_URL} from "@/axios";
+
 export default {
-  name: "DonatesQr"
+  name: "DonatesQr",
+  data(){
+    return {
+      BASE_URL,
+      translations: {},
+    }
+  },
+  mounted() {
+    this.getTranslations();
+  },
+  methods: {
+    getTranslations() {
+      api.get('/trans/')
+          .then((response) => {
+            const translations = response.data;
+            const currentLang = this.currentLanguage;
+            if (translations[currentLang]) {
+              this.translations = translations[currentLang];
+            } else {
+              console.error(`Переводы для языка "${currentLang}" не найдены`);
+            }
+          })
+          .catch((error) => {
+            console.error("Ошибка при загрузке переводов:", error);
+          });
+    },
+  }
 }
 </script>
 

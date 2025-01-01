@@ -2,25 +2,57 @@
 import SideBar from "@/components/SideBarText.vue";
 import Navigation from "@/components/Navigation.vue";
 import Sections from "@/components/Sections.vue";
+import api from "@/axios";
+import {mapGetters} from "vuex";
 
 export default {
   name: "Donates",
   components: {Sections, Navigation, SideBar},
   data() {
     return{
-      menuItems: [
-        {name: "Через карту",route: '/donates/card'},
-        {name: "Через QR",route: '/donates/qr'},
-      ],
-      page_title: "Донаты"
-    }
+      menuItems: [],
+      translations: {},
+    };
+  },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getTranslations();
+    },
+  },
+  mounted() {
+    this.getTranslations();
+  },
+  methods: {
+    getTranslations() {
+      api.get('/trans/')
+          .then((response) => {
+            const translations = response.data;
+            const currentLang = this.currentLanguage;
+            if (translations[currentLang]) {
+              this.translations = translations[currentLang];
+
+              this.menuItems = [
+                {name: this.translations.with_card || "{ with_card }", route: '/donates/card'},
+                {name: this.translations.with_qr || "{ with_qr }", route: '/donates/qr'},
+              ];
+            } else {
+              console.error(`Переводы для языка "${currentLang}" не найдены`);
+            }
+          })
+          .catch((error) => {
+            console.error("Ошибка при загрузке переводов:", error);
+          });
+    },
   }
-}
+};
 </script>
 
 <template>
-  <div class="main">
-    <side-bar :title="page_title"/>
+  <div class="main" style="display: flex">
+    <side-bar :title="translations.donates_side || '{ donates_side }'"/>
     <div class="content">
       <sections>
         <template #content>
