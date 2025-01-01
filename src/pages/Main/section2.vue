@@ -48,7 +48,7 @@ export default {
             this.about = aboutAray[0];
           })
           .catch((error) => {
-            console.error("Ошибка при загрузке данных About Us:", error);
+            console.error(error);
           });
     },
     goToAboutUS() {
@@ -91,23 +91,11 @@ export default {
   align-items: center;
   border-top: 1px solid #DDE2E4;
 }
-.btn {
-  margin-top: 72px;
-  display: flex;
-  justify-content: left;
-}
 @media (max-width: 1024px) {
 
   .content {
     width: 90%;
   }
-  .btn {
-    margin-top: 48px;
-  }
 }
-@media (max-width: 768px) {
-  .btn {
-    margin-top: 20px;
-  }
-}
+@media (max-width: 768px) {  }
 </style>
