@@ -21,12 +21,7 @@ export default {
         city: "",
       },
       regionCode: null,
-      errors: {
-        name: null,
-        birthDate: null,
-        iin: null,
-        phone: null,
-      },
+      errors: {},
       submitting: false,
       list: {},
     };
@@ -102,8 +97,6 @@ export default {
             "Content-Type": "application/json",
           },
         });
-        console.log("Успешно отправлено:", response.data);
-        alert("Ваша заявка успешно отправлена!");
         this.closeModal();
       } catch (error) {
         console.error("Ошибка при отправке заявки:", error);
@@ -119,51 +112,54 @@ export default {
 <template>
   <div class="dialog-overlay">
     <div class="dialog-content">
-      <div style="display: flex; align-items: center">
+      <div class="dialog-header">
         <button class="close-btn" @click="closeModal">&times;</button>
         <h1 class="dialog-title font-gilroy">{{ list.association_title || '{ association_title }' }}</h1>
+        <p class="dialog-description">{{ list.association_description || '{ association_description }' }}</p>
       </div>
-      <p style="color: #575F6C; margin-bottom: 2rem;">{{ list.association_description || '{ association_description }' }}</p>
-      <div class="form-grid">
-        <div class="form-group">
-          <label for="name">{{ list.your_fcs || '{ your_fcs }' }}</label>
-          <input type="text" id="name" v-model="form.name" />
-          <span class="error-message" v-if="errors.name">{{ errors.name }}</span>
+      <div class="dialog-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="name">{{ list.your_fcs || '{ your_fcs }' }}</label>
+            <input type="text" id="name" v-model="form.name" />
+            <span class="error-message" v-if="errors.name">{{ errors.name }}</span>
+          </div>
+          <div class="form-group">
+            <label for="birthDate">{{ list.date_of_birth || '{ date_of_birth }' }}</label>
+            <input type="date" id="birthDate" v-model="form.birthDate" />
+            <span class="error-message" v-if="errors.birthDate">{{ errors.birthDate }}</span>
+          </div>
+          <div class="form-group">
+            <label for="iin">{{ list.iin || '{ iin }' }}</label>
+            <input
+                type="text"
+                id="iin"
+                v-model="form.iin"
+                maxlength="12"
+                @input="validateIIN"
+            />
+            <span class="error-message" v-if="errors.iin">{{ errors.iin }}</span>
+          </div>
+          <div class="form-group">
+            <label for="phone">{{ list.phone_number || '{ phone_number }' }}</label>
+            <input type="text" id="phone" v-model="form.phone" />
+            <span class="error-message" v-if="errors.phone">{{ errors.phone }}</span>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="birthDate">{{ list.date_of_birth || '{ date_of_birth }' }}</label>
-          <input type="date" id="birthDate" v-model="form.birthDate" />
-          <span class="error-message" v-if="errors.birthDate">{{ errors.birthDate }}</span>
+        <div class="city">{{ list.country || '{ country }' }}</div>
+        <div>
+          <map-fill @region-selected="handleRegionSelected"></map-fill>
         </div>
-        <div class="form-group">
-          <label for="iin">{{ list.iin || '{ iin }' }}</label>
-          <input
-              type="text"
-              id="iin"
-              v-model="form.iin"
-              maxlength="12"
-              @input="validateIIN"
-          />
-          <span class="error-message" v-if="errors.iin">{{ errors.iin }}</span>
+        <div style="width: 100%; display: flex; justify-content: end;">
+          <button :disabled="submitting" @click="submitForm" class="submit-btn font-gilroy">
+            {{ submitting ? "..." : (list.send_request_btn || '{ send_request_btn }') }}
+          </button>
         </div>
-        <div class="form-group">
-          <label for="phone">{{ list.phone_number || '{ phone_number }' }}</label>
-          <input type="text" id="phone" v-model="form.phone" />
-          <span class="error-message" v-if="errors.phone">{{ errors.phone }}</span>
-        </div>
-      </div>
-      <div class="city">{{ list.country || '{ country }' }}</div>
-      <div>
-        <map-fill @region-selected="handleRegionSelected"></map-fill>
-      </div>
-      <div style="width: 100%; display: flex; justify-content: end;">
-        <button :disabled="submitting" @click="submitForm" class="submit-btn font-gilroy">
-          {{ submitting ? "..." :  (list.send_request_btn || '{ send_request_btn }') }}
-        </button>
       </div>
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .dialog-overlay {
@@ -174,7 +170,6 @@ export default {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  overflow-y: auto;
 }
 
 .dialog-content {
@@ -183,13 +178,19 @@ export default {
   width: 80%;
   max-width: 80%;
   max-height: 80vh;
-  padding: 20px;
-  position: relative;
+  display: flex;
+  flex-direction: column;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  overflow-y: auto;
+  overflow: hidden;
 }
-
-.close-btn {
+.dialog-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
+  padding: 20px;
+}
+.dialog-header .close-btn {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -199,12 +200,19 @@ export default {
   cursor: pointer;
   color: #0072AB;
 }
-
-.dialog-title {
+.dialog-header .dialog-title {
   font-weight: 500;
-  font-size: 40px;
-  line-height: 32px;
-  margin-bottom: 0;
+  font-size: 28px;
+  margin-bottom: 0.5rem;
+}
+.dialog-header .dialog-description {
+  color: #575F6C;
+  margin: 0;
+}
+
+.dialog-body {
+  padding: 20px;
+  overflow-y: auto;
 }
 
 .form-grid {
