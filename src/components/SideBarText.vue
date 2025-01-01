@@ -31,7 +31,8 @@ export default {
   border-right: 1px solid #EBEEF0;
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: start;
+  padding-top: 7rem;
 
   p {
     text-align: center;

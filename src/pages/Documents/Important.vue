@@ -1,28 +1,57 @@
 <script>
 import Sections from "@/components/Sections.vue";
+import api from "@/axios";
+import {mapGetters} from "vuex";
 
 export default {
   name: "Important",
   components: {Sections},
   props:{
-    data:{
-      type: Object,
+    title:{
+      type: String,
       required: true,
+      default: "{ important_documents }"
     },
   },
   data(){
     return{
-      content: "Идея создания и разработка данного Портала принадлежит председателю узбекского этнокультурного центра города Астана Ш.Пулатову при непосредственной поддержки спонсоров и партнеров из числа ниже указанных компаний и организаций. Отельную благодарность выражаем этнокультурному центру города Алматы в лице председателя А.Исматуллаева за поддержку и выражение солидарности в воплощении данной инициативы."
+      content: [],
     }
-  }
+  },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getImportant();
+    },
+  },
+  mounted() {
+    this.getImportant();
+  },
+  methods:{
+    getImportant() {
+      api.get(`/important-doc/?lang_code=${this.currentLanguage}`)
+          .then((response) => {
+            if (Array.isArray(response.data)) {
+              this.content = response.data[0];
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
+  },
 }
 </script>
 
 <template>
 <div>
   <sections>
-    <template #title>{{data.title}}</template>
-    <template #content>{{data.full_desc}}</template>
+    <template #title>{{ title }}</template>
+    <template #content>
+      <div v-html="content.desc"></div>
+    </template>
   </sections>
 </div>
 </template>
