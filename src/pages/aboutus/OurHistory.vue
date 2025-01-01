@@ -2,67 +2,46 @@
 import Sections from "@/components/Sections.vue";
 import Left from "@/components/Buttons/left.vue";
 import Right from "@/components/Buttons/right.vue";
+import api, {BASE_URL} from "@/axios";
+import {mapGetters} from "vuex";
 
 export default {
   name: "OurHistory",
-  components: { Right, Left, Sections },
-  props:{
-    data: {
-      type: Array,
-      required: true
+  components: {Right, Left, Sections},
+  props: {
+    title: {
+      type: String,
+      required: true,
+      default: "{{ our_history }}",
     }
   },
   data() {
     return {
-      title: "Наша история",
-      games: [
-        {
-          title: "Dota 2",
-          description:
-              "Dota 2 is a multiplayer online battle arena by Valve. The game is a sequel to Defense of the Ancients, which was a community-created mod for Blizzard Entertainment's Warcraft III.",
-          image: require('@/assets/images/1.png'),
-        },
-        {
-          title: "The Witcher 3",
-          description:
-              "The Witcher 3 is a role-playing game set in an open world developed by CD Projekt Red.",
-          image: require('@/assets/images/img.png'),
-        },
-        {
-          title: "RDR 2",
-          description:
-              "RDR 2 is an action-adventure game developed and published by Rockstar Games.",
-          image: require('@/assets/images/3.png'),
-        },
-        {
-          title: "PUBG Mobile",
-          description:
-              "PUBG Mobile is a battle royale game where players fight to be the last one standing.",
-          image: require('@/assets/images/2.png'),
-        },
-        {
-          title: "Fortnite",
-          description:
-              "Fortnite is a battle royale game where 100 players fight to be the last person standing.",
-          image: require('@/assets/images/4.png'),
-        },
-      ],
       activeIndex: 0,
       windowWidth: window.innerWidth,
+      history: [],
+      BASE_URL,
     };
   },
   computed: {
     isMobile() {
       return this.windowWidth <= 768;
     },
-    firstTitle() {
-      return this.data.find(item => item.title)?.title || null;
-    },
-    firstButtonsTitle() {
-      return this.data.find(item => item.buttons_title)?.buttons_title || null;
-    },
+    ...mapGetters(['currentLanguage']),
   },
   methods: {
+    getHistory() {
+      api.get(`/our-history/?lang_code=${this.currentLanguage}`)
+          .then((response) => {
+            this.history = response.data;
+          })
+          .catch((error) => {
+            console.error("Ошибка при загрузке данных About Us:", error);
+          });
+    },
+    updateWindowWidth() {
+      this.windowWidth = window.innerWidth;
+    },
     setActive(index) {
       this.activeIndex = index;
     },
@@ -75,12 +54,15 @@ export default {
       }
     },
     scrollRight() {
-      if (this.activeIndex < this.data.length - 1) {
+      if (this.activeIndex < this.history.length - 1) {
         this.setActive(this.activeIndex + 1);
       }
     },
   },
   watch: {
+    currentLanguage(newLang) {
+      this.getHistory();
+    },
     activeIndex(newIndex) {
       const container = this.$el.querySelector('.carousel-container');
       const itemWidth = this.isMobile
@@ -93,9 +75,11 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener("resize", () => {
-      this.windowWidth = window.innerWidth;
-    });
+    window.addEventListener("resize", this.updateWindowWidth);
+    this.getHistory();
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.updateWindowWidth);
   },
 };
 </script>
@@ -103,7 +87,7 @@ export default {
 <template>
   <div>
     <sections class="mob-section">
-      <template #title v-if="!isMobile">{{firstTitle}}</template>
+      <template #title v-if="!isMobile">{{ title }}</template>
       <template #title-button>
         <div class="btn">
           <left @click="scrollLeft" />
@@ -119,22 +103,22 @@ export default {
           <div class="carousel-container">
             <div
                 class="item"
-                v-for="(game, index) in data"
+                v-for="(h, index) in history"
                 :key="index"
-                :style="{ backgroundImage: `url(${game.image})` }"
+                :style="{ backgroundImage: `url(${BASE_URL + h.image})` }"
                 :class="{ active: activeIndex === index }"
                 @click="onCardClick(index)"
             >
               <div class="overlay" v-if="activeIndex === index"></div>
               <div class="item-desc">
-                <h3>{{ game.mini_desc }}</h3>
-                <p>{{ game.full_desc }}</p>
+                <h3>{{ h.title }}</h3>
+                <p v-html="h?.desc"></p>
               </div>
             </div>
           </div>
           <div class="dots" v-if="!isMobile">
             <span
-                v-for="(game, index) in data"
+                v-for="(h, index) in history"
                 :key="index"
                 :class="{ active: activeIndex === index }"
                 @click="setActive(index)"
@@ -241,6 +225,7 @@ export default {
     width: 350px;
     height: 350px;
   }
+
   .carousel-container .item.active {
     width: 400px;
   }
@@ -250,25 +235,32 @@ export default {
     flex: 0 0 100%;
     height: 50vh;
   }
+
   .carousel-container .item.active {
     width: 100%;
   }
+
   .item-desc {
     padding: 20px;
   }
+
   .dots {
     display: none;
   }
+
   .carousel-container .item {
     border-radius: 0;
   }
+
   .carousel-container {
     gap: 0;
   }
+
   .game-section {
     position: relative;
     background-color: red;
   }
+
   .btn-mobile {
     position: absolute;
     top: 0;
@@ -278,6 +270,7 @@ export default {
     z-index: 100;
     gap: 1.5rem;
   }
+
   .mob-section {
     padding: 0;
   }
