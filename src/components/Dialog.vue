@@ -231,6 +231,7 @@ export default {
   font-weight: 500;
   margin-bottom: 5px;
   color: #333333;
+  text-transform: uppercase;
 }
 
 .form-group input {
