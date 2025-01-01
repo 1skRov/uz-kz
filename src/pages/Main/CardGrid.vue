@@ -1,10 +1,17 @@
 <script>
+import {BASE_URL} from "@/axios";
+
 export default {
   name: "CardGrid",
   props: {
     cards: {
       type: Array,
       required: true
+    }
+  },
+  data(){
+    return {
+      BASE_URL
     }
   }
 }
@@ -16,7 +23,7 @@ export default {
       <div class="card" v-for="(card, index) in cards" :key="card.id">
         <div
             class="card__background"
-            :style="{ backgroundImage: `url(${card.image})` }"
+            :style="{ backgroundImage: `url(${BASE_URL + card.image})` }"
         ></div>
         <div class="card__overlay">
           <div class="card__content">

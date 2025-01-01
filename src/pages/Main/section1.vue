@@ -44,10 +44,10 @@ export default {
             const arr = response.data;
             this.list = {
               ...arr[0],
-              image1: `${BASE_URL}/media/${arr[0].image1}`,
-              image2: `${BASE_URL}/media/${arr[0].image2}`,
-              image3: `${BASE_URL}/media/${arr[0].image3}`,
-              image4: `${BASE_URL}/media/${arr[0].image4}`,
+              image1: `${BASE_URL}/${arr[0].image1}`,
+              image2: `${BASE_URL}/${arr[0].image2}`,
+              image3: `${BASE_URL}/${arr[0].image3}`,
+              image4: `${BASE_URL}/${arr[0].image4}`,
             };
           })
           .catch((error) => {

@@ -24,32 +24,6 @@ export default {
     return {
       page: "04",
       persons:[],
-      cards: [
-        {
-          id: 1,
-          category: "Category 1",
-          heading: "Example Card Heading 1",
-          image: require("@/assets/images/help.png"),
-        },
-        {
-          id: 2,
-          category: "Category 2",
-          heading: "Example Card Heading 2",
-          image: "https://images.unsplash.com/photo-1557187666-4fd70cf76254?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-        },
-        {
-          id: 3,
-          category: "Category 3",
-          heading: "Example Card Heading 3",
-          image: "https://images.unsplash.com/photo-1556680262-9990363a3e6d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-        },
-        {
-          id: 4,
-          category: "Category 4",
-          heading: "Example Card Heading 4",
-          image: "https://images.unsplash.com/photo-1557004396-66e4174d7bf6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-        },
-      ],
     };
   },
   computed: {
@@ -65,11 +39,7 @@ export default {
   },
   methods:{
     getCulture() {
-      api.get(`/famous-persons/?lang_code=${this.currentLanguage}`, {
-        headers: {
-          'ngrok-skip-browser-warning': 'true'
-        }
-      })
+      api.get(`/famous-persons/?lang_code=${this.currentLanguage}`)
           .then((response) => {
             this.persons = response.data;
           })
@@ -126,6 +96,5 @@ export default {
   }
 }
 
-@media (max-width: 768px) {
-}
+@media (max-width: 768px) {  }
 </style>
