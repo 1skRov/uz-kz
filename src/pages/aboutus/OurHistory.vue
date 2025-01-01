@@ -112,7 +112,7 @@ export default {
               <div class="overlay" v-if="activeIndex === index"></div>
               <div class="item-desc">
                 <h3>{{ h.title }}</h3>
-                <p v-html="h?.desc"></p>
+                <p v-html="h?.desc" class="truncate-text" style="word-wrap: break-word"></p>
               </div>
             </div>
           </div>
