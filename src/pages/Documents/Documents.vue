@@ -9,12 +9,9 @@ import api from "@/axios";
 export default {
 name: "Documents",
   components: {Projects, DocImp, Articles, Important},
-  data() {
-    return {
-      important_documents: {},
-      charters: [],
-      plans: [],
-      projects: [],
+  data(){
+    return{
+      translations: {},
     }
   },
   computed: {
@@ -22,39 +19,36 @@ name: "Documents",
   },
   watch: {
     currentLanguage(newLang) {
-      this.getDocs();
+      this.getTranslations();
     },
   },
   mounted() {
-    this.getDocs();
+    this.getTranslations();
   },
   methods:{
-    getDocs() {
-      api.get(`/informations/?lang_code=${this.currentLanguage}`, {
-        headers: {
-          'ngrok-skip-browser-warning': 'true',
-        },
-      })
-          .then(response => {
-            const data = response.data;
-            this.important_documents = data.find(item => item.category_id === 16) || {};
-            this.charters = data.filter(item => item.category_id === 17);
-            this.plans = data.filter(item => item.category_id === 19);
-            this.projects = data.filter(item => item.category_id === 2);
-            console.log("Данные загружены и распределены по секциям");
+    getTranslations() {
+      api.get('/trans/')
+          .then((response) => {
+            const translations = response.data;
+            const currentLang = this.currentLanguage;
+            if (translations[currentLang]) {
+              this.translations = translations[currentLang];
+            } else {
+              console.error(`Переводы для языка "${currentLang}" не найдены`);
+            }
           })
-          .catch(error => {
-            console.error("Ошибка при загрузке данных:", error);
+          .catch((error) => {
+            console.error("Ошибка при загрузке переводов:", error);
           });
     },
-  }
+  },
 }
 </script>
 
 <template>
   <div>
-    <doc-imp :important="important_documents"/>
-    <projects />
+    <doc-imp :translations="translations"/>
+    <projects :title="translations.projects" :title_side="translations.projects_side"/>
   </div>
 </template>
 

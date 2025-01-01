@@ -2,45 +2,15 @@
 import Articles from "@/pages/Documents/Articles.vue";
 import Important from "@/pages/Documents/Important.vue";
 import SideBar from "@/components/SideBarText.vue";
-import {mapGetters} from "vuex";
-import api from "@/axios";
 import Plans from "@/pages/Documents/Plans.vue";
 
 export default {
   name: "DocImp",
   components: {Plans, SideBar, Important, Articles},
-  data(){
-    return{
-      translations: {},
+  props: {
+    translations: {
+      type: Object,
     }
-  },
-  computed: {
-    ...mapGetters(['currentLanguage']),
-  },
-  watch: {
-    currentLanguage(newLang) {
-      this.getTranslations();
-    },
-  },
-  mounted() {
-    this.getTranslations();
-  },
-  methods:{
-    getTranslations() {
-      api.get('/trans/')
-          .then((response) => {
-            const translations = response.data;
-            const currentLang = this.currentLanguage;
-            if (translations[currentLang]) {
-              this.translations = translations[currentLang];
-            } else {
-              console.error(`Переводы для языка "${currentLang}" не найдены`);
-            }
-          })
-          .catch((error) => {
-            console.error("Ошибка при загрузке переводов:", error);
-          });
-    },
   },
 }
 </script>
