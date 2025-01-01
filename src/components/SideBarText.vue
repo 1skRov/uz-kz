@@ -30,6 +30,8 @@ export default {
   width: 160px;
   border-right: 1px solid #EBEEF0;
   position: relative;
+  display: flex;
+  align-items: center;
 
   p {
     text-align: center;
@@ -38,7 +40,7 @@ export default {
     text-transform: uppercase;
     writing-mode: vertical-rl;
     position: absolute;
-    top: 64px;
+    //top: 64px;
     left: 50%;
     transform: translateX(-50%) rotate(180deg);
     margin: 0 auto;

@@ -11,36 +11,10 @@ export default {
   components: {PopularItem, SideBar, Left, Right, Sections},
   data(){
     return{
-      title: "Известные личности",
-      persons_plh: [
-        {
-          id: 1,
-          name: "Иван Иванов",
-          description: "Известный ученый, внесший большой вклад в развитие физики.внесший большой вклад в развитие физикивнесший большой вклад в развитие физикивнесший большой вклад в развитие физикивнесший большой вклад в развитие физикивнесший большой вклад в развитие физикивнесший большой вклад в развитие физики",
-          image: "@/assets/images/ivan.jpg"
-        },
-        {
-          id: 2,
-          name: "Мария Петрова",
-          description: "Выдающаяся художница, известная своими абстрактными картинами.",
-          image: "@/assets/images/maria.jpg"
-        },
-        {
-          id: 3,
-          name: "Алексей Сидоров",
-          description: "Талантливый музыкант, который получил мировое признание.",
-          image: "@/assets/images/alexey.jpg"
-        },
-        {
-          id: 4,
-          name: "Ольга Смирнова",
-          description: "Писательница, чьи романы переведены на десятки языков.",
-          image: "@/assets/images/olga.jpg"
-        },
-      ],
+      translations: {},
       persons:[],
       currentPage: 0,
-      itemsPerPage: 3,
+      itemsPerPage: 1,
     }
   },
   computed: {
@@ -57,25 +31,37 @@ export default {
   watch: {
     currentLanguage(newLang) {
       this.getPersons();
+      this.getTranslations();
     },
   },
   mounted() {
     this.getPersons();
+    this.getTranslations();
   },
   methods:{
+    getTranslations() {
+      api.get('/trans/')
+          .then((response) => {
+            const translations = response.data;
+            const currentLang = this.currentLanguage;
+            if (translations[currentLang]) {
+              this.translations = translations[currentLang];
+            } else {
+              console.error(`Переводы для языка "${currentLang}" не найдены`);
+            }
+          })
+          .catch((error) => {
+            console.error("Ошибка при загрузке переводов:", error);
+          });
+    },
     getPersons() {
-      api.get(`/famous/?lang_code=${this.currentLanguage}`, {
-        headers: {
-          'ngrok-skip-browser-warning': 'true',
-        },
-      })
+      api.get(`/famous-persons/?lang_code=${this.currentLanguage}`)
           .then(response => {
-            const data = response.data;
-            this.persons = data || this.persons_plh;
+            this.persons = response.data;
             this.currentPage = parseInt(this.$route.query.page) || 0;
           })
           .catch(error => {
-            console.error("Ошибка при загрузке данных:", error);
+            console.error(error);
           });
     },
     prevPage() {
@@ -94,10 +80,10 @@ export default {
 
 <template>
   <div style="display: flex">
-    <side-bar :title="title"></side-bar>
+    <side-bar :title="translations.popular_side || '{ popular_side }'"></side-bar>
     <div class="persons">
       <sections>
-        <template #title>{{title}}</template>
+        <template #title>{{ translations.popular_person || '{ popular_person }' }}</template>
         <template #title-button>
           <div class="btn">
             <left @click="prevPage"/>
@@ -110,9 +96,11 @@ export default {
                 v-for="person in paginatedPersons"
                 :key="person.id"
                 :id="person.id"
-                :name="person.title"
+                :name="person.sur_name"
                 :text="person.desc"
-                :btn_title="person.buttons_title"
+                :img="person.image"
+                :position="person.position"
+                :btn_title="translations.popular_person || '{ popular_person }'"
             />
           </div>
         </template>

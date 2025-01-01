@@ -1,4 +1,6 @@
 <script>
+import {BASE_URL} from "@/axios";
+
 export default {
   name: "PersonDetails",
   props: {
@@ -11,6 +13,9 @@ export default {
     return {
       name: this.$route.query.name || '',
       text: this.$route.query.text || '',
+      job: this.$route.query.job || '',
+      image: this.$route.query.image || '',
+      BASE_URL
     };
   },
   methods: {
@@ -26,15 +31,15 @@ export default {
     <div class="dialog-content">
       <div class="left">
         <div class="left-image">
-          <img src="@/assets/images/img.png" alt="person" />
+          <img :src="BASE_URL + image" alt="person" />
         </div>
       </div>
       <div class="right">
         <button class="close-btn" @click="closeModal">&times;</button>
         <div class="over">
           <div class="dialog-title font-gilroy">{{ name }}</div>
-          <div class="job">Председатель, член АНК, член НЭС АНК</div>
-          <div class="dialog-text">{{ text }}{{ text }}{{ text }}{{ text }}{{ text }}{{ text }}{{ text }}{{ text }}{{ text }}{{ text }}{{ text }}{{ text }}{{ text }}{{ text }}{{ text }}</div>
+          <div class="job">{{ job }}</div>
+          <div class="dialog-text" v-html="text"></div>
         </div>
       </div>
     </div>
@@ -59,6 +64,7 @@ export default {
   width: 80%;
   max-width: 80vw;
   max-height: 70vh;
+  min-height: 70vh;
   padding: 20px;
   position: relative;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

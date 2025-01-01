@@ -1,10 +1,12 @@
 <script>
 import BasicButton from "@/components/Buttons/button_basic.vue";
+import {BASE_URL} from "@/axios";
 
 export default {
   name: "PopularItem",
   components: { BasicButton },
   props: {
+    img: "",
     id: {
       type: Number,
       required: true,
@@ -20,10 +22,12 @@ export default {
     btn_title: {
       type: String,
     },
+    position : "",
   },
   data(){
     return {
       windowWidth: window.innerWidth,
+      BASE_URL
     }
   },
   computed: {
@@ -41,7 +45,7 @@ export default {
       this.$router.push({
         name: "FamousPersonDetails",
         params: { id: this.id },
-        query: { name: this.name, text: this.text },
+        query: { name: this.name, text: this.text, job: this.position, image: this.img },
       });
     },
     updateWindowWidth() {
@@ -61,14 +65,14 @@ export default {
   <div class="main" @click="handleMainClick">
     <div class="left-img">
       <img
-          src="@/assets/images/1.png"
+          :src="BASE_URL + img"
           alt="Person Image"
           style="width: 100%; height: 100%; object-fit: cover;"
       />
     </div>
     <div class="right-content">
       <p class="font-gilroy">{{ name }}</p>
-      <span class="truncate-text-line">{{ text }}</span>
+      <span class="truncate-text-line" v-html="text"></span>
       <div class="btn">
         <basic-button :is-blue="true" @click="openDetails" />
       </div>
@@ -79,6 +83,7 @@ export default {
 <style scoped>
 .main {
   width: 100%;
+  height: 25vh;
   border-radius: 8px;
   background-color: #FAFCFD;
   border: 1px solid #EBEEF0;
