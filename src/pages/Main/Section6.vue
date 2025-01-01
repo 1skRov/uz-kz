@@ -1,88 +1,70 @@
 <script>
+import { Swiper, SwiperSlide } from "swiper/vue";
 import Sections from "@/components/Sections.vue";
 import SideBar from "@/pages/Main/SideBar.vue";
 import More from "@/components/Buttons/more.vue";
 import Left from "@/components/Buttons/left.vue";
 import Right from "@/components/Buttons/right.vue";
+import api, { BASE_URL } from "@/axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Section6",
-  components: { Right, Left, More, SideBar, Sections },
-  props:{
+  components: { Swiper, SwiperSlide, Right, Left, More, SideBar, Sections },
+  props: {
     title: {
       type: String,
       required: true,
-      default: "{{ partners }}"
+      default: "{{ partners }}",
     },
   },
   data() {
     return {
       page: "06",
-      slidesOriginal: [
-        {id: 1, src: require("@/assets/images/img.png"), alt: "Logo 1"},
-        {id: 2, src: require("@/assets/images/img.png"), alt: "Logo 2"},
-        {id: 3, src: require("@/assets/images/img.png"), alt: "Logo 3"},
-        {id: 4, src: require("@/assets/images/img.png"), alt: "Logo 4"},
-        {id: 5, src: require("@/assets/images/img.png"), alt: "Logo 5"},
-        {id: 6, src: require("@/assets/images/img.png"), alt: "Logo 6"},
-        {id: 7, src: require("@/assets/images/img.png"), alt: "Logo 7"},
-        {id: 8, src: require("@/assets/images/1.png"), alt: "Logo 8"},
-      ],
-      currentPosition: 0,
-      slideWidth: 250,
-      visibleSlides: 4,
-      disableTransition: false,
+      partners: [],
+      BASE_URL,
+      swiperInstance: null,
     };
   },
-
   computed: {
-    slidesDoubled() {
-      return [...this.slidesOriginal, ...this.slidesOriginal];
-    },
-    originalLength() {
-      return this.slidesOriginal.length;
-    },
-    doubledLength() {
-      return this.slidesDoubled.length;
-    },
-    trackStyles() {
-      const offset = this.currentPosition * this.slideWidth * -1;
-      const transitionStyle = this.disableTransition ? "none" : "0.3s";
-      return {
-        display: "flex",
-        transform: `translateX(${offset}px)`,
-        transition: transitionStyle,
-        width: `${this.doubledLength * this.slideWidth}px`,
-      };
+    ...mapGetters(["currentLanguage"]),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getPartners();
     },
   },
-
+  mounted() {
+    this.getPartners();
+  },
   methods: {
+    getPartners() {
+      api
+          .get(`/our-partners/?lang_code=${this.currentLanguage}`)
+          .then((response) => {
+            const data = response.data;
+            if (Array.isArray(data) && data.length > 0) {
+              this.partners = data;
+            } else {
+              this.partners = [];
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
     moveLeft() {
-      this.disableTransition = false;
-      this.currentPosition--;
-      this.$nextTick(() => {
-        this.checkEdges();
-      });
+      if (this.swiperInstance) {
+        this.swiperInstance.slidePrev();
+      }
     },
     moveRight() {
-      this.disableTransition = false;
-      this.currentPosition++;
-
-      this.$nextTick(() => {
-        this.checkEdges();
-      });
+      if (this.swiperInstance) {
+        this.swiperInstance.slideNext();
+      }
     },
-
-    checkEdges() {
-      if (this.currentPosition >= this.originalLength) {
-        this.disableTransition = true;
-        this.currentPosition = this.currentPosition - this.originalLength;
-      }
-      if (this.currentPosition < 0) {
-        this.disableTransition = true;
-        this.currentPosition = this.currentPosition + this.originalLength;
-      }
+    onSwiperReady(instance) {
+      this.swiperInstance = instance;
     },
   },
 };
@@ -90,40 +72,50 @@ export default {
 
 <template>
   <div class="section">
-    <side-bar :page="page" :icon="false"/>
+    <side-bar :page="page" :icon="false" />
     <div class="right-content">
       <div class="title-section">
-        <sections>
+        <sections style="padding-bottom: 0">
           <template #title>
-            {{title}}
+            {{ title }}
           </template>
           <template #title-button>
             <div class="btns">
-              <left @click="moveLeft"/>
-              <right @click="moveRight"/>
+              <left @click="moveLeft" />
+              <right @click="moveRight" />
             </div>
           </template>
         </sections>
       </div>
-      <div id="carousel" class="slider">
-        <div class="slide-track" :style="trackStyles">
-          <div
-              v-for="(slide, index) in slidesOriginal"
-              :key="index"
-              class="slide"
-          >
-            <img
-                :src="slide.image"
-                :alt="slide.image"
-                width="100%"
-                height="100%"
-            />
-          </div>
-        </div>
+      <div class="carousel-container">
+        <swiper
+            class="my-swiper"
+            :loop="true"
+            :autoplay="{ delay: 3000, disableOnInteraction: false }"
+            :space-between="30"
+            :centeredSlides="true"
+            :slides-per-view="1"
+            :breakpoints="{
+            600: { slidesPerView: 3, centeredSlides: true },
+            1000: { slidesPerView: 5, centeredSlides: true }
+          }"
+            pagination
+            @swiper="onSwiperReady"
+        >
+          <swiper-slide v-for="(partner, index) in partners" :key="index">
+            <div class="images">
+              <img
+                  style="width:100%; height:100%; display: block"
+                  :src="BASE_URL + partner.image"
+                  :alt="partner.name"
+              />
+            </div>
+          </swiper-slide>
+        </swiper>
       </div>
       <div class="btns btn-mob">
-        <left @click="moveLeft"/>
-        <right @click="moveRight"/>
+        <left @click="moveLeft" />
+        <right @click="moveRight" />
       </div>
     </div>
   </div>
@@ -133,6 +125,7 @@ export default {
 .section {
   display: flex;
   width: 100%;
+  margin-bottom: 3rem;
 }
 
 .right-content {
@@ -148,57 +141,49 @@ export default {
   align-items: center;
 }
 
+.carousel-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.carousel-container .my-swiper {
+  width: 100%;
+  margin: auto;
+}
+
+.carousel-container::before,
+.carousel-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 10rem;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.carousel-container::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+.carousel-container::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+.swiper-slide .images {
+  width: 100%;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
 .btns {
   display: flex;
   gap: 2rem;
   align-items: center;
-}
-
-.right-content #carousel {
-  position: relative;
-  height: 15vh;
-  width: 100%;
-  margin: 0;
-  overflow: hidden;
-}
-
-#carousel::before,
-#carousel::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  height: 100%;
-  width: 100px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-#carousel::before {
-  left: 0;
-  background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 1) 0%,
-      rgba(255, 255, 255, 0) 100%
-  );
-}
-
-#carousel::after {
-  right: 0;
-  background: linear-gradient(
-      to left,
-      rgba(255, 255, 255, 1) 0%,
-      rgba(255, 255, 255, 0) 100%
-  );
-}
-
-.slider .slide-track {
-  display: flex;
-  gap: 20px;
-}
-
-.slide-track .slide {
-  width: 20vh;
-  height: 10vh;
 }
 
 .btn-mob {
@@ -220,10 +205,6 @@ export default {
   }
   .btns {
     margin-left: 20px;
-  }
-  #carousel::before,
-  #carousel::after {
-    width: 50px;
   }
 }
 </style>
