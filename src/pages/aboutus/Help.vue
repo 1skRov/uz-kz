@@ -2,46 +2,90 @@
 import Left from "@/components/Buttons/left.vue";
 import Right from "@/components/Buttons/right.vue";
 import BasicButton from "@/components/Buttons/button_basic.vue";
+import api, { BASE_URL } from "@/axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Help",
-  components: {BasicButton, Right, Left},
-  props:{
-    data: {
-      type: Object,
-      required: true
+  components: { BasicButton, Right, Left },
+  props: {
+    title: {
+      type: String,
+      required: true,
+      default: "{{ help }}"
+    },
+    btn_title: {
+      type: String,
+      default: "{{ more_detail }}"
     }
   },
   data() {
     return {
-      title: "Помощь нуждающимся",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis consectetur nisi, vel bibendum arcu. Nulla facilisi. Sed condimentum, neque vel bibendum fermentum, lectus massa eleifend ex, vel sagittis nisi arcu ac arcu.",
-      bth_title: "подробнее"
+      BASE_URL,
+      helpList: [],
+      currentHelpIndex: 0,
+      transitioning: false,
     };
   },
-  methods:{
+  computed: {
+    ...mapGetters(["currentLanguage"]),
+    currentHelp() {
+      return this.helpList[this.currentHelpIndex] || {};
+    }
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getHelp();
+    },
+  },
+  mounted() {
+    this.getHelp();
+  },
+  methods: {
+    getHelp() {
+      api.get(`/help-those-in-need/?lang_code=${this.currentLanguage}`)
+          .then((response) => {
+            this.helpList = response.data;
+            this.currentHelpIndex = 0;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
     goToDonate() {
-      this.$router.push('/donates')
+      this.$router.push("/donates");
+    },
+    goLeft() {
+      if (this.helpList.length > 0) {
+        this.currentHelpIndex =
+            (this.currentHelpIndex - 1 + this.helpList.length) % this.helpList.length;
+      }
+    },
+    goRight() {
+      if (this.helpList.length > 0) {
+        this.currentHelpIndex =
+            (this.currentHelpIndex + 1) % this.helpList.length;
+      }
     }
   }
-}
+};
 </script>
 
 <template>
   <div class="content">
     <div class="text-container">
-      <div class="title font-gilroy">{{data.title}}</div>
-      <div class="text"> {{data.mini_desc}}</div>
+      <div class="title font-gilroy">{{ title }}</div>
+      <div class="text" v-html="currentHelp.mini_desc"></div>
       <div class="btn">
-        <basic-button :title_button="data.buttons_title" :is-blue="true" @click="goToDonate"/>
+        <basic-button :title_button="btn_title" :is-blue="true" @click="goToDonate" />
         <div style="display: flex; gap: 1rem">
-          <left/>
-          <right/>
+          <left @click="goLeft" />
+          <right @click="goRight" />
         </div>
       </div>
     </div>
     <div class="image-container">
-      <img :src="data.image" alt="help" class="responsive-image">
+      <img :src="BASE_URL + currentHelp.image" alt="help" class="responsive-image" />
     </div>
   </div>
 </template>

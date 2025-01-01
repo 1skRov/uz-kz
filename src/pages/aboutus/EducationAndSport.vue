@@ -19,7 +19,7 @@ export default {
     },
     btn_title: {
       type: String,
-      default: "{{ learn_more }}"
+      default: "{{ more_detail }}"
     }
   },
   data() {
