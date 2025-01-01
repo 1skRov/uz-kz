@@ -5,49 +5,50 @@ import Important from "@/pages/Documents/Important.vue";
 import Sections from "@/components/Sections.vue";
 import Right from "@/components/Buttons/right.vue";
 import Left from "@/components/Buttons/left.vue";
+import {mapGetters} from "vuex";
+import api, {BASE_URL} from "@/axios";
 
 export default {
   name: "Projects",
   components: {Left, Right, Sections, Important, Articles, SideBar},
+  props:{
+    title: {
+      type: String,
+      default: "{ projects }",
+    },
+    title_side: {
+      type: String,
+      default: "{ projects_side }",
+    }
+  },
   data() {
     return {
-      title1: "Projects",
-      games: [
-        {
-          title: "Dota 2",
-          description:
-              "Dota 2 is a m",
-          image: require('@/assets/images/1.png'),
-        },
-        {
-          title: "The Witcher 3",
-          description:
-              "The ",
-          image: require('@/assets/images/img.png'),
-        },
-        {
-          title: "RDR 2",
-          description:
-              "RDR 2 ",
-          image: require('@/assets/images/3.png'),
-        },
-        {
-          title: "PUBG Mobile",
-          description:
-              "PUBG Mobile ",
-          image: require('@/assets/images/2.png'),
-        },
-        {
-          title: "Fortnite",
-          description:
-              "Fortnite is a",
-          image: require('@/assets/images/4.png'),
-        },
-      ],
+      projects: [],
       activeIndex: 0,
+      BASE_URL
     };
   },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getProjects();
+    },
+  },
+  mounted() {
+    this.getProjects();
+  },
   methods: {
+    getProjects() {
+      api.get(`/projects-for2025/?lang_code=${this.currentLanguage}`)
+          .then((response) => {
+            this.projects = response.data;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
     scrollLeft() {
       const container = this.$el.querySelector('.carousel-container');
       const cardWidth = container.querySelector('.item').offsetWidth;
@@ -70,10 +71,10 @@ export default {
 
 <template>
   <div style="display: flex">
-    <side-bar :title="title1" :is-background="true"></side-bar>
+    <side-bar :title="title_side" :is-background="true"></side-bar>
     <div class="content">
       <sections>
-        <template #title>{{title1}}</template>
+        <template #title>{{ title }}</template>
         <template #title-button>
           <div class="btn">
             <left @click="scrollLeft" />
@@ -84,13 +85,13 @@ export default {
           <div class="carousel-container">
             <div
                 class="item"
-                v-for="(game, index) in games"
+                v-for="(p, index) in projects"
                 :key="index"
-                :style="{ backgroundImage: `url(${game.image})` }"
+                :style="{ backgroundImage: `url(${BASE_URL + p.image})` }"
             >
               <div class="item-desc">
-                <h3>{{ game.title }}</h3>
-                <p>{{ game.description }}</p>
+                <h3>{{ p.title }}</h3>
+                <p>{{ p?.description }}</p>
               </div>
             </div>
           </div>
@@ -130,7 +131,6 @@ export default {
   align-items: flex-end;
   background: #343434 no-repeat center center / cover;
   border-radius: 8px;
-  overflow: hidden;
   position: relative;
   cursor: pointer;
 }
