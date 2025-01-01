@@ -193,6 +193,11 @@ export default {
         ...region,
         active: region.id === id ? !region.active : false,
       }));
+
+      const selectedRegion = this.regions.find(region => region.id === id);
+      if (selectedRegion) {
+        this.$emit('region-selected', selectedRegion.id);
+      }
     },
     getRegions() {
       api.get(`/etno-center-region/`, )
