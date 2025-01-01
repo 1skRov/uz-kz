@@ -2,40 +2,56 @@
 import Articles from "@/pages/Documents/Articles.vue";
 import Important from "@/pages/Documents/Important.vue";
 import SideBar from "@/components/SideBarText.vue";
+import {mapGetters} from "vuex";
+import api from "@/axios";
+import Plans from "@/pages/Documents/Plans.vue";
 
 export default {
   name: "DocImp",
-  components: {SideBar, Important, Articles},
-  props:{
-    important:{
-      type: Object,
-      required: true,
-    },
-    charters:{
-      type: Array,
-      required: true,
-    },
-    plans:{
-      type: Array,
-      required: true,
-    },
-  },
+  components: {Plans, SideBar, Important, Articles},
   data(){
     return{
-      title1: "Уставы",
-      title2: "Планы на 2025год"
+      translations: {},
     }
-  }
+  },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getTranslations();
+    },
+  },
+  mounted() {
+    this.getTranslations();
+  },
+  methods:{
+    getTranslations() {
+      api.get('/trans/')
+          .then((response) => {
+            const translations = response.data;
+            const currentLang = this.currentLanguage;
+            if (translations[currentLang]) {
+              this.translations = translations[currentLang];
+            } else {
+              console.error(`Переводы для языка "${currentLang}" не найдены`);
+            }
+          })
+          .catch((error) => {
+            console.error("Ошибка при загрузке переводов:", error);
+          });
+    },
+  },
 }
 </script>
 
 <template>
   <div style="display: flex">
-    <side-bar :title="title1"></side-bar>
+    <side-bar :title="translations.documents_side || '{ documents_side }'"></side-bar>
     <div class="documents">
-      <important :data="important"/>
-      <articles :title="title1"/>
-      <articles :title="title2"/>
+      <important :title="translations.important_documents"/>
+      <articles :title="translations.charters"/>
+      <plans :title="translations.plans"/>
     </div>
   </div>
 </template>
