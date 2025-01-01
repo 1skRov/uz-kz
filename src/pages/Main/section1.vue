@@ -42,13 +42,15 @@ export default {
       api.get(`/association/?lang_code=${this.currentLanguage}`)
           .then((response) => {
             const arr = response.data;
-            this.list = {
-              ...arr[0],
-              image1: `${BASE_URL}/${arr[0].image1}`,
-              image2: `${BASE_URL}/${arr[0].image2}`,
-              image3: `${BASE_URL}/${arr[0].image3}`,
-              image4: `${BASE_URL}/${arr[0].image4}`,
-            };
+            if (Array.isArray(arr) && arr.length > 0) {
+              this.list = {
+                ...arr[0],
+                image1: `${BASE_URL}/${arr[0].image1}`,
+                image2: `${BASE_URL}/${arr[0].image2}`,
+                image3: `${BASE_URL}/${arr[0].image3}`,
+                image4: `${BASE_URL}/${arr[0].image4}`,
+              };
+            }
           })
           .catch((error) => {
             console.error(error);

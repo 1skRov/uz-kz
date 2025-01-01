@@ -7,7 +7,7 @@ import MapFill from "@/components/MapFill.vue";
 export default {
   name: "Section5",
   components: {MapFill, More, Sections, SideBar},
-  props:{
+  props: {
     title: {
       type: String,
       required: true,
@@ -18,13 +18,13 @@ export default {
       default: "{{ learn_more }}"
     }
   },
-  data(){
+  data() {
     return {
       page: "05",
     }
   },
   methods: {
-    goToRegions(){
+    goToRegions() {
       this.$router.push("/regions");
     }
   }
@@ -44,7 +44,7 @@ export default {
         </template>
         <template #content>
           <div style="position: relative">
-            <span class="truncate-text"> data.mini_desc}}</span>
+            <span class="truncate-text"> data.mini_desc</span>
             <div style="width: 100%; height: 100%">
               <map-fill></map-fill>
             </div>

@@ -63,7 +63,7 @@ export default {
           {{ title }}
         </template>
         <template #content>
-          <p v-html="about.desc"></p>
+          <p v-html="about?.desc"></p>
         </template>
         <template #btn>
           <more @click="goToAboutUS" :title="btn_title"/>
