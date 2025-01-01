@@ -1,6 +1,7 @@
 <script>
 import api from "@/axios";
 import MapFill from "@/components/MapFill.vue"
+import {mapGetters} from "vuex";
 export default {
   name: "Dialog",
   props: {
@@ -19,6 +20,7 @@ export default {
         phone: "",
         city: "",
       },
+      regionCode: null,
       errors: {
         name: null,
         birthDate: null,
@@ -26,9 +28,39 @@ export default {
         phone: null,
       },
       submitting: false,
+      list: {},
     };
   },
+  computed: {
+    ...mapGetters(["currentLanguage"]),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getTranslations();
+    },
+  },
+  mounted() {
+    this.getTranslations();
+  },
   methods: {
+    getTranslations() {
+      api.get('/trans/')
+          .then((response) => {
+            const translations = response.data;
+            const currentLang = this.currentLanguage;
+            if (translations[currentLang]) {
+              this.list = translations[currentLang];
+            } else {
+              console.error(`Переводы для языка "${currentLang}" не найдены`);
+            }
+          })
+          .catch((error) => {
+            console.error("Ошибка при загрузке переводов:", error);
+          });
+    },
+    handleRegionSelected(regionCode) {
+      this.regionCode = regionCode;
+    },
     closeModal() {
       this.$router.push('/')
     },
@@ -60,6 +92,7 @@ export default {
         iin: this.form.iin,
         date_birth: this.form.birthDate,
         phone_number: this.form.phone,
+        region_code: this.regionCode,
       };
 
       this.submitting = true;
@@ -88,22 +121,22 @@ export default {
     <div class="dialog-content">
       <div style="display: flex; align-items: center">
         <button class="close-btn" @click="closeModal">&times;</button>
-        <h1 class="dialog-title font-gilroy">Хотите стать членом нашей Ассоциации?</h1>
+        <h1 class="dialog-title font-gilroy">{{ list.association_title || '{ association_title }' }}</h1>
       </div>
-      <p style="color: #575F6C; margin-bottom: 2rem;">Заполните все формы ниже, и отправьте заявку.</p>
+      <p style="color: #575F6C; margin-bottom: 2rem;">{{ list.association_description || '{ association_description }' }}</p>
       <div class="form-grid">
         <div class="form-group">
-          <label for="name">ВАШЕ ФИО:</label>
+          <label for="name">{{ list.your_fcs || '{ your_fcs }' }}</label>
           <input type="text" id="name" v-model="form.name" />
           <span class="error-message" v-if="errors.name">{{ errors.name }}</span>
         </div>
         <div class="form-group">
-          <label for="birthDate">ДАТА РОЖДЕНИЯ:</label>
+          <label for="birthDate">{{ list.date_of_birth || '{ date_of_birth }' }}</label>
           <input type="date" id="birthDate" v-model="form.birthDate" />
           <span class="error-message" v-if="errors.birthDate">{{ errors.birthDate }}</span>
         </div>
         <div class="form-group">
-          <label for="iin">ВАШ ИИН:</label>
+          <label for="iin">{{ list.iin || '{ iin }' }}</label>
           <input
               type="text"
               id="iin"
@@ -114,18 +147,18 @@ export default {
           <span class="error-message" v-if="errors.iin">{{ errors.iin }}</span>
         </div>
         <div class="form-group">
-          <label for="phone">ВАШ ТЕЛЕФОН НОМЕР:</label>
+          <label for="phone">{{ list.phone_number || '{ phone_number }' }}</label>
           <input type="text" id="phone" v-model="form.phone" />
           <span class="error-message" v-if="errors.phone">{{ errors.phone }}</span>
         </div>
       </div>
-      <div class="city">В КАКОМ ГОРОДЕ ВЫ НАХОДИТЕСЬ?</div>
+      <div class="city">{{ list.country || '{ country }' }}</div>
       <div>
-        <map-fill></map-fill>
+        <map-fill @region-selected="handleRegionSelected"></map-fill>
       </div>
       <div style="width: 100%; display: flex; justify-content: end;">
         <button :disabled="submitting" @click="submitForm" class="submit-btn font-gilroy">
-          {{ submitting ? "Отправка..." : "Отправить заявку" }}
+          {{ submitting ? "..." :  (list.send_request_btn || '{ send_request_btn }') }}
         </button>
       </div>
     </div>
