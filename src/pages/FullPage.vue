@@ -23,14 +23,14 @@ export default {
   },
   watch: {
     currentLanguage(newLang) {
-      this.getNav();
-      this.getContacts();
+      // this.getNav();
+      // this.getContacts();
       this.getLang();
     },
   },
   mounted() {
-    this.getNav();
-    this.getContacts();
+    // this.getNav();
+    // this.getContacts();
     this.getLang();
   },
   methods: {
