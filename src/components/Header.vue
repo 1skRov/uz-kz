@@ -22,10 +22,10 @@ export default {
   data(){
     return {
       menu_links: [
-        { title: this.translate.aboutUs || "{ aboutUs }", path: '/about-us' },
+        { title: this.translate.about_us || "{ about_us }", path: '/about-us' },
         { title: this.translate.regions || "{ regions }", path: '/regions/guide' },
         { title: this.translate.documents || "{ documents }", path: '/documents' },
-        { title: this.translate.pressCenter || "{ pressCenter }", path: '/press-center' },
+        { title: this.translate.press_center || "{ press_center }", path: '/press-center' },
         { title: this.translate.popular_persons || "{ popular_persons }", path: '/famous-persons' },
         { title: this.translate.contacts || "{ contacts }", path: '/contacts' },
       ],
