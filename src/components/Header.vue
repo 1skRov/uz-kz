@@ -1,10 +1,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import FooterSandbars from "@/components/FooterSandbars.vue";
+import BasicButton from "@/components/Buttons/button_basic.vue";
 export default {
   name: "Header",
+  components: {BasicButton, FooterSandbars},
   props:{
-    lists:{
-      type: Array,
+    translate: {
+      type: Object,
       required: true,
     },
     contacts:{
@@ -18,17 +21,23 @@ export default {
   },
   data(){
     return {
-      to: ['/about-us', "/regions/guide", '/documents', '/press-center', '/famous-persons', '/contacts/republic'],
+      menu_links: [
+        { title: this.translate.aboutUs || "{ aboutUs }", path: '/about-us' },
+        { title: this.translate.regions || "{ regions }", path: '/regions/guide' },
+        { title: this.translate.documents || "{ documents }", path: '/documents' },
+        { title: this.translate.pressCenter || "{ pressCenter }", path: '/press-center' },
+        { title: this.translate.popular_persons || "{ popular_persons }", path: '/famous-persons' },
+        { title: this.translate.contacts || "{ contacts }", path: '/contacts' },
+      ],
       isDropdownOpen: false,
       isMenuOpen: false,
       aboutLinks: [
-        { text: "История", to: { name: 'AboutUs', hash: '#section-1' } },
-        { text: "Культура и традиции", to: { name: 'AboutUs', hash: '#section-2' } },
-        { text: "Наука и литература", to: { name: 'AboutUs', hash: '#section-?' } },
-        { text: "Известные личности", to: { name: 'AboutUs', hash: '#section-3' } },
-        { text: "Молодежные организации", to: { name: 'AboutUs', hash: '#section-4' } },
-        { text: "Образование", to: { name: 'AboutUs', hash: '#section-5' } },
-        { text: "Спорт", to: { name: 'AboutUs', hash: '#section-5' } },
+        { text: this.translate.our_history || "{ our_history }", to: { name: 'AboutUs', hash: '#section-1' } },
+        { text: this.translate.culture_traditions || "{ culture_traditions }", to: { name: 'AboutUs', hash: '#section-2' } },
+        { text: this.translate.popular_persons || "{ popular_persons }", to: { name: 'AboutUs', hash: '#section-3' } },
+        { text: this.translate.youth_organizations || "{ youth_organizations }", to: { name: 'AboutUs', hash: '#section-4' } },
+        { text: this.translate.education || "{ education }", to: { name: 'AboutUs', hash: '#section-5' } },
+        { text: this.translate.sport || "{ sport }", to: { name: 'AboutUs', hash: '#section-5' } },
       ],
       regionsLinks: [
         { text: "Ассоциация узбеков РК 'Дустлик'", to: { name: 'Regions', hash: '#some-section' } },
@@ -38,10 +47,10 @@ export default {
         { text: "Все регионы", to: { name: 'Regions', hash: '#guide' } },
       ],
       documentsLinks: [
-        { text: "Устав", to: { name: 'Documents', hash: '#charter' } },
-        { text: "План на 2018 год", to: { name: 'Documents', hash: '#plan2018' } },
-        { text: "Отчет за 2017 год", to: { name: 'Documents', hash: '#report2017' } },
-        { text: "Проекты", to: { name: 'Documents', hash: '#projects' } },
+        { text: this.translate.important_documents || "{ important_documents }", to: { name: 'Documents', hash: '#charter' } },
+        { text: this.translate.charters || "{ charters }", to: { name: 'Documents', hash: '#plan2018' } },
+        { text: this.translate.plans || "{ plans }", to: { name: 'Documents', hash: '#report2017' } },
+        { text: this.translate.projects || "{ projects }", to: { name: 'Documents', hash: '#projects' } },
       ],
       pressCenterLinks: [
         { text: "Последние новости", to: { name: 'PressCenter', hash: '#news' } },
@@ -108,10 +117,10 @@ export default {
 <!--  menu-->
   <nav class="menu">
     <ul class="list">
-      <li v-for="(list, id) in lists" :key="id" class="list-item">
-        <router-link :to="to[id]" :class="{ active: isActive(to[id]) }" style="text-decoration: none; color: #000" class="list-item"
+      <li v-for="(list, id) in menu_links" :key="id" class="list-item">
+        <router-link :to="list.path" :class="{ active: isActive(list.path) }" style="text-decoration: none; color: #000" class="list-item"
                      exact-active-class="router-link-exact-active"
-                     active-class="router-link-active">{{list.title}}</router-link>
+                     active-class="router-link-active">{{ list.title }}</router-link>
       </li>
     </ul>
   </nav>
@@ -173,41 +182,14 @@ export default {
   </nav>
   <nav v-if="isMenuOpen" class="hidden-menu">
     <div class="content">
+      <footer-sandbars :title="translate.about_us || '{ about_us }'" :links="aboutLinks"></footer-sandbars>
+      <footer-sandbars :title="translate.regions || '{ regions }'" :links="regionsLinks"></footer-sandbars>
+      <footer-sandbars :title="translate.documents || '{ documents }'" :links="documentsLinks"></footer-sandbars>
+      <footer-sandbars :title="translate.press_center || '{ press_center }'" :links="pressCenterLinks"></footer-sandbars>
+      <footer-sandbars :title="translate.contacts || '{ contacts }'" :links="contactsLinks"></footer-sandbars>
       <div class="sandbars">
-        <router-link @click="closeMenu" :to="{ path: '/about-us' }" style="text-decoration: none; color: #000" class="main-text font-gilroy">О НАС</router-link>
-        <div v-for="(link, index) in aboutLinks" :key="'about-'+index">
-          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
-        </div>
-      </div>
-      <div class="sandbars">
-        <router-link @click="closeMenu" to="/regions" style="text-decoration: none; color: #000" class="main-text font-gilroy">РЕГИОНЫ</router-link>
-        <div v-for="(link, index) in regionsLinks" :key="'regions-'+index">
-          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
-        </div>
-      </div>
-      <div class="sandbars">
-        <router-link @click="closeMenu" to="/documents" style="text-decoration: none; color: #000" class="main-text font-gilroy">ДОКУМЕНТЫ</router-link>
-        <div v-for="(link, index) in documentsLinks" :key="'documents-'+index">
-          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
-        </div>
-      </div>
-      <div class="sandbars">
-        <router-link @click="closeMenu" to="/press-center" style="text-decoration: none; color: #000" class="main-text font-gilroy">ПРЕСС ЦЕНТР</router-link>
-        <div v-for="(link, index) in pressCenterLinks" :key="'press-'+index">
-          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
-        </div>
-      </div>
-      <div class="sandbars">
-        <router-link @click="closeMenu" to="/contacts" style="text-decoration: none; color: #000" class="main-text font-gilroy">КОНТАКТЫ</router-link>
-        <div v-for="(link, index) in contactsLinks" :key="'contacts-'+index">
-          <router-link class="text" :to="link.to">{{ link.text }}</router-link>
-        </div>
-      </div>
-      <div class="sandbars">
-        <router-link @click="closeMenu" to="/about-us" style="text-decoration: none; color: #000" class="main-text font-gilroy">Известные личности</router-link>
-        <div @click="openDonate" class="btn">
-          Донаты
-        </div>
+        <h2 class="main-text hidden-bar">{{ translate.donates || '{ donates }' }}</h2>
+        <basic-button @click="openDonate" :title_button="translate.donates || '{ donates }'" :is-blue="true"></basic-button>
       </div>
     </div>
     <div class="for-mobile">
@@ -319,13 +301,13 @@ export default {
       display: flex;
       gap: 0.5rem;
       width: 50%;
-     }
+    }
 
     .contacts {
-       display: flex;
+      display: flex;
       gap: 1rem;
-       align-items: center;
-     }
+      align-items: center;
+    }
   }
 
   .langAndMail {
@@ -420,30 +402,6 @@ export default {
     grid-gap: 10px
   }
 
-  .content .sandbars {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .sandbars .text {
-    color: #9098A5;
-    display: block;
-    margin-bottom: 0.5rem;
-    text-decoration: none;
-  }
-
-  .sandbars .btn {
-    background-color: #0072AB;
-    color: #FFFFFF;
-    font-weight: 500;
-    text-transform: uppercase;
-    text-align: center;
-    border-radius: 6px;
-    padding: 1rem 1.5rem;
-    cursor: pointer;
-  }
-
   .main-text {
     font-weight: 500;
     color: #333;
@@ -463,25 +421,6 @@ export default {
   .content {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
-  }
-
-  .content .sandbars {
-    gap:0;
-  }
-
-  .sandbars .text {
-    display: none;
-  }
-
-  .sandbars .btn {
-    background-color: #0072AB;
-    color: #FFFFFF;
-    font-weight: 500;
-    text-transform: uppercase;
-    text-align: center;
-    border-radius: 6px;
-    padding: 1rem 1.5rem;
-    cursor: pointer;
   }
 
   .main-text {

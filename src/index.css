@@ -53,7 +53,30 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+/*for footer*/
+.sandbars {
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    gap: 1rem;
 
+    .main-text {
+        font-weight: 500;
+        color: #333;
+        font-size: 1rem;
+    }
+
+    .text {
+        color: #9098A5;
+        display: block;
+        margin-bottom: 0.5rem;
+        text-decoration: none;
+    }
+
+    .text:hover {
+        text-decoration: underline;
+    }
+}
 @media (max-width: 1024px) {
     * {
         font-size: 14px;
@@ -69,5 +92,13 @@ body {
     }
     .font-gilroy {
         font-size: 12px;
+    }
+    .sandbars {
+        gap: 0;
+        width: 100%;
+
+        .text {
+            display: none;
+        }
     }
 }

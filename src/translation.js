@@ -1,12 +1,13 @@
 import axios from 'axios';
-export const BASE_URL = "http://127.0.0.1:8000/media/";
-const api = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api/',
+
+const apiClient = axios.create({
+    baseURL: '/api', // Базовый URL для запросов
+    timeout: 5000, // Таймаут для запросов
 });
 
 export const getTranslations = async (language) => {
     try {
-        const response = await api.get('/trans/');
+        const response = await apiClient.get('/trans/');
         const translations = response.data;
 
         if (translations[language]) {
@@ -17,8 +18,6 @@ export const getTranslations = async (language) => {
         }
     } catch (error) {
         console.error("Ошибка при загрузке переводов:", error);
-        throw error;
+        throw error; // Проброс ошибки, если нужно обработать выше
     }
 };
-
-export default api;

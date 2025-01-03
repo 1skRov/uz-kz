@@ -2,7 +2,7 @@
 import { mapGetters } from 'vuex';
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-import api from "@/axios";
+import api, {getTranslations} from "@/axios";
 
 export default {
   name: "FullMainPage",
@@ -10,62 +10,33 @@ export default {
   data() {
     return {
       navbars: null,
-      contacts: {
-        phone1: null,
-        phone2: null,
-        email: null,
-        address: null
-      },
+      contacts: {},
       lang: [],
+      trans: {},
   }},
   computed: {
     ...mapGetters(['currentLanguage']),
   },
   watch: {
     currentLanguage(newLang) {
-      // this.getNav();
-      // this.getContacts();
-      this.getLang();
+      this.getContacts();
+      // this.getLang();
+      this.getTranslations();
     },
   },
-  mounted() {
-    // this.getNav();
-    // this.getContacts();
-    this.getLang();
+  async mounted() {
+    this.trans = await getTranslations(this.currentLanguage);
+    this.getContacts();
+    // this.getLang();
+
   },
   methods: {
-    getNav() {
-      api.get(`/navbars/?lang_code=${this.currentLanguage}`, {
-        headers: {
-          'ngrok-skip-browser-warning': 'true'
-        }
-      })
-          .then(response => {
-            this.navbars = response.data.map(item => ({
-              id: item.id,
-              title: item.title
-            }));
-            console.log("navbars загружены успешно:", this.navbars);
-          })
-          .catch(error => {
-            console.error("navbars", error);
-          });
-    },
     getContacts() {
-      api.get(`/contacts/?lang_code=${this.currentLanguage}`, {
-        headers: {
-          'ngrok-skip-browser-warning': 'true',
-        },
-      })
+      api.get(`/contacts/?lang_code=${this.currentLanguage}`)
           .then((response) => {
             const data = response.data[0];
             if (data) {
-              this.contacts = {
-                address: data.address,
-                phone1: data.phone1,
-                phone2: data.phone2,
-                email: data.email,
-              };
+              this.contacts = data;
             }
           })
           .catch((error) => {
@@ -84,9 +55,6 @@ export default {
                 code: item.kod,
                 title: item.title
               }));
-              console.log("lang загружены успешно:", this.lang);
-            } else {
-              console.error("Некорректный формат данных для lang");
             }
           })
           .catch(error => {
@@ -99,9 +67,8 @@ export default {
 
 <template>
   <div class="main">
-<!--    <div v-for="c in lang">{{c}}</div>-->
     <div style="width: 100%">
-      <Header :lists="navbars" :contacts="contacts" :lang="lang"/>
+      <Header :translate="trans" :contacts="contacts" :lang="lang"/>
     </div>
     <div class="content">
       <transition name="fade" mode="out-in">
@@ -109,7 +76,7 @@ export default {
       </transition>
     </div>
     <div>
-      <Footer/>
+      <Footer :translate="trans" :contact_line="contacts"/>
     </div>
   </div>
 </template>

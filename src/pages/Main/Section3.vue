@@ -2,7 +2,7 @@
 import Sections from "@/components/Sections.vue";
 import SideBar from "@/pages/Main/SideBar.vue";
 import More from "@/components/Buttons/more.vue";
-import api from "@/axios";
+import api, {BASE_URL} from "@/axios";
 import {mapGetters} from "vuex";
 
 export default {
@@ -23,6 +23,7 @@ export default {
     return {
       page: "03",
       culture:{},
+      BASE_URL
     };
   },
   computed: {
@@ -74,7 +75,7 @@ export default {
         <template #content>
           <div class="content-body">
             <div class="gradient-overlay"></div>
-            <img src="@/assets/images/img.png" alt="culture and traditions" style="width: 100%; height: 100%;">
+            <img :src="BASE_URL + culture.image" alt="culture and traditions" style="width: 100%; height: 100%;">
             <div class="abs-text">
               <div class="image-title font-gilroy">{{culture.title2}}</div>
               <div class="image-desc truncate-text" v-html="culture.mini_desc"></div>
