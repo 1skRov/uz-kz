@@ -1,24 +1,59 @@
 <script>
 import Sections from "@/components/Sections.vue";
+import SideBar from "@/components/SideBarText.vue";
+import {mapGetters} from "vuex";
+import api, {getTranslations, BASE_URL} from "@/axios";
 
 export default {
   name: "Education",
-  components: {Sections}
+  components: {SideBar, Sections},
+  data(){
+    return {
+      trans: {},
+      education: {},
+      BASE_URL
+    }
+  },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getTranslations();
+      this.getEducation();
+    },
+  },
+  async mounted() {
+    this.trans = await getTranslations(this.currentLanguage);
+    this.getEducation();
+  },
+  methods: {
+    getEducation() {
+      api.get(`/education/?lang_code=${this.currentLanguage}`)
+          .then((response) => {
+            const data = response.data[0];
+            if (data) {
+              this.education = data;
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
+  }
 }
 </script>
 
 <template>
 <div class="main">
-  <div></div>
-  <div>
-    <div style="width: 100%; height: 70vh; border-radius: 8px; overflow: hidden">
-      <img src="@/assets/images/2.png" alt="education" style="width: 100%; height: 100%">
+  <side-bar :title="trans.regions || '{ regions }'"/>
+  <div class="content">
+    <div class="image_content">
+      <img :src="BASE_URL + education.image" :alt="BASE_URL + education.image" style="width: 100%; height: 100%">
     </div>
-    <div>
-      <sections>
-        <template #title>title</template>
-        <template #content>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ducimus ea impedit nam vero. Beatae commodi consectetur facilis, laudantium nostrum numquam quas quibusdam quidem voluptate voluptatum. Ad architecto blanditiis consequuntur, cum dignissimos dolor, id impedit necessitatibus nihil placeat quam sed tempora! Ab dolorem enim ex molestias mollitia officia optio voluptates.</template>
-      </sections>
+    <div class="text-content">
+      <div class="title">{{ education.title }}</div>
+      <div class="text" v-html="education.full_desc"></div>
     </div>
   </div>
 </div>
@@ -26,7 +61,33 @@ export default {
 
 <style scoped>
 .main {
-  width: 65%;
-  margin: 50px auto;
+  display: flex;
+  .content {
+    margin: 0 auto;
+    padding: 64px 0;
+    width: 65%;
+    height: 100%;
+
+    .image_content {
+      width: 100%;
+      height: 65%;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    .text-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .title {
+        font-size: 40px;
+        color: #333333;
+      }
+      .text {
+        line-height: 32px;
+      }
+    }
+  }
 }
 </style>
