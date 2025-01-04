@@ -21,6 +21,10 @@ export default {
       type: String,
       default: "{ latest_news }",
     },
+    rows: {
+      type: Number,
+      default: 2,
+    }
   },
   data() {
     return {
@@ -59,7 +63,7 @@ export default {
             if (Array.isArray(data) && data.length > 0) {
               this.news = data.map((item) => ({
                 ...item,
-                formattedDate: this.formatDate(item.posted_date), // Добавляем отформатированную дату
+                formattedDate: this.formatDate(item.posted_date),
               }));
               this.$nextTick(() => {
                 if (this.swiperInstance) {
@@ -134,10 +138,29 @@ export default {
         <swiper
             :modules="[Grid]"
             :slidesPerView="3"
+            :slidesPerGroup="1"
             :spaceBetween="10"
-            :grid="{ rows: 2, fill: 'row' }"
+            :grid="{ rows: rows, fill: 'row' }"
             :onSwiper="onSwiper"
             :onSlideChange="onSlideChange"
+            :breakpoints="{
+              0: {
+                slidesPerView: 1,
+                slidesPerGroup: 1,
+                grid: {
+                  rows: 1,
+                  fill: 'row'
+                }
+              },
+              768: {
+                slidesPerView: 3,
+                slidesPerGroup: 1,
+                grid: {
+                  rows: rows,
+                  fill: 'row'
+                }
+              }
+            }"
         >
           <SwiperSlide
               v-for="(n, index) in news"
@@ -161,8 +184,14 @@ export default {
       </template>
       <template #btn>
         <div class="btn">
-          <left @click="prevSlide" />
-          <right @click="nextSlide" />
+          <left
+              :disabled="isBeginning"
+              @click="prevSlide"
+          />
+          <right
+              :disabled="isEnd"
+              @click="nextSlide"
+          />
         </div>
       </template>
     </sections>
@@ -231,16 +260,22 @@ export default {
         line-height: 24px;
         font-size: 16px;
       }
-
-      .time {
-      }
     }
   }
 }
 
 @media (max-width: 768px) {
+  .btn {
+    gap: 2em;
+  }
   .card {
-    height: auto;
+    height: 27rem;
+    gap: 1.5rem;
+    .card-content {
+      .title {
+        font-size: 15px;
+      }
+    }
   }
 }
 </style>
