@@ -51,6 +51,12 @@ const routes = [
         component: () => import('@/pages/Presscenter/PressCenter.vue')
       },
       {
+        path: '/news/:id',
+        name: 'NewsDetails',
+        component: () => import('@/pages/Presscenter/NewsDetail.vue'),
+        props: true,
+      },
+      {
         path: '/contacts',
         name: 'Contacts',
         redirect: '/contacts/republic',

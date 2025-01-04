@@ -2,62 +2,111 @@
 import Sections from "@/components/Sections.vue";
 import Right from "@/components/Buttons/right.vue";
 import Left from "@/components/Buttons/left.vue";
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Grid } from 'swiper/modules';
+import api, {BASE_URL} from "@/axios";
+import {mapGetters} from "vuex";
 
 export default {
   name: "LatestNews",
-  components: { Left, Right, Sections },
+  components: {
+    Sections,
+    Left,
+    Right,
+    Swiper,
+    SwiperSlide
+  },
+  props: {
+    title: {
+      type: String,
+      default: "{ latest_news }",
+    },
+  },
   data() {
     return {
-      title: "Последние новости",
-      allCards: [
-        {
-          description: "Dota 2 is a multipLorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa doloremque eos esse magnam mollitia nihil odio quibusdam ratione saepe veniam. A consectetur id neque. Deserunt doloremque possimus quas quidem repellat. Cumque dolorem, fuga ipsum nisi porro praesentium quidem ratione totam ut vel. Aliquid asperiores atque debitis dicta, doloremque earum enim exercitationem harum illo ipsa ipsam numquam praesentium quidem. Cupiditate fuga, id labore minus neque nihil nisi nostrum, officia optio perferendis quas repellendus sed similique soluta, ut? Iure molestias odio officiis quisquam rem, reprehenderit saepe soluta temporibus vitae? Ad adipisci esse harum laudantium quisquam, quo reiciendis rem repellendus, rerum voluptas voluptatem.layer online battle arena.",
-          image:"https://www.gazeta.uz/media/img/2022/01/ouPaAp16433889116473_l.jpg",
-        },
-        {
-          description: "The Witcher 3 is a role-playing game.",
-          image: require("@/assets/images/img.png"),
-        },
-        {
-          description: "RDR 2Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa doloremque eos esse magnam mollitia nihil odio quibusdam ratione saepe veniam. A consectetur id neque. Deserunt doloremque possimus quas quidem repellat. Cumque dolorem, fuga ipsum nisi porro praesentium quidem ratione totam ut vel. Aliquid asperiores atque debitis dicta, doloremque earum enim exercitationem harum illo ipsa ipsam numquam praesentium quidem. Cupiditate fuga, id labore minus neque nihil nisi nostrum, officia optio perferendis quas repellendus sed similique soluta, ut? Iure molestias odio officiis quisquam rem, reprehenderit saepe soluta temporibus vitae? Ad adipisci esse harum laudantium quisquam, quo reiciendis rem repellendus, rerum voluptas voluptatem. is an action-adventure game.",
-          image: "https://www.gazeta.uz/media/img/2017/04/V8lBRJ14912123189853_b.jpg",
-        },
-        {
-          description: "PUBG Mobile is a battle royale game.",
-          image: "https://img.championat.com/s/732x488/news/big/v/m/shavkat-rahmonov_1733492480660266478.jpg",
-        },
-        {
-          description: "Fortnite is a battle royale game.",
-          image: "https://kaztag.kz/upload/resize_cache/iblock/f64/881_500_2/1.jpg?173363672371421",
-        },
-        { description: "Description 6", image: require("@/assets/images/1.png") },
-        { description: "Description 7", image: require("@/assets/images/img.png") },
-        { description: "Description 8", image: require("@/assets/images/3.png") },
-        { description: "Description 9", image: require("@/assets/images/2.png") },
-        { description: "Description 10", image: require("@/assets/images/4.png") },
-      ],
-      currentIndex: 0,
-      cardsPerPage: 6,
+      news: [],
+      Grid,
+      BASE_URL,
+      swiperInstance: null,
+      isBeginning: true,
+      isEnd: false,
     };
   },
   computed: {
-    visibleCards() {
-      return this.allCards.slice(
-          this.currentIndex,
-          this.currentIndex + this.cardsPerPage
-      );
+    ...mapGetters(["currentLanguage"]),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getNews();
+      this.$nextTick(() => {
+        if (this.swiperInstance) {
+          this.swiperInstance.update();
+          this.isBeginning = this.swiperInstance.isBeginning;
+          this.isEnd = this.swiperInstance.isEnd;
+        }
+      });
     },
   },
+  mounted() {
+    this.getNews();
+  },
   methods: {
+    getNews() {
+      api
+          .get(`/last-news/?lang_code=${this.currentLanguage}`)
+          .then((response) => {
+            const data = response.data;
+            if (Array.isArray(data) && data.length > 0) {
+              this.news = data.map((item) => ({
+                ...item,
+                formattedDate: this.formatDate(item.posted_date), // Добавляем отформатированную дату
+              }));
+              this.$nextTick(() => {
+                if (this.swiperInstance) {
+                  this.swiperInstance.update();
+                  this.isBeginning = this.swiperInstance.isBeginning;
+                  this.isEnd = this.swiperInstance.isEnd;
+                }
+              });
+            } else {
+              this.news = [];
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
+    formatDate(dateString) {
+      const options = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      };
+      return new Date(dateString).toLocaleDateString(this.currentLanguage || "en-US", options);
+    },
+    onSwiper(swiper) {
+      this.swiperInstance = swiper;
+      this.isBeginning = swiper.isBeginning;
+      this.isEnd = swiper.isEnd;
+    },
+    onSlideChange(swiper) {
+      this.isBeginning = swiper.isBeginning;
+      this.isEnd = swiper.isEnd;
+    },
     prevSlide() {
-      if (this.currentIndex > 0) {
-        this.currentIndex -= this.cardsPerPage;
+      if (this.swiperInstance) {
+        this.swiperInstance.slidePrev();
       }
     },
     nextSlide() {
-      if (this.currentIndex + this.cardsPerPage < this.allCards.length) {
-        this.currentIndex += this.cardsPerPage;
+      if (this.swiperInstance) {
+        this.swiperInstance.slideNext();
       }
+    },
+    goToNewsDetails(newsId) {
+      this.$router.push({ name: 'NewsDetails', params: { id: newsId } });
     },
   },
 };
@@ -66,31 +115,49 @@ export default {
 <template>
   <div>
     <sections>
-      <template #title>{{ title }}</template>
+      <template #title>
+        {{ title }}
+      </template>
       <template #title-button>
         <div class="btn">
-          <left @click="prevSlide" />
-          <right @click="nextSlide" />
+          <left
+              :disabled="isBeginning"
+              @click="prevSlide"
+          />
+          <right
+              :disabled="isEnd"
+              @click="nextSlide"
+          />
         </div>
       </template>
       <template #content>
-        <div class="carousel-container">
-          <div class="carousel-wrapper">
-            <div
-                class="carousel-slide"
-                v-for="(card, index) in visibleCards"
-                :key="index"
-            >
-              <div class="card">
-                <div>
-                  <img :src="card.image" alt="Новость" />
-                  <p class="truncate-text font-gilroy">{{ card.description }}</p>
-                </div>
-                <span>вчера 22:33</span>
+        <swiper
+            :modules="[Grid]"
+            :slidesPerView="3"
+            :spaceBetween="10"
+            :grid="{ rows: 2, fill: 'row' }"
+            :onSwiper="onSwiper"
+            :onSlideChange="onSlideChange"
+        >
+          <SwiperSlide
+              v-for="(n, index) in news"
+              :key="index"
+              @click="goToNewsDetails(n.id)"
+          >
+            <div class="card">
+              <div class="image-card">
+                <img
+                    :src="BASE_URL + n.image"
+                    alt="Новость"
+                />
+              </div>
+              <div class="card-content">
+                <div class="title font-gilroy truncate-text">{{ n.title }}</div>
+                <div class="time">{{ n.formattedDate  }}</div>
               </div>
             </div>
-          </div>
-        </div>
+          </SwiperSlide>
+        </swiper>
       </template>
       <template #btn>
         <div class="btn">
@@ -108,87 +175,72 @@ export default {
   align-items: center;
   gap: 1em;
 }
-.carousel-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 100%;
-  margin: 0 auto;
-  overflow: hidden;
-}
-
-.carousel-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.carousel-slide {
-  flex: 0 0 calc(33.333% - 5px);
-  margin-bottom: 10px;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.carousel-slide:hover {
-  background-color: #f9fafb;
-  transform: scale(0.95);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
 .card {
   padding: 5px;
-  height: 23rem;
+  max-height: 25rem;
+  height: 25rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-}
+  gap: 1.5rem;
 
-.card img {
-  width: 100%;
-  border-radius: 8px;
-  height: 13rem;
-  object-fit: cover;
-}
+  .image-card {
+    height: 60%;
+    max-height: 60%;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
 
-.card span {
-  color: #CFD3DA;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: 500;
-}
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      justify-content: center;
+    }
+  }
 
-.card p {
-  color: #333333;
-  font-weight: 500;
-  line-height: 28px;
+  .card-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: hidden;
+
+    .title {
+      color: #333333;
+      font-weight: 500;
+      line-height: 28px;
+      font-size: 18px;
+    }
+
+    .time {
+      color: #CFD3DA;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+  }
 }
 
 @media (max-width: 1024px) {
   .card {
-    height: 25rem;
+    height: 22rem;
+    gap: 1rem;
+    .card-content {
+      .title {
+        line-height: 24px;
+        font-size: 16px;
+      }
+
+      .time {
+      }
+    }
   }
 }
 
 @media (max-width: 768px) {
-  .carousel-wrapper {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* Улучшение для iOS */
-  }
-
-  .carousel-slide {
-    flex: 0 0 100%; /* Показываем один элемент за раз */
-    margin-right: 10px; /* Расстояние между элементами */
-  }
-
   .card {
-    height: auto; /* Автоматическая высота для лучшей адаптации */
-  }
-
-
-  .carousel-wrapper::-webkit-scrollbar {
-    display: none; /* Скрываем стандартный скроллбар */
+    height: auto;
   }
 }
 </style>

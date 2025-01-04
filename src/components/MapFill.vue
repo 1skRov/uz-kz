@@ -2,7 +2,7 @@
   <div class="map-container">
     <svg
         width="100%"
-        height="фгещ"
+        height="auto"
         viewBox="0 0 1226 674"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

@@ -24,14 +24,17 @@ export default {
     <side-bar :title="page_title"/>
     <div class="content">
       <latest-news></latest-news>
-      <video-materials></video-materials>
-      <photo-gallery></photo-gallery>
+<!--      <video-materials></video-materials>-->
+<!--      <photo-gallery></photo-gallery>-->
 <!--      <interview></interview>-->
     </div>
   </div>
 </template>
 
 <style scoped>
+.main {
+  display: flex;
+}
 .content {
   width: 65%;
   margin: 0 auto;
