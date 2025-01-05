@@ -25,7 +25,7 @@ export default {
     <div class="content">
       <latest-news></latest-news>
       <video-materials></video-materials>
-<!--      <photo-gallery></photo-gallery>-->
+      <photo-gallery></photo-gallery>
 <!--      <interview></interview>-->
     </div>
   </div>

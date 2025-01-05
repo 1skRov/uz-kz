@@ -23,7 +23,7 @@ export default {
     },
     rows: {
       type: Number,
-      default: 2,
+      default: 1,
     }
   },
   data() {

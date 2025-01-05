@@ -2,60 +2,118 @@
 import Sections from "@/components/Sections.vue";
 import Right from "@/components/Buttons/right.vue";
 import Left from "@/components/Buttons/left.vue";
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Grid } from 'swiper/modules';
+import api, {BASE_URL} from "@/axios";
+import {mapGetters} from "vuex";
 
 export default {
   name: "PhotoGallery",
-  components: { Left, Right, Sections },
+  components: {
+    Sections,
+    Right,
+    Left,
+    Swiper,
+    SwiperSlide
+  },
+  props:{
+    title:{
+      type: String,
+      default: "{ photos }"
+    },
+    rows: {
+      type: Number,
+      default: 2,
+    }
+  },
   data() {
     return {
-      title: "Фотогалерея",
-      allCards: [
-        { description: "Dota 2", image: "https://www.gazeta.uz/media/img/2022/01/ouPaAp16433889116473_l.jpg" },
-        { description: "The Witcher 3", image: require("@/assets/images/img.png") },
-        { description: "RDR 2", image: "https://www.gazeta.uz/media/img/2017/04/V8lBRJ14912123189853_b.jpg" },
-        { description: "PUBG Mobile", image: "https://img.championat.com/s/732x488/news/big/v/m/shavkat-rahmonov_1733492480660266478.jpg" },
-        { description: "Fortnite", image: "https://kaztag.kz/upload/resize_cache/iblock/f64/881_500_2/1.jpg" },
-        { description: "Fortnite", image: "https://kaztag.kz/upload/resize_cache/iblock/f64/881_500_2/1.jpg" },
-        { description: "Fortnite", image: "https://kaztag.kz/upload/resize_cache/iblock/f64/881_500_2/1.jpg" },
-        { description: "Fortnite", image: "https://kaztag.kz/upload/resize_cache/iblock/f64/881_500_2/1.jpg" },
-        { description: "Fortnite", image: "https://kaztag.kz/upload/resize_cache/iblock/f64/881_500_2/1.jpg" },
-        { description: "Fortnite", image: "https://kaztag.kz/upload/resize_cache/iblock/f64/881_500_2/1.jpg" },
-      ],
-      currentIndex: 0,
-      cardsPerPage: 6,
-      showModal: false,
-      modalImage: "",
+      materials: [],
+      Grid,
+      BASE_URL,
+      swiperInstance: null,
+      isBeginning: true,
+      isEnd: false,
     };
   },
   computed: {
-    visibleCards() {
-      return this.allCards.slice(
-          this.currentIndex,
-          this.currentIndex + this.cardsPerPage
-      );
+    ...mapGetters(["currentLanguage"]),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getNews();
+      this.$nextTick(() => {
+        if (this.swiperInstance) {
+          this.swiperInstance.update();
+          this.isBeginning = this.swiperInstance.isBeginning;
+          this.isEnd = this.swiperInstance.isEnd;
+        }
+      });
     },
   },
+  mounted() {
+    this.getNews();
+  },
   methods: {
+    getNews() {
+      api
+          .get(`/photo-gallery/?lang_code=${this.currentLanguage}`)
+          .then((response) => {
+            const data = response.data;
+            if (Array.isArray(data) && data.length > 0) {
+              this.materials = data.map((item) => ({
+                ...item,
+                formattedDate: this.formatDate(item.posted_date),
+              }));
+              this.$nextTick(() => {
+                if (this.swiperInstance) {
+                  this.swiperInstance.update();
+                  this.isBeginning = this.swiperInstance.isBeginning;
+                  this.isEnd = this.swiperInstance.isEnd;
+                }
+              });
+            } else {
+              this.materials = [];
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
+    formatDate(dateString) {
+      const options = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      };
+      return new Date(dateString).toLocaleDateString(this.currentLanguage || "en-US", options);
+    },
+    onSwiper(swiper) {
+      this.swiperInstance = swiper;
+      this.isBeginning = swiper.isBeginning;
+      this.isEnd = swiper.isEnd;
+    },
+    onSlideChange(swiper) {
+      this.isBeginning = swiper.isBeginning;
+      this.isEnd = swiper.isEnd;
+    },
     prevSlide() {
-      if (this.currentIndex > 0) {
-        this.currentIndex -= this.cardsPerPage;
+      if (this.swiperInstance) {
+        this.swiperInstance.slidePrev();
       }
     },
     nextSlide() {
-      if (this.currentIndex + this.cardsPerPage < this.allCards.length) {
-        this.currentIndex += this.cardsPerPage;
+      if (this.swiperInstance) {
+        this.swiperInstance.slideNext();
       }
     },
-    openImage(image) {
-      this.modalImage = image;
-      this.showModal = true;
-    },
-    closeModal() {
-      this.showModal = false;
-      this.modalImage = "";
+    goToVideoDetails(newsId) {
+      this.$router.push({name: 'VideoDetails', params: {id: newsId}});
     },
   },
-};
+}
 </script>
 
 <template>
@@ -64,37 +122,71 @@ export default {
       <template #title>{{ title }}</template>
       <template #title-button>
         <div class="btn">
-          <left @click="prevSlide" />
-          <right @click="nextSlide" />
+          <left
+              :disabled="isBeginning"
+              @click="prevSlide"
+          />
+          <right
+              :disabled="isEnd"
+              @click="nextSlide"
+          />
         </div>
       </template>
       <template #content>
-        <div class="carousel-wrapper">
-          <div
-              class="carousel-slide"
-              v-for="(card, index) in visibleCards"
+        <swiper
+            :modules="[Grid]"
+            :slidesPerView="3"
+            :slidesPerGroup="1"
+            :spaceBetween="10"
+            :grid="{ rows: rows, fill: 'row' }"
+            :onSwiper="onSwiper"
+            :onSlideChange="onSlideChange"
+            :breakpoints="{
+              0: {
+                slidesPerView: 1,
+                slidesPerGroup: 1,
+                grid: {
+                  rows: 1,
+                  fill: 'row'
+                }
+              },
+              768: {
+                slidesPerView: 3,
+                slidesPerGroup: 1,
+                grid: {
+                  rows: rows,
+                  fill: 'row'
+                }
+              }
+            }"
+        >
+          <SwiperSlide
+              v-for="(m, index) in materials"
               :key="index"
+              @click="goToVideoDetails(m.id)"
           >
-            <div class="card" @click="openImage(card.image)">
-              <img :src="card.image" alt="Новость" />
-              <div class="overlay">
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M22 38C30.8366 38 38 30.8366 38 22C38 13.1634 30.8366 6 22 6C13.1634 6 6 13.1634 6 22C6 30.8366 13.1634 38 22 38Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M41.9998 42L33.2998 33.3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M22 16V28" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M16 22H28" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+            <div class="card">
+              <div class="image-card">
+                <img :src="BASE_URL + m.image" alt="image">
+              </div>
+              <div class="card-content">
+                <div class="title font-gilroy truncate-text">{{ m.title }}</div>
+                <div class="time">{{ m.formattedDate }}</div>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Модальное окно -->
-        <div v-if="showModal" class="modal" @click.self="closeModal">
-          <div class="modal-content">
-            <button class="close-btn" @click="closeModal">&times;</button>
-            <img :src="modalImage" alt="Увеличенное фото" />
-          </div>
+          </SwiperSlide>
+        </swiper>
+      </template>
+      <template #btn>
+        <div class="btn">
+          <left
+              :disabled="isBeginning"
+              @click="prevSlide"
+          />
+          <right
+              :disabled="isEnd"
+              @click="nextSlide"
+          />
         </div>
       </template>
     </sections>
@@ -104,96 +196,85 @@ export default {
 <style scoped>
 .btn {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 1em;
 }
 
-.carousel-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.carousel-slide {
-  flex: 0 0 calc(33.333% - 5px);
-  margin-bottom: 10px;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-/*.carousel-slide:hover {
-  background-color: #f9fafb;
-  transform: scale(0.95);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-} */
 .card {
-  position: relative;
-}
-
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 13rem;
-  background-color: rgba(0, 114, 171, 0.9);
-  border-radius: 8px;
+  padding: 5px;
+  max-height: 25rem;
+  height: 25rem;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .image-card {
+    height: 60%;
+    max-height: 60%;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      justify-content: center;
+    }
+  }
+
+  .card-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: hidden;
+
+    .title {
+      color: #333333;
+      font-weight: 500;
+      line-height: 28px;
+      font-size: 18px;
+    }
+
+    .time {
+      color: #CFD3DA;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+  }
 }
 
-.card:hover .overlay {
-  opacity: 1;
+@media (max-width: 1024px) {
+  .card {
+    height: 22rem;
+    gap: 1rem;
+
+    .card-content {
+      .title {
+        line-height: 24px;
+        font-size: 16px;
+      }
+    }
+  }
 }
 
-.card img {
-  width: 100%;
-  border-radius: 8px;
-  height: 13rem;
-  object-fit: cover;
-}
+@media (max-width: 768px) {
+  .btn {
+    gap: 2em;
+  }
 
-/* Модальное окно */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
+  .card {
+    height: 27rem;
+    gap: 1.5rem;
 
-.modal-content {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content img {
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: 8px;
-}
-
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 30px;
-  color: white;
-  background: none;
-  border: none;
-  cursor: pointer;
-  outline: none;
+    .card-content {
+      .title {
+        font-size: 15px;
+      }
+    }
+  }
 }
 </style>
