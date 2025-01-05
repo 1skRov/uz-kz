@@ -24,7 +24,7 @@ export default {
     <side-bar :title="page_title"/>
     <div class="content">
       <latest-news></latest-news>
-<!--      <video-materials></video-materials>-->
+      <video-materials></video-materials>
 <!--      <photo-gallery></photo-gallery>-->
 <!--      <interview></interview>-->
     </div>
