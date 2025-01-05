@@ -6,10 +6,11 @@ import LatestNews from "@/pages/Presscenter/LatestNews.vue";
 import VideoMaterials from "@/pages/Presscenter/VideoMaterials.vue";
 import PhotoGallery from "@/pages/Presscenter/PhotoGallery.vue";
 import Interview from "@/pages/Presscenter/Interview.vue";
+import Help from "@/pages/aboutus/Help.vue";
 
 export default {
   name: "PressCenter",
-  components: {Interview, PhotoGallery, VideoMaterials, LatestNews, Navigation, SideBar, Sections},
+  components: {Help, Interview, PhotoGallery, VideoMaterials, LatestNews, Navigation, SideBar, Sections},
   data(){
     return {
       page_title: "Press Center",
@@ -26,7 +27,10 @@ export default {
       <latest-news></latest-news>
       <video-materials></video-materials>
       <photo-gallery></photo-gallery>
-<!--      <interview></interview>-->
+      <interview></interview>
+      <div style="padding: 60px 0">
+        <help></help>
+      </div>
     </div>
   </div>
 </template>
@@ -38,7 +42,6 @@ export default {
 .content {
   width: 65%;
   margin: 0 auto;
-  padding-bottom: 50px;
 }
 @media (max-width: 1024px) {
   .content {

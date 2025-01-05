@@ -1,53 +1,106 @@
 <script>
-import Sections from "@/components/Sections.vue";
-import Right from "@/components/Buttons/right.vue";
 import Left from "@/components/Buttons/left.vue";
+import Right from "@/components/Buttons/right.vue";
 import BasicButton from "@/components/Buttons/button_basic.vue";
+import api, { BASE_URL } from "@/axios";
+import { mapGetters } from "vuex";
 
 export default {
-  name: "Interview",
-  components: {BasicButton, Left, Right, Sections},
+  name: "Help",
+  components: { BasicButton, Right, Left },
+  props: {
+    title: {
+      type: String,
+      required: true,
+      default: "{{ interview }}"
+    },
+    btn_title: {
+      type: String,
+      default: "{{ watch }}"
+    }
+  },
   data() {
     return {
-      title: "Интервью",
-      text:"Благотворительные инициативы общества собирают с каждым разом всё больше участников, которые приносят лекарства, одежду, продукты, игрушки. Эти простые вещи обладают добавочной ценностью — они несут в себе тепло, заботу и стремление облегчить и украсить жизнь людей, находящихся в трудной жизненной ситуации.",
-      author: "author"
+      BASE_URL,
+      list: [],
+      currentHelpIndex: 0,
+      transitioning: false,
+    };
+  },
+  computed: {
+    ...mapGetters(["currentLanguage"]),
+    currentHelp() {
+      return this.list[this.currentHelpIndex] || {};
+    }
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getInterview();
+    },
+  },
+  mounted() {
+    this.getInterview();
+  },
+  methods: {
+    getInterview() {
+      api.get(`/interview/?lang_code=${this.currentLanguage}`)
+          .then((response) => {
+            this.list = response.data;
+            this.currentHelpIndex = 0;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
+    goToDonate() {
+      this.$router.push("/donates");
+    },
+    goLeft() {
+      if (this.list.length > 0) {
+        this.currentHelpIndex =
+            (this.currentHelpIndex - 1 + this.list.length) % this.list.length;
+      }
+    },
+    goRight() {
+      if (this.list.length > 0) {
+        this.currentHelpIndex =
+            (this.currentHelpIndex + 1) % this.list.length;
+      }
     }
   }
-}
+};
 </script>
 
 <template>
-  <div class="content">
-    <div style="display: flex; flex-direction: column; gap: 3.5rem; padding: 3rem; width: 50%">
-      <div class="title font-gilroy">{{title}}</div>
-      <div class="text"> {{text}}</div>
-<!--      <div class="author"> {{author}}</div>-->
+  <div class="main">
+    <div class="text-container">
+      <div class="title font-gilroy">{{ title }}</div>
+      <div class="text" v-html="currentHelp.mini_desc"></div>
       <div class="btn">
-        <basic-button :title_button="bth_title" :is-blue="true"/>
+        <basic-button :title_button="btn_title" :is-blue="true" @click="goToDonate" />
         <div style="display: flex; gap: 1rem">
-          <left/>
-          <right/>
+          <left @click="goLeft" />
+          <right @click="goRight" />
         </div>
       </div>
     </div>
     <div class="image-container">
-      <img src="@/assets/images/help.png" alt="help" class="responsive-image">
+      <img :src="BASE_URL + currentHelp.image" alt="help" class="responsive-image" />
     </div>
   </div>
 </template>
 
 <style scoped>
-.content {
-  border: 1px solid #EBEEF0;
-  border-radius: 8px;
+.main {
   display: flex;
-  background-color: rgba(0, 114, 171, 0.02);
+  overflow: hidden;
+  width: 100%;
 }
 
 .title {
   font-size: 40px;
   line-height: 42px;
+  font-weight: 500;
 }
 
 .text {
@@ -59,16 +112,57 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-
+.text-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  width: 50%;
+  box-sizing: border-box;
+}
 .image-container {
   width: 50%;
   display: flex;
-  flex-shrink:1;
   justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .responsive-image {
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-width: 100%;
+}
+@media (max-width: 1024px) {
+  .title {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .text {
+    line-height: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+  .text-container {
+    width: 100%;
+    padding: 30px;
+  }
+  .image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .responsive-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
 }
 </style>
