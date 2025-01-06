@@ -1,29 +1,35 @@
 @font-face {
     font-family: 'Ubuntu';
-    src: url('@/assets/fonts/Ubuntu-Regular.woff') format('woff'),
-    url('@/assets/fonts/Ubuntu-Regular.woff2') format('woff2');
+    src: url('./assets/fonts/Ubuntu-Regular.woff2') format('woff2'),
+    url('./assets/fonts/Ubuntu-Regular.woff') format('woff'),
+    url('./assets/fonts/Ubuntu-Regular.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
 }
+
 @font-face {
     font-family: 'Ubuntu';
-    src: url('@/assets/fonts/Ubuntu-Medium.woff') format('woff'),
-    url('@/assets/fonts/Ubuntu-Medium.woff2') format('woff2');
+    src: url('./assets/fonts/Ubuntu-Medium.woff2') format('woff2'),
+    url('./assets/fonts/Ubuntu-Medium.woff') format('woff'),
+    url('./assets/fonts/Ubuntu-Medium.ttf') format('truetype');
     font-weight: 500;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Gilroy';
-    src: url('@/assets/fonts/Gilroy-Regular.woff') format('woff'),
-    url('@/assets/fonts/Gilroy-Regular.woff2') format('woff2');
+    src: url('./assets/fonts/Gilroy-Regular.woff2') format('woff2'),
+    url('./assets/fonts/Gilroy-Regular.woff') format('woff'),
+    url('./assets/fonts/Gilroy-Regular.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
 }
+
 @font-face {
     font-family: 'Gilroy';
-    src: url('@/assets/fonts/Gilroy-Medium.woff') format('woff'),
-    url('@/assets/fonts/Gilroy-Medium.woff2') format('woff2');
+    src: url('./assets/fonts/Gilroy-Medium.woff2') format('woff2'),
+    url('./assets/fonts/Gilroy-Medium.woff') format('woff'),
+    url('./assets/fonts/Gilroy-Medium.ttf') format('truetype');
     font-weight: 500;
     font-style: normal;
 }
@@ -32,11 +38,13 @@ body {
     margin: 0;
     font-family: 'Ubuntu', sans-serif;
     font-size: 16px;
+    font-weight: 400;
     color: #575F6C;
 }
 .font-gilroy {
     font-family: 'Gilroy', sans-serif;
     font-size: 16px;
+    font-weight: 400;
     color: #333333;
 }
 .truncate-text {
