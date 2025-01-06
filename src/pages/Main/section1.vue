@@ -106,8 +106,8 @@ export default {
   align-items: center;
 }
 .tablet-space {
-  position:relative;
-  width:100%;
+  position: relative;
+  width: 100%;
 
   .tablet-space-img {
     width: 100%;
@@ -124,7 +124,6 @@ export default {
       width: 70%;
       justify-content: end;
     }
-
 
 
     .large-image img,
@@ -163,11 +162,12 @@ export default {
       line-height: 52px;
       font-weight: 500;
     }
+
     .desc {
       font-size: 14px;
       margin-top: 24px;
       margin-bottom: 40px;
-      color:#575F6C;
+      color: #575F6C;
       line-height: 32px;
       word-wrap: break-word;
     }
@@ -178,15 +178,18 @@ export default {
   .content {
     width: 90%;
   }
+
   .tablet-space {
     .tablet-space-img {
       padding: 40px 0;
+
       .image-grid {
         height: 100%;
         width: 95%;
       }
     }
   }
+
   .tablet-space {
     .backdrop-blur-container {
       padding: 40px;
@@ -212,10 +215,13 @@ export default {
   .content {
     width: 100%;
   }
+
   .tablet-space {
     margin-bottom: 40vh;
+
     .tablet-space-img {
       padding: 0;
+
       .image-grid {
         grid-template-columns: 1fr;
         width: 100%;
@@ -228,7 +234,7 @@ export default {
     }
 
     .backdrop-blur-container {
-      left: 50% ;
+      left: 50%;
       transform: translateX(-50%);
       padding: 30px 20px;
       border-radius: 8px;
@@ -242,6 +248,7 @@ export default {
         font-size: 24px;
         line-height: 40px;
       }
+
       .desc {
         font-size: 12px;
         margin: 20px 0;

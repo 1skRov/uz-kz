@@ -88,10 +88,8 @@ export default {
   border-top: 1px solid #DDE2E4;
 }
 @media (max-width: 1024px) {
-
   .content {
     width: 90%;
   }
 }
-@media (max-width: 768px) {  }
 </style>
