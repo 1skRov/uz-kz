@@ -20,14 +20,14 @@ export default {
   watch: {
     currentLanguage(newLang) {
       this.getContacts();
-      // this.getLang();
+      this.getLang();
       this.getTranslations();
     },
   },
   async mounted() {
     this.trans = await getTranslations(this.currentLanguage);
     this.getContacts();
-    // this.getLang();
+    this.getLang();
 
   },
   methods: {

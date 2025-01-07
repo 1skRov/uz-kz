@@ -2,9 +2,10 @@
 import { mapGetters, mapActions } from 'vuex';
 import FooterSandbars from "@/components/FooterSandbars.vue";
 import BasicButton from "@/components/Buttons/button_basic.vue";
+import TabletHeaderMenu from "@/components/TabletHeaderMenu.vue";
 export default {
   name: "Header",
-  components: {BasicButton, FooterSandbars},
+  components: {TabletHeaderMenu, BasicButton, FooterSandbars},
   props:{
     translate: {
       type: Object,
@@ -31,38 +32,6 @@ export default {
       ],
       isDropdownOpen: false,
       isMenuOpen: false,
-      aboutLinks: [
-        { text: this.translate.our_history || "{ our_history }", to: { name: 'AboutUs', hash: '#section-1' } },
-        { text: this.translate.culture_traditions || "{ culture_traditions }", to: { name: 'AboutUs', hash: '#section-2' } },
-        { text: this.translate.popular_persons || "{ popular_persons }", to: { name: 'AboutUs', hash: '#section-3' } },
-        { text: this.translate.youth_organizations || "{ youth_organizations }", to: { name: 'AboutUs', hash: '#section-4' } },
-        { text: this.translate.education || "{ education }", to: { name: 'AboutUs', hash: '#section-5' } },
-        { text: this.translate.sport || "{ sport }", to: { name: 'AboutUs', hash: '#section-5' } },
-      ],
-      regionsLinks: [
-        { text: "Ассоциация узбеков РК 'Дустлик'", to: { name: 'Regions', hash: '#some-section' } },
-        { text: "АСТАНА Узбекский ЭКЦ г. Астаны", to: { name: 'Regions', hash: '#some-section' } },
-        { text: "АЛМАТЫ Узбекский ЭКЦ г. Алматы", to: { name: 'Regions', hash: '#some-section' } },
-        { text: "Узбекский ЭКЦ г. Шымкент", to: { name: 'Regions', hash: '#some-section' } },
-        { text: "Все регионы", to: { name: 'Regions', hash: '#guide' } },
-      ],
-      documentsLinks: [
-        { text: this.translate.important_documents || "{ important_documents }", to: { name: 'Documents', hash: '#charter' } },
-        { text: this.translate.charters || "{ charters }", to: { name: 'Documents', hash: '#plan2018' } },
-        { text: this.translate.plans || "{ plans }", to: { name: 'Documents', hash: '#report2017' } },
-        { text: this.translate.projects || "{ projects }", to: { name: 'Documents', hash: '#projects' } },
-      ],
-      pressCenterLinks: [
-        { text: "Последние новости", to: { name: 'PressCenter', hash: '#news' } },
-        { text: "Видео материалы", to: { name: 'PressCenter', hash: '#video' } },
-        { text: "Фотогалерея", to: { name: 'PressCenter', hash: '#gallery' } },
-        { text: "Интервью", to: { name: 'PressCenter', hash: '#interviews' } },
-        { text: "Благотворительная помощь", to: { name: 'PressCenter', hash: '#charity' } },
-      ],
-      contactsLinks: [
-        { text: "Центральные контакты", to: { name: 'Contacts', hash: '#republic' } },
-        { text: "Региональные контакты", to: { name: 'Contacts', hash: '#regions' } },
-      ]
     }
   },
   computed: {
@@ -79,7 +48,6 @@ export default {
     changeLanguage(language) {
       this.updateLanguage(language.code);
       this.isDropdownOpen = false;
-      console.log('Выбран язык:', language.title);
     },
     isActive(route) {
       return this.$route.path === route;
@@ -90,18 +58,15 @@ export default {
     closeMenu() {
       this.isMenuOpen = false;
     },
-    openDonate() {
-      this.$router.push('/donates');
-      this.isMenuOpen = false;
-    },
+
   }
 }
 </script>
 
 <template>
 <div class="header">
-<!--  icon-->
-  <nav class="icon" @click="ReturnMainPage">
+  <!--  icon-->
+  <nav class="header__icon" @click="ReturnMainPage">
       <svg viewBox="0 0 160 80" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 0H160V80H0V0Z" fill="#0072AB"/>
         <path d="M28.744 48.16C27.576 48.16 26.568 48 25.72 47.68C24.872 47.344 24.168 46.888 23.608 46.312C23.064 45.72 22.656 45.024 22.384 44.224C22.128 43.408 22 42.512 22 41.536V31.192H25.744V41.224C25.744 41.896 25.816 42.472 25.96 42.952C26.12 43.416 26.328 43.8 26.584 44.104C26.856 44.392 27.176 44.6 27.544 44.728C27.928 44.856 28.344 44.92 28.792 44.92C29.704 44.92 30.44 44.64 31 44.08C31.576 43.52 31.864 42.568 31.864 41.224V31.192H35.608V41.536C35.608 42.512 35.472 43.408 35.2 44.224C34.928 45.04 34.512 45.744 33.952 46.336C33.392 46.912 32.68 47.36 31.816 47.68C30.952 48 29.928 48.16 28.744 48.16Z" fill="white"/>
@@ -114,25 +79,23 @@ export default {
         <path d="M138.008 33.784C137.496 34.312 136.888 35 136.184 35.848C135.48 36.68 134.752 37.592 134 38.584C133.248 39.576 132.504 40.6 131.768 41.656C131.032 42.712 130.376 43.72 129.8 44.68H138.272V47.824H125.192V45.592C125.64 44.776 126.184 43.872 126.824 42.88C127.48 41.872 128.16 40.864 128.864 39.856C129.568 38.832 130.28 37.848 131 36.904C131.736 35.944 132.416 35.088 133.04 34.336H125.576V31.192H138.008V33.784Z" fill="white"/>
       </svg>
   </nav>
-<!--  menu-->
-  <nav class="menu">
-    <ul class="list">
-      <li v-for="(list, id) in menu_links" :key="id" class="list-item">
+  <nav class="header__menu">
+    <ul class="header__list">
+      <li v-for="(list, id) in menu_links" :key="id" class="header__list-item">
         <router-link :to="list.path" :class="{ active: isActive(list.path) }" style="text-decoration: none; color: #000" class="list-item"
                      exact-active-class="router-link-exact-active"
                      active-class="router-link-active">{{ list.title }}</router-link>
       </li>
     </ul>
   </nav>
-<!--  location and contacts -->
-  <nav class="localAndContacts">
-    <div class="local">
+  <nav class="header__localAndContacts">
+    <div class="header__local">
       <svg width="43" height="43" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M16.6663 2.67969C11.525 2.67969 7.34338 6.86388 7.34338 12.0052C7.34338 17.9825 15.299 27.6922 15.6377 28.1016L16.6663 29.349L17.6949 28.1016C18.0336 27.6909 25.9892 17.9825 25.9892 12.0052C25.9892 6.86254 21.8076 2.67969 16.6663 2.67969ZM16.6663 5.34635C20.337 5.34635 23.3226 8.33454 23.3226 12.0052C23.3225 15.6119 19.1703 21.8149 16.6663 25.1016C14.1623 21.8176 10.0101 15.6172 10.0101 12.0052C10.0101 8.33454 12.9956 5.34635 16.6663 5.34635ZM16.6663 8.66667C14.825 8.66667 13.333 10.1587 13.333 12C13.333 13.8413 14.825 15.3333 16.6663 15.3333C18.5076 15.3333 19.9996 13.8413 19.9996 12C19.9996 10.1587 18.5076 8.66667 16.6663 8.66667Z" fill="#CFD3DA"/>
       </svg>
       <p>{{ contacts.address }}</p>
     </div>
-    <div class="contacts">
+    <div class="header__contacts">
       <svg width="21" height="21" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clip-path="url(#clip0_345_284)">
           <path d="M19.7624 14.1333L15.3874 12.2583C15.2005 12.1787 14.9928 12.1619 14.7956 12.2105C14.5983 12.2591 14.4222 12.3705 14.2937 12.5279L12.3562 14.8951C9.31545 13.4614 6.86837 11.0143 5.43469 7.97358L7.80188 6.03608C7.95957 5.90783 8.07117 5.73169 8.11981 5.53434C8.16844 5.33699 8.15145 5.12916 8.07141 4.94233L6.19641 0.567328C6.10856 0.365925 5.9532 0.201486 5.7571 0.102366C5.561 0.0032464 5.33645 -0.0243417 5.12219 0.0243589L1.05969 0.961859C0.853118 1.00956 0.668812 1.12587 0.536855 1.29181C0.404898 1.45775 0.333082 1.66352 0.33313 1.87553C0.33313 11.8951 8.45422 20.0005 18.4581 20.0005C18.6702 20.0007 18.8761 19.9289 19.0421 19.7969C19.2081 19.665 19.3245 19.4806 19.3722 19.274L20.3097 15.2115C20.3581 14.9962 20.3299 14.7707 20.23 14.5739C20.1301 14.3772 19.9648 14.2214 19.7624 14.1333Z" fill="#CFD3DA"/>
@@ -149,49 +112,38 @@ export default {
       </div>
     </div>
   </nav>
-<!--  language and email -->
-  <nav class="langAndMail">
-    <div class="lang" @click="toggleDropdown">
+  <nav class="header_langAndMail">
+    <div class="header__lang" @click="toggleDropdown">
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M14.0003 0.666626C6.64833 0.666626 0.666992 6.64796 0.666992 14C0.666992 21.352 6.64833 27.3333 14.0003 27.3333C21.3523 27.3333 27.3337 21.352 27.3337 14C27.3337 6.64796 21.3523 0.666626 14.0003 0.666626ZM23.2243 8.66663H20.151C19.8217 7.06796 19.3443 5.64663 18.7483 4.46129C20.619 5.39729 22.1763 6.86396 23.2243 8.66663ZM24.667 14C24.667 14.9226 24.5377 15.812 24.3163 16.6666H20.543C20.623 15.8093 20.667 14.9186 20.667 14C20.667 13.0813 20.623 12.1906 20.543 11.3333H24.3163C24.5377 12.188 24.667 13.0773 24.667 14ZM14.0003 24.6666C12.8763 24.6666 11.4017 22.692 10.5937 19.3333H17.4057C16.599 22.692 15.1243 24.6666 14.0003 24.6666ZM10.1443 16.6666C10.055 15.828 10.0003 14.9426 10.0003 14C10.0003 13.0573 10.055 12.172 10.1443 11.3333H17.8563C17.9457 12.172 18.0003 13.0573 18.0003 14C18.0003 14.9426 17.9457 15.828 17.8563 16.6666H10.1443ZM3.33366 14C3.33366 13.0773 3.46299 12.188 3.68433 11.3333H7.45766C7.37766 12.1906 7.33366 13.0813 7.33366 14C7.33366 14.9186 7.37766 15.8093 7.45766 16.6666H3.68433C3.46299 15.812 3.33366 14.9226 3.33366 14ZM14.0003 3.33329C15.1243 3.33329 16.599 5.30796 17.407 8.66663H10.5937C11.4017 5.30796 12.8763 3.33329 14.0003 3.33329ZM9.25366 4.46129C8.65766 5.64663 8.18033 7.06796 7.85099 8.66663H4.77632C5.82433 6.86396 7.38166 5.39729 9.25366 4.46129ZM4.77632 19.3333H7.84966C8.17899 20.932 8.65633 22.3533 9.25233 23.5386C7.38166 22.6026 5.82433 21.136 4.77632 19.3333ZM18.747 23.5386C19.343 22.3533 19.819 20.932 20.1497 19.3333H23.223C22.1763 21.136 20.619 22.6026 18.747 23.5386Z" fill="#0072AB" fill-opacity="0.3"/>
       </svg>
       <p>{{ currentLanguage.toUpperCase() }}</p>
     </div>
-    <ul v-if="isDropdownOpen" class="dropdown">
+    <ul v-if="isDropdownOpen" class="header__lang-dropdown">
       <li
           v-for="(language, index) in lang"
           :key="index"
           @click="changeLanguage(language)"
-          class="dropdown-item"
+          class="header__lang-dropdown-item"
       >
         {{ language.title }}
       </li>
     </ul>
-    <div class="mail" :title="contacts.email">
+    <div class="header__mail" :title="contacts.email">
       <a :href="`mailto:${contacts.email}`" target="_blank">
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M5.33366 5.33337C3.86033 5.33337 2.66699 6.52671 2.66699 8.00004V24C2.66699 25.4734 3.86033 26.6667 5.33366 26.6667H26.667C28.1403 26.6667 29.3337 25.4734 29.3337 24V8.00004C29.3337 6.52671 28.1403 5.33337 26.667 5.33337H5.33366ZM5.33366 8.00004H26.667V9.33598L16.0003 16L5.33366 9.33598V8.00004ZM5.33366 12.0026L16.0003 18.6667L26.667 12.0026V24H5.33366V12.0026Z" fill="#333333"/>
         </svg>
       </a>
     </div>
-    <div class="menu-toggle" @click="toggleMenu">
+    <div class="header__menu-toggle" @click="toggleMenu">
       <svg width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path d="M4 6h16M4 12h16M4 18h16" stroke="#333" stroke-width="2" stroke-linecap="round" />
       </svg>
     </div>
   </nav>
-  <nav v-if="isMenuOpen" class="hidden-menu">
-    <div class="content">
-      <footer-sandbars :title="translate.about_us || '{ about_us }'" :links="aboutLinks"></footer-sandbars>
-      <footer-sandbars :title="translate.regions || '{ regions }'" :links="regionsLinks"></footer-sandbars>
-      <footer-sandbars :title="translate.documents || '{ documents }'" :links="documentsLinks"></footer-sandbars>
-      <footer-sandbars :title="translate.press_center || '{ press_center }'" :links="pressCenterLinks"></footer-sandbars>
-      <footer-sandbars :title="translate.contacts || '{ contacts }'" :links="contactsLinks"></footer-sandbars>
-      <div class="sandbars">
-        <h2 class="main-text hidden-bar">{{ translate.donates || '{ donates }' }}</h2>
-        <basic-button @click="openDonate" :title_button="translate.donates || '{ donates }'" :is-blue="true"></basic-button>
-      </div>
-    </div>
+  <nav v-if="isMenuOpen" class="header__hidden-menu">
+    <tablet-header-menu :translate="translate"></tablet-header-menu>
     <div class="for-mobile">
       <nav class="langAndMail-mobile">
         <div class="lang" @click="toggleDropdown">
@@ -248,131 +200,130 @@ export default {
 </template>
 
 <style scoped>
-.menu-toggle {
-  display: none;
-}
+/*
 .list-item .router-link-exact-active {
   font-weight: bold;
   color: #0072AB;
   padding-bottom: 5px;
   border-bottom: 1px solid #0072AB;
-}
+} */
 .header {
   width: 100%;
-  height: 100%;
+  height: 80px;
   border-bottom: 1px solid #EBEEF0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
-  color: black;
+}
 
-  .icon {
-    width: 160px;
-    height: 80px;
-    cursor: pointer;
-  }
+.header__icon {
+  width: 160px;
+  min-width: 160px;
+  height: 100%;
+}
 
-  .menu {
-    margin-left: auto;
-    margin-right: auto;
-    .list {
-      display: flex;
-      align-items: center;
-      gap: 4.5rem;
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
+.header__menu {
+  margin: 0 auto;
+}
 
-      .list-item {
-        cursor: pointer;
-        text-transform: uppercase;
-      }
-    }
-  }
+.header__list {
+  display: flex;
+  align-items: center;
+  gap: 3.5rem;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
 
-  .localAndContacts {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+.header__list-item {
+  cursor: pointer;
+  text-transform: uppercase;
+}
 
-    .local {
-      align-items: center;
-      display: flex;
-      gap: 0.5rem;
-      width: 50%;
-    }
+.header__localAndContacts {
+  display: flex;
+}
 
-    .contacts {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-  }
+.header__local,
+.header__contacts {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 270px;
+}
 
-  .langAndMail {
-    display: flex;
-    align-items: center;
-    height: 80px;
-    position: relative;
-    .lang {
-      display: flex;
-      align-items: center;
-      text-transform: uppercase;
-      height: 80px;
-      border-left: 1px solid #EBEEF0;
-      padding: 0 15px;
-      gap: 0.8rem;
-      cursor: pointer;
-    }
-    .dropdown {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: #fff;
-      border: 1px solid #0072AB;
-      border-radius: 5px;
-      width: 120px;
-      z-index: 10;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+.header_langAndMail {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 100%;
+}
 
-    .dropdown-item {
-      padding: 10px;
-      text-align: center;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
+.header__lang {
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  border-left: 1px solid #EBEEF0;
+  height: 100%;
+  padding: 0 15px;
+  gap: 5px;
+  cursor: pointer;
+}
 
-    .dropdown-item:hover {
-      background: #f1f1f1;
-      color: #0072ab;
-    }
-    .mail {
-      display: flex;
-      align-items: center;
-      height: 80px;
-      padding: 0 15px;
-      border-left: 1px solid #EBEEF0;
-    }
-  }
-  p {
-    margin: 0;
-  }
+.header__lang-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  border: 1px solid #0072AB;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  list-style: none;
+  padding: 1rem;
+  z-index: 100;
+}
+
+.header__lang-dropdown-item {
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.header__lang-dropdown-item :hover{
+  background: #f1f1f1;
+  color: #0072ab;
+}
+
+.header__mail{
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  border-left: 1px solid #EBEEF0;
+  height: 100%;
+}
+p {
+  margin: 0;
+}
+.header__menu-toggle {
+  display: none;
 }
 @media (max-width: 1024px) {
-  .menu {
+  .header__menu,
+  .for-mobile  {
     display: none;
   }
 
-  .for-mobile {
-    display: none;
+  .header__local{
+    width: 250px;
   }
 
-  .menu-toggle {
+  .header__contacts {
+    width: 190px;
+  }
+
+  .header__menu-toggle {
     cursor: pointer;
     border-left: 1px solid #EBEEF0;
     padding: 0 15px;
@@ -381,7 +332,7 @@ export default {
     display: flex;
   }
 
-  .hidden-menu {
+  .header__hidden-menu {
     position: absolute;
     top: 80px;
     left: 0;
@@ -395,39 +346,15 @@ export default {
     gap: 20px;
     border-top: 1px solid #EBEEF0;
   }
-  .content {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,
-    minmax(230px, 1fr));
-    grid-gap: 10px
-  }
-
-  .main-text {
-    font-weight: 500;
-    color: #333;
-    margin-bottom: 10px;
-  }
 }
 @media (max-width: 768px) {
-  .header .localAndContacts {
+  .header__localAndContacts {
     display: none;
   }
-  .header .langAndMail .lang, .mail {
+  .header__mail {
     display: none;
-  }
-  .header .langAndMail .mail {
-    display: none;
-  }
-  .content {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
   }
 
-  .main-text {
-    font-weight: 500;
-    color: #333;
-    margin-bottom: 10px;
-  }
   .for-mobile {
     display: flex;
     flex-direction: column;
