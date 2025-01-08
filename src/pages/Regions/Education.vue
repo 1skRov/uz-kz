@@ -19,7 +19,6 @@ export default {
   },
   watch: {
     currentLanguage(newLang) {
-      this.getTranslations();
       this.getEducation();
     },
   },

@@ -3,10 +3,11 @@ import Sections from "@/components/Sections.vue";
 import SideBar from "@/components/SideBarText.vue";
 import Navigation from "@/components/Navigation.vue";
 import SelectElement from "@/components/SelectElement.vue"
+import MapFill from "@/components/MapFill.vue";
 
 export default {
   name: "Regions",
-  components: {Navigation, SideBar, Sections, SelectElement},
+  components: {MapFill, Navigation, SideBar, Sections, SelectElement},
   data(){
     return {
       title: "Этнокультурный центр узбеков Казахстана",
@@ -30,10 +31,7 @@ export default {
         {{ title }}
       </template>
       <template #content>
-        <div style="position: relative">
-          <span class="truncate-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae corporis, ex numquam tempora totam vel vero. At beatae eos excepturi libero repudiandae soluta? Asperiores blanditiis deserunt dolor minima numquam, quas?</span>
-          <img src="@/assets/icons/mail.svg" alt="map" style="width: 100%; height: 100%">
-        </div>
+        <map-fill></map-fill>
       </template>
     </sections>
     <select-element :items="menuItems" class="mob-has"></select-element>
