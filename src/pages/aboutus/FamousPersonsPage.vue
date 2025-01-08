@@ -83,7 +83,7 @@ export default {
     <side-bar :title="translations.popular_side || '{ popular_side }'"></side-bar>
     <div class="persons">
       <sections>
-        <template #title>{{ translations.popular_person || '{ popular_person }' }}</template>
+        <template #title>{{ translations.popular_persons || '{ popular_persons }' }}</template>
         <template #title-button>
           <div class="btn">
             <left @click="prevPage"/>

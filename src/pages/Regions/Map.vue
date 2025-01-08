@@ -53,7 +53,7 @@ export default {
 
 <style scoped>
 #map {
-  height: 500px;
+  height: 100%;
   border-radius: 16px
 }
 .leaflet-popup-content-wrapper {

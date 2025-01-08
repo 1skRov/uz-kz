@@ -75,7 +75,7 @@ export default {
         <router-view />
       </transition>
     </div>
-    <div>
+    <div class="main__footer">
       <Footer :translate="trans" :contact_line="contacts"/>
     </div>
   </div>
