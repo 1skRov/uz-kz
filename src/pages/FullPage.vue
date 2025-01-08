@@ -21,7 +21,6 @@ export default {
     currentLanguage(newLang) {
       this.getContacts();
       this.getLang();
-      this.getTranslations();
     },
   },
   async mounted() {

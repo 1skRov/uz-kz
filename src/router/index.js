@@ -70,7 +70,7 @@ const routes = [
           {
             path: 'regions',
             name: 'regions',
-            component: () => import('@/pages/Regions/Contacts.vue'),
+            component: () => import('@/pages/Contacts/Regions.vue'),
           },
         ]
       },

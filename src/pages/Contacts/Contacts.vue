@@ -24,11 +24,6 @@ export default {
       ]
     }
   },
-  watch: {
-    currentLanguage(newLang) {
-      this.getTranslations();
-    },
-  },
   async mounted() {
     this.trans = await getTranslations(this.currentLanguage);
   },
@@ -37,7 +32,7 @@ export default {
 
 <template>
   <div class="main">
-    <side-bar :title="page_title || '{ contacts_side }'"/>
+    <side-bar :title="trans.contacts_side || '{ contacts_side }'"/>
     <div class="content">
       <select-element :items="menuItems" class="mob-has"></select-element>
       <navigation :menu-items="menuItems" class="nav"/>
