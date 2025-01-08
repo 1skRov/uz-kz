@@ -40,6 +40,15 @@ body {
     font-size: 16px;
     font-weight: 400;
     color: #575F6C;
+    scrollbar-color: #0072AB #FFFFFF;
+    scrollbar-width: thin;
+}
+::-webkit-scrollbar {
+    width: 7px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #0072AB;
+    border-radius: 8px;
 }
 .font-gilroy {
     font-family: 'Gilroy', sans-serif;
@@ -72,6 +81,7 @@ body {
         font-weight: 500;
         color: #333;
         font-size: 1rem;
+        text-decoration: none;
     }
 
     .text {

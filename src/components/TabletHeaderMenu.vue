@@ -54,11 +54,11 @@ export default {
 
 <template>
 <div class="header__tablet-content">
-  <footer-sandbars :title="translate.about_us || '{ about_us }'" :links="aboutLinks"></footer-sandbars>
-  <footer-sandbars :title="translate.regions || '{ regions }'" :links="regionsLinks"></footer-sandbars>
-  <footer-sandbars :title="translate.documents || '{ documents }'" :links="documentsLinks"></footer-sandbars>
-  <footer-sandbars :title="translate.press_center || '{ press_center }'" :links="pressCenterLinks"></footer-sandbars>
-  <footer-sandbars :title="translate.contacts || '{ contacts }'" :links="contactsLinks"></footer-sandbars>
+  <footer-sandbars :title="translate.about_us || '{ about_us }'" :to="'/about-us'" :links="aboutLinks"></footer-sandbars>
+  <footer-sandbars :title="translate.regions || '{ regions }'" :to="'/regions'" :links="regionsLinks"></footer-sandbars>
+  <footer-sandbars :title="translate.documents || '{ documents }'" :to="'/documents'" :links="documentsLinks"></footer-sandbars>
+  <footer-sandbars :title="translate.press_center || '{ press_center }'" :to="'/press-center'" :links="pressCenterLinks"></footer-sandbars>
+  <footer-sandbars :title="translate.contacts || '{ contacts }'" :to="'/contacts'" :links="contactsLinks"></footer-sandbars>
   <div class="sandbars">
     <h2 class="main-text hidden-bar">{{ translate.donates || '{ donates }' }}</h2>
     <basic-button @click="openDonate" :title_button="translate.donates || '{ donates }'" :is-blue="true"></basic-button>

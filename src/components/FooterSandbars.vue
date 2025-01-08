@@ -8,14 +8,15 @@ export default {
     },
     links: {
       type: Array,
-    }
+    },
+    to: String,
   }
 }
 </script>
 
 <template>
   <div class="sandbars">
-    <h2 class="main-text">{{ title }}</h2>
+    <router-link class="main-text" :to="to">{{ title }}</router-link>
     <div v-for="(link, index) in links" :key=index>
       <router-link class="text" :to="link.to">{{ link.text }}</router-link>
     </div>
