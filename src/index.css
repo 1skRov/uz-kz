@@ -95,6 +95,12 @@ body {
         text-decoration: underline;
     }
 }
+.btns-carousel {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 @media (max-width: 1024px) {
     * {
         font-size: 14px;
@@ -118,5 +124,8 @@ body {
         .text {
             display: none;
         }
+    }
+    .btns-carousel {
+        gap: 2rem;
     }
 }

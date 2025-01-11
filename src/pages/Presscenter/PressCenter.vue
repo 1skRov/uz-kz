@@ -28,9 +28,9 @@ export default {
       <video-materials></video-materials>
       <photo-gallery></photo-gallery>
       <interview></interview>
-      <div style="padding: 60px 0">
-        <help></help>
-      </div>
+<!--      <div style="padding: 60px 0">-->
+<!--        <help></help>-->
+<!--      </div>-->
     </div>
   </div>
 </template>
@@ -42,6 +42,7 @@ export default {
 .content {
   width: 65%;
   margin: 0 auto;
+  padding-bottom: 60px;
 }
 @media (max-width: 1024px) {
   .content {

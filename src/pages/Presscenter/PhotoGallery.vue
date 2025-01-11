@@ -4,8 +4,8 @@ import Right from "@/components/Buttons/right.vue";
 import Left from "@/components/Buttons/left.vue";
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Grid } from 'swiper/modules';
-import api, {BASE_URL} from "@/axios";
-import {mapGetters} from "vuex";
+import api, { BASE_URL } from "@/axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "PhotoGallery",
@@ -16,8 +16,8 @@ export default {
     Swiper,
     SwiperSlide
   },
-  props:{
-    title:{
+  props: {
+    title: {
       type: String,
       default: "{ photos }"
     },
@@ -34,6 +34,8 @@ export default {
       swiperInstance: null,
       isBeginning: true,
       isEnd: false,
+      isModalOpen: false,
+      currentImage: null,
     };
   },
   computed: {
@@ -109,11 +111,17 @@ export default {
         this.swiperInstance.slideNext();
       }
     },
-    goToVideoDetails(newsId) {
-      this.$router.push({name: 'VideoDetails', params: {id: newsId}});
+    openModal(image) {
+      this.currentImage = image;
+      this.isModalOpen = true;
+      console.log("test")
+    },
+    closeModal() {
+      this.isModalOpen = false;
+      this.currentImage = null;
     },
   },
-}
+};
 </script>
 
 <template>
@@ -121,7 +129,7 @@ export default {
     <sections>
       <template #title>{{ title }}</template>
       <template #title-button>
-        <div class="btn">
+        <div class="btns-carousel">
           <left
               :disabled="isBeginning"
               @click="prevSlide"
@@ -163,15 +171,22 @@ export default {
           <SwiperSlide
               v-for="(m, index) in materials"
               :key="index"
-              @click="goToVideoDetails(m.id)"
           >
             <div class="card">
-              <div class="image-card">
-                <img :src="BASE_URL + m.image" alt="image">
+              <div class="card__image" @click="openModal(BASE_URL + m.image)">
+                <img :src="BASE_URL + m.image" alt="image" />
+                <div class="card__overlay">
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 38C30.8366 38 38 30.8366 38 22C38 13.1634 30.8366 6 22 6C13.1634 6 6 13.1634 6 22C6 30.8366 13.1634 38 22 38Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M41.9998 42L33.2998 33.3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 16V28" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 22H28" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
               </div>
-              <div class="card-content">
-                <div class="title font-gilroy truncate-text">{{ m.title }}</div>
-                <div class="time">{{ m.formattedDate }}</div>
+              <div class="card__content">
+                <div class="card__title font-gilroy truncate-text">{{ m.title }}</div>
+                <div class="card__time">{{ m.formattedDate }}</div>
               </div>
             </div>
           </SwiperSlide>
@@ -190,16 +205,16 @@ export default {
         </div>
       </template>
     </sections>
+    <div v-if="isModalOpen" class="modal" @click.self="closeModal">
+      <div class="modal-content">
+        <img :src="currentImage" alt="fullscreen image" />
+        <button class="close-button" @click="closeModal">&times;</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.btn {
-  display: flex;
-  align-items: center;
-  gap: 1em;
-}
-
 .card {
   padding: 5px;
   max-height: 25rem;
@@ -207,44 +222,61 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-
-  .image-card {
-    height: 60%;
-    max-height: 60%;
-    width: 100%;
-    border-radius: 8px;
-    overflow: hidden;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      justify-content: center;
-    }
-  }
-
-  .card-content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    overflow: hidden;
-
-    .title {
-      color: #333333;
-      font-weight: 500;
-      line-height: 28px;
-      font-size: 18px;
-    }
-
-    .time {
-      color: #CFD3DA;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-  }
+}
+.card__image {
+  position: relative;
+  height: 60%;
+  max-height: 60%;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+}
+.card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.card__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 114, 171, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 8px;
+}
+.card__overlay svg {
+  width: 50px;
+  height: 50px;
+  color: white;
+}
+.card:hover .card__overlay {
+  opacity: 1;
+}
+.card__content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: hidden;
+}
+.card__title {
+  color: #333333;
+  font-weight: 500;
+  line-height: 28px;
+  font-size: 18px;
+}
+.card__time {
+  color: #CFD3DA;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
 @media (max-width: 1024px) {
@@ -276,5 +308,45 @@ export default {
       }
     }
   }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 6000;
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.modal-content img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #ccc;
 }
 </style>
