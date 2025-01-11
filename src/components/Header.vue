@@ -200,15 +200,15 @@ export default {
 </template>
 
 <style scoped>
-/*
 .list-item .router-link-exact-active {
   font-weight: bold;
   color: #0072AB;
   padding-bottom: 5px;
   border-bottom: 1px solid #0072AB;
-} */
+}
 .header {
   width: 100%;
+  box-sizing: border-box;
   height: 80px;
   border-bottom: 1px solid #EBEEF0;
   display: flex;

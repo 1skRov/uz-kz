@@ -66,7 +66,7 @@ export default {
 
 <template>
   <div class="main">
-    <div style="width: 100%">
+    <div style="width: 100%" class="main__header">
       <Header :translate="trans" :contacts="contacts" :lang="lang"/>
     </div>
     <div class="content">
@@ -81,6 +81,14 @@ export default {
 </template>
 
 <style>
+.main__header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 5000;
+  background-color: #fff;
+}
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s;
 }
