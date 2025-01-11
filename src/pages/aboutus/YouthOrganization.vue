@@ -60,6 +60,9 @@ export default {
         this.swiperRef.slidePrev();
       }
     },
+    goToDetails(newsId) {
+      this.$router.push({ name: 'OrganizationDetails', params: { id: newsId } });
+    },
   },
 };
 </script>
@@ -84,7 +87,7 @@ export default {
                 <div class="inside">
                   <div class="card-title font-gilroy">{{ card.title }}</div>
                   <div class="card-description" v-html="card.desc"></div>
-                  <button class="card-button" @click="$router.push({ name: 'OrganizationDetails', params: { id: card.id, card: card } })">{{ btn_title }}</button>
+                  <button class="card-button" @click="goToDetails(card.id)">{{ btn_title }}</button>
                 </div>
               </div>
             </div>
