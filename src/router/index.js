@@ -18,6 +18,12 @@ const routes = [
         component: () => import('@/pages/aboutus/AboutUs.vue')
       },
       {
+        path: '/about-us/organization/:id',
+        name: 'OrganizationDetails',
+        component: () => import('@/pages/aboutus/OrganizationDetails.vue'),
+        props: true,
+      },
+      {
         path: '/regions',
         name: 'Regions',
         component: () => import('@/pages/Regions/Regions.vue'),

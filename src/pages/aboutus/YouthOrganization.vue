@@ -25,7 +25,7 @@ export default {
     return {
       cards: [],
       BASE_URL,
-      swiperRef: null, // Для хранения ссылки на Swiper
+      swiperRef: null,
     };
   },
   computed: {
@@ -84,7 +84,7 @@ export default {
                 <div class="inside">
                   <div class="card-title font-gilroy">{{ card.title }}</div>
                   <div class="card-description" v-html="card.desc"></div>
-                  <button class="card-button">{{ btn_title }}</button>
+                  <button class="card-button" @click="$router.push({ name: 'OrganizationDetails', params: { id: card.id, card: card } })">{{ btn_title }}</button>
                 </div>
               </div>
             </div>
@@ -107,13 +107,12 @@ export default {
                       class="card-description truncate-text"
                       v-html="card.desc"
                   ></div>
-                  <button class="card-button">{{ btn_title }}</button>
+                  <button class="card-button" @click="$router.push({ name: 'OrganizationDetails', params: { id: card.id, card: card } })">{{ btn_title }}</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- Swiper для мобильных устройств -->
         <swiper
             ref="swiperRef"
             :slides-per-view="1"
@@ -137,7 +136,7 @@ export default {
                   class="card-description truncate-text"
                   v-html="card.desc"
               ></div>
-              <button class="card-button">{{ btn_title }}</button>
+              <button class="card-button" @click="$router.push({ name: 'OrganizationDetails', params: { id: card.id, card: card } })">{{ btn_title }}</button>
             </div>
           </swiper-slide>
         </swiper>
