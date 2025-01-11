@@ -96,9 +96,10 @@ export default {
             :centeredSlides="true"
             :slides-per-view="1"
             :breakpoints="{
-            600: { slidesPerView: 3, centeredSlides: true },
-            1000: { slidesPerView: 5, centeredSlides: true }
-          }"
+  0: { slidesPerView: 2, centeredSlides: true },
+  600: { slidesPerView: 3, centeredSlides: true },
+  1000: { slidesPerView: 5, centeredSlides: true }
+}"
             pagination
             @swiper="onSwiperReady"
         >
@@ -205,6 +206,15 @@ export default {
   }
   .btns {
     margin-left: 20px;
+  }
+  .carousel-container::before {
+    left: 0;
+    background: none;
+  }
+
+  .carousel-container::after {
+    right: 0;
+    background: none;
   }
 }
 </style>
