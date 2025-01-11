@@ -26,6 +26,7 @@ export default {
       cards: [],
       BASE_URL,
       swiperRef: null,
+      isTablet: window.innerWidth <= 1024,
     };
   },
   computed: {
@@ -38,8 +39,15 @@ export default {
   },
   mounted() {
     this.getOrganization();
+    window.addEventListener("resize", this.updateIsTablet);
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.updateIsTablet);
   },
   methods: {
+    updateIsTablet() {
+      this.isTablet = window.innerWidth <= 1024;
+    },
     getOrganization() {
       api
           .get(`/youth-organizations/?lang_code=${this.currentLanguage}`)
@@ -77,6 +85,7 @@ export default {
                 v-for="(card, index) in cards.slice(0, 2)"
                 :key="index"
                 class="card"
+                @click="goToDetails(card.id)"
             >
               <img
                   :src="BASE_URL + card.image"
@@ -97,6 +106,7 @@ export default {
                 v-for="(card, index) in cards.slice(2, 5)"
                 :key="index"
                 class="card"
+                @click="goToDetails(card.id)"
             >
               <img
                   :src="BASE_URL + card.image"
