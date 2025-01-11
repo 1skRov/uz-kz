@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
     state: {
-        selectedLanguage: 'ru',
+        selectedLanguage: localStorage.getItem('selectedLanguage') || 'ru',
     },
     getters: {
         currentLanguage(state) {
@@ -17,6 +17,7 @@ export default createStore({
     actions: {
         updateLanguage({ commit }, languageCode) {
             commit('setLanguage', languageCode);
+            localStorage.setItem('selectedLanguage', languageCode);
         },
     },
     modules: {

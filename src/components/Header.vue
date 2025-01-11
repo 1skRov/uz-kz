@@ -12,7 +12,7 @@ export default {
       required: true,
     },
     contacts:{
-      type: Array,
+      type: Object,
       required: true,
     },
     lang:{
@@ -238,7 +238,6 @@ export default {
 
 .header__list-item {
   cursor: pointer;
-  text-transform: uppercase;
 }
 
 .header__localAndContacts {

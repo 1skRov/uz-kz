@@ -18,47 +18,46 @@ export default {
     ...mapGetters(['currentLanguage']),
   },
   watch: {
-    currentLanguage(newLang) {
-      this.getContacts();
-      this.getLang();
+    currentLanguage(newLang, oldLang) {
+      if (newLang !== oldLang) {
+        this.updateLanguageResources();
+      }
     },
   },
   async mounted() {
-    this.trans = await getTranslations(this.currentLanguage);
-    this.getContacts();
-    this.getLang();
-
+    this.updateLanguageResources();
   },
   methods: {
-    getContacts() {
-      api.get(`/contacts/?lang_code=${this.currentLanguage}`)
-          .then((response) => {
-            const data = response.data[0];
-            if (data) {
-              this.contacts = data;
-            }
-          })
-          .catch((error) => {
-            console.error('Ошибка при загрузке contacts:', error);
-          });
+    updateLanguageResources() {
+      this.getContacts();
+      this.getLang();
+      this.getTranslations();
     },
-    getLang() {
-      api.get('/languages/', {
-        headers: {
-          'ngrok-skip-browser-warning': 'true'
+    async getTranslations() {
+      this.trans = await getTranslations(this.currentLanguage);
+    },
+    async getContacts() {
+      try {
+        const response = await api.get(`/contacts/?lang_code=${this.currentLanguage}`);
+        this.contacts = response.data[0] || {};
+      } catch (error) {
+        console.error('Ошибка при загрузке контактов:', error);
+      }
+    },
+    async getLang() {
+      try {
+        const response = await api.get('/languages/');
+        if (Array.isArray(response.data)) {
+          this.lang = response.data.map(item => ({
+            code: item.kod,
+            title: item.title,
+          }));
+        } else {
+          this.lang = []
         }
-      })
-          .then(response => {
-            if (Array.isArray(response.data)) {
-              this.lang = response.data.map(item => ({
-                code: item.kod,
-                title: item.title
-              }));
-            }
-          })
-          .catch(error => {
-            console.error("Ошибка при загрузке languages:", error);
-          });
+      } catch (error) {
+        console.error('Ошибка при загрузке языка:', error);
+      }
     },
   }
 }
