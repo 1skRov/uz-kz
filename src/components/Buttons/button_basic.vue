@@ -24,7 +24,6 @@ export default {
 
 <style scoped>
 .btn {
-  text-transform: uppercase;
   cursor: pointer;
   border: 1px solid #CFD3DA;
   border-radius: 6px;
