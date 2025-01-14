@@ -1,5 +1,6 @@
 <template>
   <div class="map-container">
+    <span class="description truncate-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, quidem.</span>
     <svg
         width="100%"
         height="auto"
@@ -48,6 +49,7 @@ export default {
           active: false,
           labelX: 350,
           labelY: 350,
+          description: "",
         },
         {
           id: '05',
@@ -56,6 +58,7 @@ export default {
           active: false,
           labelX: 950,
           labelY: 550,
+          description: "",
         },
         {
           id: '06',
@@ -64,6 +67,7 @@ export default {
           active: false,
           labelX: 170,
           labelY: 390,
+          description: "",
         },
         {
           id: '18',
@@ -72,6 +76,7 @@ export default {
           active: false,
           labelX: 1150,
           labelY: 310,
+          description: "",
         },
         {
           id: '08',
@@ -80,6 +85,7 @@ export default {
           active: false,
           labelX: 790,
           labelY: 550,
+          description: "",
         },
         {
           id: '20',
@@ -88,6 +94,7 @@ export default {
           active: false,
           labelX: 610,
           labelY: 380,
+          description: "",
         },
         {
           id: '10',
@@ -96,6 +103,7 @@ export default {
           active: false,
           labelX: 520,
           labelY: 170,
+          description: "",
         },
         {
           id: '11',
@@ -104,6 +112,7 @@ export default {
           active: false,
           labelX: 500,
           labelY: 480,
+          description: "",
         },
         {
           id: '12',
@@ -112,6 +121,7 @@ export default {
           active: false,
           labelX: 210,
           labelY: 520,
+          description: "",
         },
         {
           id: '15',
@@ -120,6 +130,7 @@ export default {
           active: false,
           labelX: 670,
           labelY: 80,
+          description: "",
         },
         {
           id: '01',
@@ -128,6 +139,7 @@ export default {
           active: false,
           labelX: 720,
           labelY: 180,
+          description: "",
         },
         {
           id: '14',
@@ -136,6 +148,7 @@ export default {
           active: false,
           labelX: 900,
           labelY: 180,
+          description: "",
         },
         {
           id: '17',
@@ -144,6 +157,7 @@ export default {
           active: false,
           labelX: 660,
           labelY: 610,
+          description: "",
         },
         {
           id: '07',
@@ -152,6 +166,7 @@ export default {
           active: false,
           labelX: 150,
           labelY: 300,
+          description: "",
         },
         {
           id: '09',
@@ -160,6 +175,7 @@ export default {
           active: false,
           labelX: 820,
           labelY: 300,
+          description: "",
         },
         {
           id: '19',
@@ -168,6 +184,7 @@ export default {
           active: false,
           labelX: 980,
           labelY: 450,
+          description: "",
         },
         {
           id: '16',
@@ -176,6 +193,7 @@ export default {
           active: false,
           labelX: 1000,
           labelY: 300,
+          description: "",
         },
       ],
     };
@@ -204,6 +222,9 @@ export default {
           .then((response) => {
             const serverData = response.data;
             this.updateRegionsWithServerData(serverData);
+            // this.regions = response.data.map(region => ({
+            //   description: region.mini_desc || "еуые",
+            // }));
           })
           .catch((error) => {
             console.error('Ошибка при загрузке regions:', error);
@@ -238,5 +259,11 @@ export default {
   margin: 0 auto;
   display: flex;
   justify-content: center;
+  position: relative;
+}
+.description {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>

@@ -65,7 +65,6 @@ export default {
 
 <template>
 <div class="header">
-  <!--  icon-->
   <nav class="header__icon" @click="ReturnMainPage">
       <svg viewBox="0 0 160 80" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 0H160V80H0V0Z" fill="#0072AB"/>
@@ -79,15 +78,15 @@ export default {
         <path d="M138.008 33.784C137.496 34.312 136.888 35 136.184 35.848C135.48 36.68 134.752 37.592 134 38.584C133.248 39.576 132.504 40.6 131.768 41.656C131.032 42.712 130.376 43.72 129.8 44.68H138.272V47.824H125.192V45.592C125.64 44.776 126.184 43.872 126.824 42.88C127.48 41.872 128.16 40.864 128.864 39.856C129.568 38.832 130.28 37.848 131 36.904C131.736 35.944 132.416 35.088 133.04 34.336H125.576V31.192H138.008V33.784Z" fill="white"/>
       </svg>
   </nav>
+
   <nav class="header__menu">
     <ul class="header__list">
       <li v-for="(list, id) in menu_links" :key="id" class="header__list-item">
-        <router-link :to="list.path" :class="{ active: isActive(list.path) }" style="text-decoration: none; color: #000" class="list-item"
-                     exact-active-class="router-link-exact-active"
-                     active-class="router-link-active">{{ list.title }}</router-link>
+        <router-link :to="list.path" :class="{ active: isActive(list.path) }" style="text-decoration: none; color: #000">{{ list.title }}</router-link>
       </li>
     </ul>
   </nav>
+
   <nav class="header__localAndContacts">
     <div class="header__local">
       <svg width="43" height="43" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -112,6 +111,7 @@ export default {
       </div>
     </div>
   </nav>
+
   <nav class="header_langAndMail">
     <div class="header__lang" @click="toggleDropdown">
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -142,17 +142,18 @@ export default {
       </svg>
     </div>
   </nav>
+
   <nav v-if="isMenuOpen" class="header__hidden-menu">
     <tablet-header-menu :translate="translate"></tablet-header-menu>
     <div class="for-mobile">
-      <nav class="langAndMail-mobile">
-        <div class="lang" @click="toggleDropdown">
+      <nav class="mobile__langAAndMail">
+        <div class="mobile__lang" @click="toggleDropdown">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M14.0003 0.666626C6.64833 0.666626 0.666992 6.64796 0.666992 14C0.666992 21.352 6.64833 27.3333 14.0003 27.3333C21.3523 27.3333 27.3337 21.352 27.3337 14C27.3337 6.64796 21.3523 0.666626 14.0003 0.666626ZM23.2243 8.66663H20.151C19.8217 7.06796 19.3443 5.64663 18.7483 4.46129C20.619 5.39729 22.1763 6.86396 23.2243 8.66663ZM24.667 14C24.667 14.9226 24.5377 15.812 24.3163 16.6666H20.543C20.623 15.8093 20.667 14.9186 20.667 14C20.667 13.0813 20.623 12.1906 20.543 11.3333H24.3163C24.5377 12.188 24.667 13.0773 24.667 14ZM14.0003 24.6666C12.8763 24.6666 11.4017 22.692 10.5937 19.3333H17.4057C16.599 22.692 15.1243 24.6666 14.0003 24.6666ZM10.1443 16.6666C10.055 15.828 10.0003 14.9426 10.0003 14C10.0003 13.0573 10.055 12.172 10.1443 11.3333H17.8563C17.9457 12.172 18.0003 13.0573 18.0003 14C18.0003 14.9426 17.9457 15.828 17.8563 16.6666H10.1443ZM3.33366 14C3.33366 13.0773 3.46299 12.188 3.68433 11.3333H7.45766C7.37766 12.1906 7.33366 13.0813 7.33366 14C7.33366 14.9186 7.37766 15.8093 7.45766 16.6666H3.68433C3.46299 15.812 3.33366 14.9226 3.33366 14ZM14.0003 3.33329C15.1243 3.33329 16.599 5.30796 17.407 8.66663H10.5937C11.4017 5.30796 12.8763 3.33329 14.0003 3.33329ZM9.25366 4.46129C8.65766 5.64663 8.18033 7.06796 7.85099 8.66663H4.77632C5.82433 6.86396 7.38166 5.39729 9.25366 4.46129ZM4.77632 19.3333H7.84966C8.17899 20.932 8.65633 22.3533 9.25233 23.5386C7.38166 22.6026 5.82433 21.136 4.77632 19.3333ZM18.747 23.5386C19.343 22.3533 19.819 20.932 20.1497 19.3333H23.223C22.1763 21.136 20.619 22.6026 18.747 23.5386Z" fill="#0072AB" fill-opacity="0.3"/>
           </svg>
           <p>{{ currentLanguage.toUpperCase() }}</p>
         </div>
-        <ul v-if="isDropdownOpen" class="dropdown">
+        <ul v-if="isDropdownOpen" class="mobile__dropdown">
           <li
               v-for="(language, index) in lang"
               :key="index"
@@ -172,7 +173,7 @@ export default {
       </nav>
       <nav class="localAndContacts-mobile">
         <div class="local">
-          <svg width="43" height="43" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="27" height="27" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M16.6663 2.67969C11.525 2.67969 7.34338 6.86388 7.34338 12.0052C7.34338 17.9825 15.299 27.6922 15.6377 28.1016L16.6663 29.349L17.6949 28.1016C18.0336 27.6909 25.9892 17.9825 25.9892 12.0052C25.9892 6.86254 21.8076 2.67969 16.6663 2.67969ZM16.6663 5.34635C20.337 5.34635 23.3226 8.33454 23.3226 12.0052C23.3225 15.6119 19.1703 21.8149 16.6663 25.1016C14.1623 21.8176 10.0101 15.6172 10.0101 12.0052C10.0101 8.33454 12.9956 5.34635 16.6663 5.34635ZM16.6663 8.66667C14.825 8.66667 13.333 10.1587 13.333 12C13.333 13.8413 14.825 15.3333 16.6663 15.3333C18.5076 15.3333 19.9996 13.8413 19.9996 12C19.9996 10.1587 18.5076 8.66667 16.6663 8.66667Z" fill="#CFD3DA"/>
           </svg>
           <p>{{ contacts.address }}</p>
@@ -200,12 +201,6 @@ export default {
 </template>
 
 <style scoped>
-.list-item .router-link-exact-active {
-  font-weight: bold;
-  color: #0072AB;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #0072AB;
-}
 .header {
   width: 100%;
   box-sizing: border-box;
@@ -290,7 +285,7 @@ export default {
   transition: background 0.2s;
 }
 
-.header__lang-dropdown-item :hover{
+.header__lang-dropdown-item:hover{
   background: #f1f1f1;
   color: #0072ab;
 }
@@ -302,9 +297,11 @@ export default {
   border-left: 1px solid #EBEEF0;
   height: 100%;
 }
+
 p {
   margin: 0;
 }
+
 .header__menu-toggle {
   display: none;
 }
@@ -350,81 +347,86 @@ p {
   .header__localAndContacts {
     display: none;
   }
-  .header__mail {
+  .header__mail,
+  .header__lang {
     display: none;
   }
 
   .for-mobile {
     display: flex;
     flex-direction: column;
-    .langAndMail-mobile {
-      display: flex;
-      position: relative;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 10px ;
-      border-bottom: 1px solid #EBEEF0;
-      .lang {
-        display: flex;
-        align-items: center;
-        text-transform: uppercase;
-        border: 1px solid #EBEEF0;
-        padding: 15px;
-        gap: 0.8rem;
-        cursor: pointer;
-      }
-      .dropdown {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: #fff;
-        border: 1px solid #0072AB;
-        border-radius: 5px;
-        width: 120px;
-        z-index: 10;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      .dropdown-item {
-        padding: 10px;
-        text-align: center;
-        cursor: pointer;
-        transition: background 0.2s;
-      }
-
-      .dropdown-item:hover {
-        background: #f1f1f1;
-        color: #0072ab;
-      }
-      .mail {
-        display: flex;
-        align-items: center;
-        padding: 15px;
-        border: 1px solid #EBEEF0;
-      }
-    }
-    .localAndContacts-mobile {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      gap: 0.5rem;
-
-      .local {
-        align-items: center;
-        display: flex;
-        gap: 0.5rem;
-        width: 50%;
-      }
-
-      .contacts {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-      }
-    }
   }
-}
+
+  .mobile__langAAndMail {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px ;
+    border-bottom: 1px solid #EBEEF0;
+  }
+
+  .mobile__lang {
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    border: 1px solid #EBEEF0;
+    padding: 15px;
+    gap: 0.8rem;
+    cursor: pointer;
+  }
+
+  .mobile__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    border: 1px solid #0072AB;
+    border-radius: 5px;
+    width: 120px;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .dropdown-item {
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .dropdown-item:hover {
+    background: #f1f1f1;
+    color: #0072ab;
+  }
+
+  .mail {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #EBEEF0;
+  }
+
+  .localAndContacts-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 15px;
+    }
+  .local {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .contacts {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  }
 </style>

@@ -78,5 +78,8 @@ export default {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
   }
+  .hidden-bar {
+    display: none;
+  }
 }
 </style>
