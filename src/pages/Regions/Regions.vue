@@ -4,30 +4,20 @@ import SideBar from "@/components/SideBarText.vue";
 import Navigation from "@/components/Navigation.vue";
 import SelectElement from "@/components/SelectElement.vue"
 import MapFill from "@/components/MapFill.vue";
-import {getTranslations} from "@/axios";
 import {mapGetters} from "vuex";
 
 export default {
   name: "Regions",
-  components: {MapFill, Navigation, SideBar, Sections, SelectElement},
-  data(){
-    return {
-      title: "Этнокультурный центр узбеков Казахстана",
-      trans: {},
-    }
-  },
+  components: { MapFill, Navigation, SideBar, Sections, SelectElement },
   computed: {
-    ...mapGetters(['currentLanguage']),
+    ...mapGetters(['currentLanguage', "getTranslations"]),
     menuItems(){
       return [
-        { name: this.trans.guide || "{ guide }", route: '/regions/guide' },
-        { name: this.trans.information || "{ information }", route: '/regions/info' },
-        { name: this.trans.contacts || "{ contacts }", route: '/regions/regions-contacts' },
+        { name: this.getTranslations.guide || "{ guide }", route: '/regions/guide' },
+        { name: this.getTranslations.information || "{ information }", route: '/regions/info' },
+        { name: this.getTranslations.contacts || "{ contacts }", route: '/regions/regions-contacts' },
       ]
     }
-  },
-  async mounted() {
-    this.trans = await getTranslations(this.currentLanguage);
   },
   methods: {
     activeRegion(region) {
@@ -39,11 +29,11 @@ export default {
 
 <template>
 <div class="main">
-  <side-bar :title="trans.regions_side || '{ regions_side }'"/>
+  <side-bar :title="getTranslations.regions_side || '{ regions_side }'"/>
   <div class="content">
     <sections>
       <template #title>
-        {{ trans.ethno_center || "{ ethno_center }" }}
+        {{ getTranslations.ethno_center || "{ ethno_center }" }}
       </template>
       <template #content>
         <map-fill @region-selected="activeRegion"></map-fill>

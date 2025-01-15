@@ -51,7 +51,7 @@ export default {
         v-for="person in persons"
         :key="person.id"
         :id="person.id"
-        :name="person.first_name"
+        :name="person.full_name"
         :text="person.desc"
         :img="person.image"
         :position="person.position"
