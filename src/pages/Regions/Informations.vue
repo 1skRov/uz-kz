@@ -1,16 +1,59 @@
 <script>
+import {mapGetters} from "vuex";
+import api, {BASE_URL} from "@/axios";
+
 export default {
-  name: "Informations"
+  name: "Informations",
+  data() {
+    return {
+      info: {},
+      rid: null,
+      BASE_URL,
+    }
+  },
+  computed: {
+    ...mapGetters(['currentLanguage']),
+  },
+  watch: {
+    currentLanguage(newLang) {
+      this.getPersons();
+    },
+    '$route.query.region_id': {
+      handler(newRegionId) {
+        this.rid = newRegionId;
+        this.getPersons(newRegionId);
+      },
+      immediate: true,
+    },
+  },
+  mounted() {
+    const regionId = this.$route.query.region_id;
+    this.getPersons(regionId);
+  },
+  methods: {
+    getPersons(regionId) {
+      if (regionId) {
+        api.get(`/etno-center/?region_id=${regionId}`)
+            .then(response => {
+              this.info = response.data;
+            })
+            .catch(error => {
+              console.error(error);
+            });
+      }
+    },
+  }
 }
 </script>
 
 <template>
 <div>
+  {{ info }} - {{ rid }}
   <div style="width: 100%; height: auto;">
-    <img src="@/assets/images/img.png" alt="info">
+    <img :src="BASE_URL + info.image" :alt="BASE_URL + info.image">
   </div>
   <div>
-    <p>Идея создания и разработка данного Портала принадлежит председателю узбекского этнокультурного центра города Астана Ш.Пулатову при непосредственной поддержки спонсоров и партнеров из числа ниже указанных компаний и организаций. Отельную благодарность выражаем этнокультурному центру города Алматы в лице председателя А.Исматуллаева за поддержку и выражение солидарности в воплощении данной инициативы. Идея создания и разработка данного Портала принадлежит председателю узбекского этнокультурного центра города Астана Ш.Пулатову при непосредственной поддержки спонсоров и партнеров из числа ниже указанных компаний и организаций. Отельную благодарность выражаем этнокультурному центру города Алматы в лице председателя А.Исматуллаева за поддержку и выражение солидарности в воплощении данной инициативы. Идея создания и разработка данного Портала принадлежит председателю узбекского этнокультурного центра города Астана Ш.Пулатову при непосредственной поддержки спонсоров и партнеров из числа ниже указанных компаний и организаций. Отельную благодарность выражаем этнокультурному центру города Алматы в лице председателя А.Исматуллаева за поддержку и выражение солидарности в воплощении данной инициативы.</p>
+    <div class="info" v-html="info.info"></div>
   </div>
 </div>
 </template>
@@ -23,12 +66,12 @@ img {
   object-fit: cover;
   border-radius: 8px;
 }
-p {
+.info {
   line-height: 40px;
 }
 
 @media (max-width: 1024px) {
-  p {
+  .info {
     line-height: 28px;
   }
   img {

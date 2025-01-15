@@ -43,7 +43,7 @@ const routes = [
             path: 'regions-contacts',
             name: 'regions-contacts',
             // component: () => import('@/pages/Regions/Contacts.vue'),
-            component: () => import('@/pages/Contacts/Republic.vue'),
+            component: () => import('@/pages/Regions/Contacts'),
           },
         ]
       },

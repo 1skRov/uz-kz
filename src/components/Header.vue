@@ -157,7 +157,7 @@ export default {
           <li
               v-for="(language, index) in lang"
               :key="index"
-              @click="changeLanguage(language.title)"
+              @click="changeLanguage(language)"
               class="dropdown-item"
           >
             {{ language.title }}

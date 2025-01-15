@@ -29,6 +29,11 @@ export default {
   async mounted() {
     this.trans = await getTranslations(this.currentLanguage);
   },
+  methods: {
+    activeRegion(region) {
+      this.$router.push({ path: '', query: { region_id: region.id } });
+    }
+  }
 }
 </script>
 
@@ -41,7 +46,7 @@ export default {
         {{ trans.ethno_center || "{ ethno_center }" }}
       </template>
       <template #content>
-        <map-fill></map-fill>
+        <map-fill @region-selected="activeRegion"></map-fill>
       </template>
     </sections>
     <select-element :items="menuItems" class="mob-has"></select-element>

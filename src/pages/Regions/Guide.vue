@@ -6,7 +6,7 @@ import {mapGetters} from "vuex";
 export default {
   name: "Guide",
   components: {PopularItem},
-  data(){
+  data() {
     return {
       persons: [],
     }
@@ -18,19 +18,28 @@ export default {
     currentLanguage(newLang) {
       this.getPersons();
     },
+    '$route.query.region_id': {
+      handler(newRegionId) {
+        this.getPersons(newRegionId);
+      },
+      immediate: true,
+    },
   },
   mounted() {
-    this.getPersons();
+    const regionId = this.$route.query.region_id;
+    this.getPersons(regionId);
   },
   methods: {
-    getPersons() {
-      api.get(`/etno-center-manager/?lang_code=${this.currentLanguage}`)
-          .then(response => {
-            this.persons = response.data;
-          })
-          .catch(error => {
-            console.error(error);
-          });
+    getPersons(regionId) {
+      if (regionId) {
+        api.get(`/etno-center-manager/?region_id=${regionId}`)
+            .then(response => {
+              this.persons = response.data;
+            })
+            .catch(error => {
+              console.error(error);
+            });
+      }
     },
   }
 }
