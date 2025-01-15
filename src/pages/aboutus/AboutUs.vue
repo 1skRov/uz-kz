@@ -20,28 +20,32 @@ export default {
     CultureAndTraditions,
     OurHistory,
     WhoWeaAre,
-    Sections},
+    Sections
+  },
   data () {
     return {
       sections: [],
       currentSection: 0,
-      translate: {},
     }
   },
   computed: {
-    ...mapGetters(["currentLanguage"]),
-  },
-  watch: {
-    currentLanguage(newLang) {
-      this.getAboutUsTranslate();
-    },
+    ...mapGetters(["currentLanguage", "getTranslations"]),
+    sections(){
+      return [
+        this.getTranslations.who_we_are,
+        this.getTranslations.our_history,
+        this.getTranslations.culture_traditions,
+        this.getTranslations.popular_persons,
+        this.getTranslations.youth_organizations,
+        this.getTranslations.education,
+        this.getTranslations.help,
+      ]
+    }
   },
   mounted() {
-    this.getAboutUsTranslate();
     const observer = new IntersectionObserver(this.handleIntersection, {
       threshold: 0.3,
     });
-
     const sectionElements = document.querySelectorAll(".section");
     sectionElements.forEach((section) => observer.observe(section));
   },
@@ -55,34 +59,6 @@ export default {
           }
         }
       }
-    },
-    getAboutUsTranslate() {
-      api
-          .get("/trans/")
-          .then((response) => {
-            const translations = response.data;
-            const currentLang = this.currentLanguage;
-            if (translations[currentLang]) {
-              this.translate = translations[currentLang];
-              this.populateSections();
-            } else {
-              console.error(`Переводы для языка "${currentLang}" не найдены`);
-            }
-          })
-          .catch((error) => {
-            console.error("Ошибка при загрузке переводов:", error);
-          });
-    },
-    populateSections() {
-      this.sections = [
-        this.translate.who_we_are,
-        this.translate.our_history,
-        this.translate.culture_traditions,
-        this.translate.popular_persons,
-        this.translate.youth_organizations,
-        this.translate.education,
-        this.translate.help,
-      ];
     },
   },
 };
@@ -105,10 +81,10 @@ export default {
     <div class="text-box hid">{{ sections[currentSection] }}</div>
     <div style="width: 100%">
       <div id="section-0" class="section">
-        <WhoWeaAre :title="translate.who_we_are" />
+        <WhoWeaAre :title="getTranslations.who_we_are" />
       </div>
       <div id="section-1" class="section">
-        <OurHistory :title="translate.our_history" />
+        <OurHistory :title="getTranslations.our_history" />
       </div>
       <div style="position: relative; width: 100%; background-color: #F7F8FA">
         <div style="position: absolute; bottom: 0; right: 0">
@@ -118,24 +94,24 @@ export default {
           <img src="@/assets/images/cult-top.png" alt="" />
         </div>
         <div id="section-2" class="section">
-          <CultureAndTraditions :title="translate.culture_traditions" />
+          <CultureAndTraditions :title="getTranslations.culture_traditions" />
         </div>
       </div>
       <div id="section-3" class="section">
-        <PopularPersons :title="translate.popular_persons" :btn_title="translate.learn_more" />
+        <PopularPersons :title="getTranslations.popular_persons" :btn_title="getTranslations.learn_more" />
       </div>
       <div id="section-4" class="section">
-        <YouthOrganization :title="translate.youth_organizations" :btn_title="translate.more_detail" />
+        <YouthOrganization :title="getTranslations.youth_organizations" :btn_title="getTranslations.more_detail" />
       </div>
       <div id="section-5" class="section">
         <EducationAndSport
-            :data_ed="translate.education"
-            :data_sp="translate.sport"
-            :btn_title="translate.more_detail"
+            :data_ed="getTranslations.education"
+            :data_sp="getTranslations.sport"
+            :btn_title="getTranslations.more_detail"
         />
       </div>
       <div id="section-6" class="section" style="padding-bottom: 60px;">
-        <Help :title="translate.help" :btn_title="translate.more_detail" />
+        <Help :title="getTranslations.help" :btn_title="getTranslations.more_detail" />
       </div>
     </div>
   </div>

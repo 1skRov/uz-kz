@@ -1,6 +1,5 @@
 <script>
 import { Swiper, SwiperSlide } from "swiper/vue";
-import "swiper/swiper-bundle.css"; // Подключение стилей Swiper
 import Sections from "@/components/Sections.vue";
 import api, { BASE_URL } from "@/axios";
 import { mapGetters } from "vuex";
@@ -13,7 +12,6 @@ export default {
   props: {
     title: {
       type: String,
-      required: true,
       default: "{{ youth_organizations }}",
     },
     btn_title: {

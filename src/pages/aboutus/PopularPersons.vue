@@ -11,7 +11,6 @@ export default {
   props:{
     title: {
       type: String,
-      required: true,
       default: "{{ popular_persons }}"
     },
     btn_title: {

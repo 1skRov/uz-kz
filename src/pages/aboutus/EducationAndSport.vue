@@ -24,7 +24,6 @@ export default {
   },
   data() {
     return{
-      color:"#000",
       ed: {},
       sp: {},
     }
