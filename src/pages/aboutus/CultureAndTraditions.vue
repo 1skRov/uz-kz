@@ -81,7 +81,7 @@ export default {
           >
             <img :src="slide.image" :alt="BASE_URL + slide.image" class="carousel-image" />
             <div class="carousel-caption">
-              <h3 class="font-gilroy">{{ slide.title2 }}</h3>
+              <h3 class="font-gilroy">{{ slide.title }}</h3>
               <p v-html="slide.content"></p>
             </div>
           </div>

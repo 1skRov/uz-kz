@@ -2,7 +2,7 @@
 import {mapActions, mapGetters} from 'vuex';
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-import api, {getTranslations} from "@/axios";
+import api, {getAllTranslations} from "@/axios";
 
 export default {
   name: "FullMainPage",
@@ -12,7 +12,6 @@ export default {
       navbars: null,
       contacts: {},
       lang: [],
-      trans: {},
   }},
   computed: {
     ...mapGetters(['currentLanguage', 'getTranslations']),
@@ -26,6 +25,9 @@ export default {
   },
   async mounted() {
     this.updateLanguageResources();
+    if (!this.currentLanguage && this.lang.length > 0) {
+      this.changeLanguage(this.lang[0]);
+    }
   },
   methods: {
     ...mapActions(['updateTranslations']),
@@ -36,7 +38,7 @@ export default {
     },
     async fetchAndSetTranslations() {
       try {
-        const result = await getTranslations(this.currentLanguage);
+        const result = await getAllTranslations(this.currentLanguage);
         await this.updateTranslations(result);
       } catch (error) {
         console.error('Ошибка при загрузке переводов:', error);
@@ -58,8 +60,11 @@ export default {
             code: item.kod,
             title: item.title,
           }));
+          if (!this.currentLanguage && this.lang.length > 0) {
+            this.changeLanguage(this.lang[0]);
+          }
         } else {
-          this.lang = []
+          this.lang = [];
         }
       } catch (error) {
         console.error('Ошибка при загрузке языка:', error);
@@ -74,7 +79,6 @@ export default {
     <div style="width: 100%" class="main__header">
       <Header :translate="getTranslations" :contacts="contacts" :lang="lang"/>
     </div>
-    {{ getTranslations }}
     <div class="content">
       <transition name="fade" mode="out-in">
         <router-view />

@@ -27,7 +27,7 @@ export default {
         ></div>
         <div class="card__overlay">
           <div class="card__content">
-            <div class="card__category font-gilroy">{{card.sur_name}}</div>
+            <div class="card__category font-gilroy">{{ card.sur_name }}</div>
             <div class="card__heading">{{ card.position }}</div>
           </div>
         </div>

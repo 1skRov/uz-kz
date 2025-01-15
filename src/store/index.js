@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
     state: {
-        selectedLanguage: localStorage.getItem('selectedLanguage') || 'ru',
+        selectedLanguage: localStorage.getItem('selectedLanguage'),
         translations: {},
     },
     getters: {
@@ -18,7 +18,7 @@ export default createStore({
             state.selectedLanguage = languageCode;
         },
         setTranslations(state, payload) {
-            state.translations = payload; // 2) Устанавливаем переводы
+            state.translations = payload;
         },
     },
     actions: {

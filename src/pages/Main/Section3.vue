@@ -11,7 +11,6 @@ export default {
   props: {
     title: {
       type: String,
-      required: true,
       default: "{{ culture_traditions }}"
     },
     btn_title: {
@@ -45,7 +44,7 @@ export default {
             this.culture = cultureArray[0];
           })
           .catch((error) => {
-            console.error(error);
+            console.error("культура и традиция",error);
           });
     },
     goToAboutUsSection() {
@@ -77,8 +76,8 @@ export default {
             <div class="gradient-overlay"></div>
             <img :src="BASE_URL + culture.image" alt="culture and traditions" style="width: 100%; height: 100%;">
             <div class="abs-text">
-              <div class="image-title font-gilroy">{{culture.title2}}</div>
-              <div class="image-desc truncate-text" v-html="culture.mini_desc"></div>
+              <div class="image-title font-gilroy">{{ culture.title }}</div>
+              <div class="image-desc truncate-text" v-html="culture.desc"></div>
             </div>
           </div>
         </template>

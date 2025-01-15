@@ -96,10 +96,10 @@ export default {
             :centeredSlides="true"
             :slides-per-view="1"
             :breakpoints="{
-  0: { slidesPerView: 2, centeredSlides: true },
-  600: { slidesPerView: 3, centeredSlides: true },
-  1000: { slidesPerView: 5, centeredSlides: true }
-}"
+              0: { slidesPerView: 2, centeredSlides: true },
+              600: { slidesPerView: 3, centeredSlides: true },
+              1000: { slidesPerView: 5, centeredSlides: true }
+            }"
             pagination
             @swiper="onSwiperReady"
         >

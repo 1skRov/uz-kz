@@ -1,16 +1,12 @@
-import axios from 'axios';
-
-const apiClient = axios.create({
-    baseURL: '/api', // Базовый URL для запросов
-    timeout: 5000, // Таймаут для запросов
-});
+import api from "@/axios";
 
 export const getTranslations = async (language) => {
     try {
-        const response = await apiClient.get('/trans/');
+        const response = await api.get('/trans/');
         const translations = response.data;
 
         if (translations[language]) {
+            console.log("est", translations[language])
             return translations[language];
         } else {
             console.error(`Переводы для языка "${language}" не найдены`);
@@ -18,6 +14,6 @@ export const getTranslations = async (language) => {
         }
     } catch (error) {
         console.error("Ошибка при загрузке переводов:", error);
-        throw error; // Проброс ошибки, если нужно обработать выше
+        throw error;
     }
 };

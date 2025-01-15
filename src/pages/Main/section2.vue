@@ -11,7 +11,6 @@ export default {
   props:{
     title: {
       type: String,
-      required: true,
       default: "{{ about_us }}"
     },
     btn_title: {
@@ -44,7 +43,7 @@ export default {
             this.about = aboutAray[0];
           })
           .catch((error) => {
-            console.error(error);
+            console.error("о нас",error);
           });
     },
     goToAboutUS() {

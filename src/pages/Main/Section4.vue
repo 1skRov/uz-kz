@@ -44,7 +44,7 @@ export default {
             this.persons = response.data;
           })
           .catch((error) => {
-            console.error(error);
+            console.error("известные личности", error);
           });
     },
     goToFamousPersons(){

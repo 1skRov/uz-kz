@@ -44,7 +44,6 @@ export default {
         </template>
         <template #content>
           <div style="position: relative">
-            <span class="truncate-text"> data.mini_desc</span>
             <div style="width: 100%; height: 100%">
               <map-fill></map-fill>
             </div>

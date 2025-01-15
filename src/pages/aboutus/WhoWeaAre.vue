@@ -35,6 +35,7 @@ export default {
       api.get(`/who-are-we/?lang_code=${this.currentLanguage}`)
           .then((response) => {
             const arr = response.data;
+            console.log(arr)
             this.content = arr[0].desc;
           })
           .catch((error) => {
