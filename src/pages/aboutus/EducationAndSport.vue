@@ -48,7 +48,7 @@ export default {
             const arr = response.data;
             if (Array.isArray(arr) && arr.length > 0) {
               this.ed = arr[0];
-            }
+            } else {this.ed= {}}
           })
           .catch((error) => {
             console.error(error);
@@ -60,7 +60,7 @@ export default {
             const arr = response.data;
             if (Array.isArray(arr) && arr.length > 0) {
               this.sp = arr[0];
-            }
+            } else {this.sp = {}}
           })
           .catch((error) => {
             console.error(error);

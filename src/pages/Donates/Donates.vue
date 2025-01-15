@@ -11,48 +11,23 @@ export default {
   data() {
     return{
       menuItems: [],
-      translations: {},
     };
   },
   computed: {
-    ...mapGetters(['currentLanguage']),
+    ...mapGetters(['getTranslations']),
+    menuItems(){
+      return [
+        {name: this.getTranslations.with_card || "{ with_card }", route: '/donates/card'},
+        {name: this.getTranslations.with_qr || "{ with_qr }", route: '/donates/qr'},
+      ]
+    }
   },
-  watch: {
-    currentLanguage(newLang) {
-      this.getTranslations();
-    },
-  },
-  mounted() {
-    this.getTranslations();
-  },
-  methods: {
-    getTranslations() {
-      api.get('/trans/')
-          .then((response) => {
-            const translations = response.data;
-            const currentLang = this.currentLanguage;
-            if (translations[currentLang]) {
-              this.translations = translations[currentLang];
-
-              this.menuItems = [
-                {name: this.translations.with_card || "{ with_card }", route: '/donates/card'},
-                {name: this.translations.with_qr || "{ with_qr }", route: '/donates/qr'},
-              ];
-            } else {
-              console.error(`Переводы для языка "${currentLang}" не найдены`);
-            }
-          })
-          .catch((error) => {
-            console.error("Ошибка при загрузке переводов:", error);
-          });
-    },
-  }
 };
 </script>
 
 <template>
   <div class="main" style="display: flex">
-    <side-bar :title="translations.donates_side || '{ donates_side }'"/>
+    <side-bar :title="getTranslations.donates_side || '{ donates_side }'"/>
     <div class="content">
       <sections>
         <template #content>

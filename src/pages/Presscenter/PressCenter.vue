@@ -7,27 +7,25 @@ import VideoMaterials from "@/pages/Presscenter/VideoMaterials.vue";
 import PhotoGallery from "@/pages/Presscenter/PhotoGallery.vue";
 import Interview from "@/pages/Presscenter/Interview.vue";
 import Help from "@/pages/aboutus/Help.vue";
+import {mapGetters} from "vuex";
 
 export default {
   name: "PressCenter",
   components: {Help, Interview, PhotoGallery, VideoMaterials, LatestNews, Navigation, SideBar, Sections},
-  data(){
-    return {
-      page_title: "Press Center",
-      title: "Press Releases"
-    }
-  }
+  computed: {
+    ...mapGetters(['getTranslations']),
+  },
 }
 </script>
 
 <template>
   <div class="main">
-    <side-bar :title="page_title"/>
+    <side-bar :title="getTranslations.press_center || '{ press_center }'"/>
     <div class="content">
-      <latest-news></latest-news>
-      <video-materials></video-materials>
-      <photo-gallery></photo-gallery>
-      <interview></interview>
+      <latest-news :title="getTranslations.latest_news"></latest-news>
+      <video-materials :title="getTranslations.video_material"></video-materials>
+      <photo-gallery :title="getTranslations.photos"></photo-gallery>
+      <interview :title="getTranslations.interview" :btn_title="getTranslations.watch"></interview>
 <!--      <div style="padding: 60px 0">-->
 <!--        <help></help>-->
 <!--      </div>-->

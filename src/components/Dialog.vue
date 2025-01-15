@@ -23,36 +23,12 @@ export default {
       regionCode: null,
       errors: {},
       submitting: false,
-      list: {},
     };
   },
   computed: {
-    ...mapGetters(["currentLanguage"]),
-  },
-  watch: {
-    currentLanguage(newLang) {
-      this.getTranslations();
-    },
-  },
-  mounted() {
-    this.getTranslations();
+    ...mapGetters(["getTranslations"]),
   },
   methods: {
-    getTranslations() {
-      api.get('/trans/')
-          .then((response) => {
-            const translations = response.data;
-            const currentLang = this.currentLanguage;
-            if (translations[currentLang]) {
-              this.list = translations[currentLang];
-            } else {
-              console.error(`Переводы для языка "${currentLang}" не найдены`);
-            }
-          })
-          .catch((error) => {
-            console.error("Ошибка при загрузке переводов:", error);
-          });
-    },
     handleRegionSelected(regionCode) {
       this.regionCode = regionCode;
     },
@@ -114,23 +90,23 @@ export default {
     <div class="dialog-content">
       <div class="dialog-header">
         <button class="close-btn" @click="closeModal">&times;</button>
-        <h1 class="dialog-title font-gilroy">{{ list.association_title || '{ association_title }' }}</h1>
-        <p class="dialog-description">{{ list.association_description || '{ association_description }' }}</p>
+        <h1 class="dialog-title font-gilroy">{{ getTranslations.association_title || '{ association_title }' }}</h1>
+        <p class="dialog-description">{{ getTranslations.association_description || '{ association_description }' }}</p>
       </div>
       <div class="dialog-body">
         <div class="form-grid">
           <div class="form-group">
-            <label for="name">{{ list.your_fcs || '{ your_fcs }' }}</label>
+            <label for="name">{{ getTranslations.your_fcs || '{ your_fcs }' }}</label>
             <input type="text" id="name" v-model="form.name" />
             <span class="error-message" v-if="errors.name">{{ errors.name }}</span>
           </div>
           <div class="form-group">
-            <label for="birthDate">{{ list.date_of_birth || '{ date_of_birth }' }}</label>
+            <label for="birthDate">{{ getTranslations.date_of_birth || '{ date_of_birth }' }}</label>
             <input type="date" id="birthDate" v-model="form.birthDate" />
             <span class="error-message" v-if="errors.birthDate">{{ errors.birthDate }}</span>
           </div>
           <div class="form-group">
-            <label for="iin">{{ list.iin || '{ iin }' }}</label>
+            <label for="iin">{{ getTranslations.iin || '{ iin }' }}</label>
             <input
                 type="text"
                 id="iin"
@@ -141,18 +117,18 @@ export default {
             <span class="error-message" v-if="errors.iin">{{ errors.iin }}</span>
           </div>
           <div class="form-group">
-            <label for="phone">{{ list.phone_number || '{ phone_number }' }}</label>
+            <label for="phone">{{ getTranslations.phone_number || '{ phone_number }' }}</label>
             <input type="text" id="phone" v-model="form.phone" />
             <span class="error-message" v-if="errors.phone">{{ errors.phone }}</span>
           </div>
         </div>
-        <div class="city">{{ list.country || '{ country }' }}</div>
+        <div class="city">{{ getTranslations.country || '{ country }' }}</div>
         <div>
           <map-fill @region-selected="handleRegionSelected"></map-fill>
         </div>
         <div style="width: 100%; display: flex; justify-content: end;">
           <button :disabled="submitting" @click="submitForm" class="submit-btn font-gilroy">
-            {{ submitting ? "..." : (list.send_request_btn || '{ send_request_btn }') }}
+            {{ submitting ? "..." : (getTranslations.send_request_btn || '{ send_request_btn }') }}
           </button>
         </div>
       </div>

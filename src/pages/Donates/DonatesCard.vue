@@ -7,7 +7,6 @@ export default {
   name: "DonatesCard",
   data() {
     return {
-      translations: {},
       form: {
         number_card: "",
         name_card: "",
@@ -19,32 +18,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['currentLanguage']),
-  },
-  watch: {
-    currentLanguage(newLang) {
-      this.getTranslations();
-    },
-  },
-  mounted() {
-    this.getTranslations();
+    ...mapGetters(['getTranslations']),
   },
   methods: {
-    getTranslations() {
-      api.get('/trans/')
-          .then((response) => {
-            const translations = response.data;
-            const currentLang = this.currentLanguage;
-            if (translations[currentLang]) {
-              this.translations = translations[currentLang];
-            } else {
-              console.error(`Переводы для языка "${currentLang}" не найдены`);
-            }
-          })
-          .catch((error) => {
-            console.error("Ошибка при загрузке переводов:", error);
-          });
-    },
     async submitForm() {
       const payload = {...this.form};
       this.submitting = true;
@@ -66,12 +42,12 @@ export default {
 <template>
   <div class="dialog-content">
     <div style="display: flex; flex-direction: column;">
-      <div class="dialog-title font-gilroy">{{ translations.donate_title || '{ donate_title }' }}</div>
-      <p style="color: #575F6C; margin-bottom: 2rem;">{{ translations.donate_description || '{ donate_description }' }}</p>
+      <div class="dialog-title font-gilroy">{{ getTranslations.donate_title || '{ donate_title }' }}</div>
+      <p style="color: #575F6C; margin-bottom: 2rem;">{{ getTranslations.donate_description || '{ donate_description }' }}</p>
     </div>
     <div class="form-grid">
       <div class="form-group">
-        <label for="number_card">{{ translations.card_number || '{ card_number }' }}</label>
+        <label for="number_card">{{ getTranslations.card_number || '{ card_number }' }}</label>
         <input
             type="number"
             id="number_card"
@@ -82,7 +58,7 @@ export default {
         />
       </div>
       <div class="form-group">
-        <label for="cvv">{{ translations.cvv || '{ cvv }' }}</label>
+        <label for="cvv">{{ getTranslations.cvv || '{ cvv }' }}</label>
         <input
             type="number"
             id="cvv"
@@ -93,11 +69,11 @@ export default {
         />
       </div>
       <div class="form-group">
-        <label for="name_card">{{ translations.card_name || '{ card_name }' }}</label>
+        <label for="name_card">{{ getTranslations.card_name || '{ card_name }' }}</label>
         <input type="text" id="name_card" v-model="form.name_card" />
       </div>
       <div class="form-group">
-        <label for="price">{{ translations.summ || '{ summ }' }}</label>
+        <label for="price">{{ getTranslations.summ || '{ summ }' }}</label>
         <input
             type="number"
             id="price"
@@ -113,12 +89,12 @@ export default {
         <span class="checkmark"></span>
       </label>
       <span style="margin-left: 10px; font-weight: 500; letter-spacing: 2px; color: #333333">
-       {{ translations.confirm || '{ confirm }' }}
+       {{ getTranslations.confirm || '{ confirm }' }}
       </span>
     </div>
     <div style="width: 100%;">
       <button :disabled="submitting || !form.confirmation" @click="submitForm" class="submit-btn font-gilroy">
-        {{ submitting ? "..." : (translations.send_donate_btn || '{ send_donate_btn }') }}
+        {{ submitting ? "..." : (getTranslations.send_donate_btn || '{ send_donate_btn }') }}
       </button>
     </div>
   </div>

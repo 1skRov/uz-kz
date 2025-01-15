@@ -9,46 +9,16 @@ import api from "@/axios";
 export default {
 name: "Documents",
   components: {Projects, DocImp, Articles, Important},
-  data(){
-    return{
-      translations: {},
-    }
-  },
   computed: {
-    ...mapGetters(['currentLanguage']),
-  },
-  watch: {
-    currentLanguage(newLang) {
-      this.getTranslations();
-    },
-  },
-  mounted() {
-    this.getTranslations();
-  },
-  methods:{
-    getTranslations() {
-      api.get('/trans/')
-          .then((response) => {
-            const translations = response.data;
-            const currentLang = this.currentLanguage;
-            if (translations[currentLang]) {
-              this.translations = translations[currentLang];
-            } else {
-              console.error(`Переводы для языка "${currentLang}" не найдены`);
-            }
-          })
-          .catch((error) => {
-            console.error("Ошибка при загрузке переводов:", error);
-          });
-    },
+    ...mapGetters(['getTranslations']),
   },
 }
 </script>
 
 <template>
   <div>
-    <doc-imp :translations="translations"/>
-    <projects :title="translations.projects" :title_side="translations.projects_side"/>
+    <doc-imp :translations="getTranslations"/>
+    <projects :title="getTranslations.projects" :title_side="getTranslations.projects_side"/>
   </div>
 </template>
 

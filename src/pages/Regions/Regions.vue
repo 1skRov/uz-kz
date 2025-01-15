@@ -10,7 +10,7 @@ export default {
   name: "Regions",
   components: { MapFill, Navigation, SideBar, Sections, SelectElement },
   computed: {
-    ...mapGetters(['currentLanguage', "getTranslations"]),
+    ...mapGetters(["getTranslations"]),
     menuItems(){
       return [
         { name: this.getTranslations.guide || "{ guide }", route: '/regions/guide' },

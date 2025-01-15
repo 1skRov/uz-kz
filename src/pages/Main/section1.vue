@@ -48,7 +48,7 @@ export default {
                 image3: `${BASE_URL}/${arr[0].image3}`,
                 image4: `${BASE_URL}/${arr[0].image4}`,
               };
-            }
+            }else {this.list = {}}
           })
           .catch((error) => {
             console.error(error);

@@ -4,35 +4,26 @@ import Navigation from "@/components/Navigation.vue";
 import Sections from "@/components/Sections.vue";
 import ContactsRegion from "@/pages/Regions/Contacts.vue";
 import {mapGetters} from "vuex";
-import {getTranslations} from "@/axios";
 import SelectElement from "@/components/SelectElement.vue";
 
 export default {
   name: "Contacts",
   components: {SelectElement, Sections, Navigation, SideBar, ContactsRegion},
-  data() {
-    return {
-      trans: {},
-    }
-  },
   computed: {
-    ...mapGetters(['currentLanguage']),
+    ...mapGetters(['getTranslations']),
     menuItems(){
       return [
-        { name: this.trans.republic_contacts || "{ republic_contacts }", route: '/contacts/republic' },
-        { name: this.trans.region_contacts || "{ region_contacts }", route: '/contacts/regions' },
+        { name: this.getTranslations.republic_contacts || "{ republic_contacts }", route: '/contacts/republic' },
+        { name: this.getTranslations.region_contacts || "{ region_contacts }", route: '/contacts/regions' },
       ]
     }
-  },
-  async mounted() {
-    this.trans = await getTranslations(this.currentLanguage);
   },
 }
 </script>
 
 <template>
   <div class="main">
-    <side-bar :title="trans.contacts_side || '{ contacts_side }'"/>
+    <side-bar :title="getTranslations.contacts_side || '{ contacts_side }'"/>
     <div class="content">
       <select-element :items="menuItems" class="mob-has"></select-element>
       <navigation :menu-items="menuItems" class="nav"/>
