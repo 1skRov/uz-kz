@@ -11,12 +11,10 @@ export default {
   props:{
     title:{
       type: String,
-      required: true,
       default: "{{ main_title }}"
     },
     btn_title:{
       type: String,
-      required: true,
       default: "{{ join_button }}"
     }
   },

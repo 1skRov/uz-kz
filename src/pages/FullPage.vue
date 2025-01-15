@@ -1,5 +1,5 @@
 <script>
-import { mapGetters } from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import api, {getTranslations} from "@/axios";
@@ -15,7 +15,7 @@ export default {
       trans: {},
   }},
   computed: {
-    ...mapGetters(['currentLanguage']),
+    ...mapGetters(['currentLanguage', 'getTranslations']),
   },
   watch: {
     currentLanguage(newLang, oldLang) {
@@ -28,13 +28,19 @@ export default {
     this.updateLanguageResources();
   },
   methods: {
+    ...mapActions(['updateTranslations']),
     updateLanguageResources() {
       this.getContacts();
       this.getLang();
-      this.getTranslations();
+      this.fetchAndSetTranslations();
     },
-    async getTranslations() {
-      this.trans = await getTranslations(this.currentLanguage);
+    async fetchAndSetTranslations() {
+      try {
+        const result = await getTranslations(this.currentLanguage);
+        await this.updateTranslations(result);
+      } catch (error) {
+        console.error('Ошибка при загрузке переводов:', error);
+      }
     },
     async getContacts() {
       try {
@@ -66,15 +72,16 @@ export default {
 <template>
   <div class="main">
     <div style="width: 100%" class="main__header">
-      <Header :translate="trans" :contacts="contacts" :lang="lang"/>
+      <Header :translate="getTranslations" :contacts="contacts" :lang="lang"/>
     </div>
+    {{ getTranslations }}
     <div class="content">
       <transition name="fade" mode="out-in">
         <router-view />
       </transition>
     </div>
     <div class="main__footer">
-      <Footer :translate="trans" :contact_line="contacts"/>
+      <Footer :translate="getTranslations" :contact_line="contacts"/>
     </div>
   </div>
 </template>
