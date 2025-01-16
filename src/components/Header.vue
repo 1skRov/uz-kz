@@ -7,35 +7,28 @@ export default {
   name: "Header",
   components: {TabletHeaderMenu, BasicButton, FooterSandbars},
   props:{
-    translate: {
-      type: Object,
-      required: true,
-    },
     contacts:{
       type: Object,
-      required: true,
     },
-    lang:{
-      type: Array,
-      required: true,
-    }
   },
   data(){
     return {
-      menu_links: [
-        { title: this.translate.about_us || "{ about_us }", path: '/about-us' },
-        { title: this.translate.regions || "{ regions }", path: '/regions/guide' },
-        { title: this.translate.documents || "{ documents }", path: '/documents' },
-        { title: this.translate.press_center || "{ press_center }", path: '/press-center' },
-        { title: this.translate.popular_persons || "{ popular_persons }", path: '/famous-persons' },
-        { title: this.translate.contacts || "{ contacts }", path: '/contacts' },
-      ],
       isDropdownOpen: false,
       isMenuOpen: false,
     }
   },
   computed: {
-    ...mapGetters(['currentLanguage']),
+    ...mapGetters(['currentLanguage', 'availableLanguages', 'getTranslations']),
+    menu_links() {
+      return [
+        { title: this.getTranslations.about_us || "{ about_us }", path: '/about-us' },
+        { title: this.getTranslations.regions || "{ regions }", path: '/regions/guide' },
+        { title: this.getTranslations.documents || "{ documents }", path: '/documents' },
+        { title: this.getTranslations.press_center || "{ press_center }", path: '/press-center' },
+        { title: this.getTranslations.popular_persons || "{ popular_persons }", path: '/famous-persons' },
+        { title: this.getTranslations.contacts || "{ contacts }", path: '/contacts' },
+      ];
+    },
   },
   methods: {
     ...mapActions(['updateLanguage']),
@@ -45,8 +38,8 @@ export default {
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen;
     },
-    changeLanguage(language) {
-      this.updateLanguage(language.code);
+    changeLanguage(languageCode) {
+      this.updateLanguage(languageCode);
       this.isDropdownOpen = false;
     },
     isActive(route) {
@@ -117,13 +110,13 @@ export default {
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M14.0003 0.666626C6.64833 0.666626 0.666992 6.64796 0.666992 14C0.666992 21.352 6.64833 27.3333 14.0003 27.3333C21.3523 27.3333 27.3337 21.352 27.3337 14C27.3337 6.64796 21.3523 0.666626 14.0003 0.666626ZM23.2243 8.66663H20.151C19.8217 7.06796 19.3443 5.64663 18.7483 4.46129C20.619 5.39729 22.1763 6.86396 23.2243 8.66663ZM24.667 14C24.667 14.9226 24.5377 15.812 24.3163 16.6666H20.543C20.623 15.8093 20.667 14.9186 20.667 14C20.667 13.0813 20.623 12.1906 20.543 11.3333H24.3163C24.5377 12.188 24.667 13.0773 24.667 14ZM14.0003 24.6666C12.8763 24.6666 11.4017 22.692 10.5937 19.3333H17.4057C16.599 22.692 15.1243 24.6666 14.0003 24.6666ZM10.1443 16.6666C10.055 15.828 10.0003 14.9426 10.0003 14C10.0003 13.0573 10.055 12.172 10.1443 11.3333H17.8563C17.9457 12.172 18.0003 13.0573 18.0003 14C18.0003 14.9426 17.9457 15.828 17.8563 16.6666H10.1443ZM3.33366 14C3.33366 13.0773 3.46299 12.188 3.68433 11.3333H7.45766C7.37766 12.1906 7.33366 13.0813 7.33366 14C7.33366 14.9186 7.37766 15.8093 7.45766 16.6666H3.68433C3.46299 15.812 3.33366 14.9226 3.33366 14ZM14.0003 3.33329C15.1243 3.33329 16.599 5.30796 17.407 8.66663H10.5937C11.4017 5.30796 12.8763 3.33329 14.0003 3.33329ZM9.25366 4.46129C8.65766 5.64663 8.18033 7.06796 7.85099 8.66663H4.77632C5.82433 6.86396 7.38166 5.39729 9.25366 4.46129ZM4.77632 19.3333H7.84966C8.17899 20.932 8.65633 22.3533 9.25233 23.5386C7.38166 22.6026 5.82433 21.136 4.77632 19.3333ZM18.747 23.5386C19.343 22.3533 19.819 20.932 20.1497 19.3333H23.223C22.1763 21.136 20.619 22.6026 18.747 23.5386Z" fill="#0072AB" fill-opacity="0.3"/>
       </svg>
-      <p>{{ currentLanguage.toUpperCase() }}</p>
+      <p v-if="currentLanguage">{{ currentLanguage?.toUpperCase() }}</p>
     </div>
     <ul v-if="isDropdownOpen" class="header__lang-dropdown">
       <li
-          v-for="(language, index) in lang"
-          :key="index"
-          @click="changeLanguage(language)"
+          v-for="language in availableLanguages"
+          :key="language.code"
+          @click="changeLanguage(language.code)"
           class="header__lang-dropdown-item"
       >
         {{ language.title }}
@@ -144,7 +137,7 @@ export default {
   </nav>
 
   <nav v-if="isMenuOpen" class="header__hidden-menu">
-    <tablet-header-menu :translate="translate"></tablet-header-menu>
+    <tablet-header-menu :translate="getTranslations"></tablet-header-menu>
     <div class="for-mobile">
       <nav class="mobile__langAAndMail">
         <div class="mobile__lang" @click="toggleDropdown">
@@ -155,7 +148,7 @@ export default {
         </div>
         <ul v-if="isDropdownOpen" class="mobile__dropdown">
           <li
-              v-for="(language, index) in lang"
+              v-for="(language, index) in availableLanguages"
               :key="index"
               @click="changeLanguage(language)"
               class="dropdown-item"

@@ -2,55 +2,60 @@
 
 import FooterSandbars from "@/components/FooterSandbars.vue";
 import BasicButton from "@/components/Buttons/button_basic.vue";
+import {mapGetters} from "vuex";
 
 export default {
   name: "Footer",
   components: {BasicButton, FooterSandbars},
   props: {
-    translate: {
-      type: Object,
-      required: true,
-    },
     contact_line:{
       type: Object,
-      required: true
     }
   },
-  data() {
-    return {
-      aboutLinks: [
-        { text: this.translate.our_history || "{ our_history }", to: { name: 'AboutUs', hash: '#section-1' } },
-        { text: this.translate.culture_traditions || "{ culture_traditions }", to: { name: 'AboutUs', hash: '#section-2' } },
-        { text: this.translate.popular_persons || "{ popular_persons }", to: { name: 'AboutUs', hash: '#section-3' } },
-        { text: this.translate.youth_organizations || "{ youth_organizations }", to: { name: 'AboutUs', hash: '#section-4' } },
-        { text: this.translate.education || "{ education }", to: { name: 'AboutUs', hash: '#section-5' } },
-        { text: this.translate.sport || "{ sport }", to: { name: 'AboutUs', hash: '#section-5' } },
-      ],
-      regionsLinks: [
+  computed: {
+    ...mapGetters(['getTranslations']),
+    aboutLinks() {
+      return [
+        { text: this.getTranslations.our_history || "{ our_history }", to: { name: 'AboutUs', hash: '#section-1' } },
+        { text: this.getTranslations.culture_traditions || "{ culture_traditions }", to: { name: 'AboutUs', hash: '#section-2' } },
+        { text: this.getTranslations.popular_persons || "{ popular_persons }", to: { name: 'AboutUs', hash: '#section-3' } },
+        { text: this.getTranslations.youth_organizations || "{ youth_organizations }", to: { name: 'AboutUs', hash: '#section-4' } },
+        { text: this.getTranslations.education || "{ education }", to: { name: 'AboutUs', hash: '#section-5' } },
+        { text: this.getTranslations.sport || "{ sport }", to: { name: 'AboutUs', hash: '#section-5' } },
+      ]
+    },
+    regionsLinks() {
+      return [
         { text: "Ассоциация узбеков РК 'Дустлик'", to: { name: 'Regions', hash: '#some-section' } },
         { text: "АСТАНА Узбекский ЭКЦ г. Астаны", to: { name: 'Regions', hash: '#some-section' } },
         { text: "АЛМАТЫ Узбекский ЭКЦ г. Алматы", to: { name: 'Regions', hash: '#some-section' } },
         { text: "Узбекский ЭКЦ г. Шымкент", to: { name: 'Regions', hash: '#some-section' } },
         { text: "Все регионы", to: { name: 'Regions', hash: '#guide' } },
-      ],
-      documentsLinks: [
-        { text: this.translate.important_documents || "{ important_documents }", to: { name: 'Documents', hash: '#charter' } },
-        { text: this.translate.charters || "{ charters }", to: { name: 'Documents', hash: '#plan2018' } },
-        { text: this.translate.plans || "{ plans }", to: { name: 'Documents', hash: '#report2017' } },
-        { text: this.translate.projects || "{ projects }", to: { name: 'Documents', hash: '#projects' } },
-      ],
-      pressCenterLinks: [
-        { text: "Последние новости", to: { name: 'PressCenter', hash: '#news' } },
-        { text: "Видео материалы", to: { name: 'PressCenter', hash: '#video' } },
-        { text: "Фотогалерея", to: { name: 'PressCenter', hash: '#gallery' } },
-        { text: "Интервью", to: { name: 'PressCenter', hash: '#interviews' } },
-        { text: "Благотворительная помощь", to: { name: 'PressCenter', hash: '#charity' } },
-      ],
-      contactsLinks: [
-        { text: "Центральные контакты", to: { name: 'Contacts', hash: '#republic' } },
-        { text: "Региональные контакты", to: { name: 'Contacts', hash: '#regions' } },
       ]
-    };
+    },
+    documentsLinks(){
+      return [
+        { text: this.getTranslations.important_documents || "{ important_documents }", to: { name: 'Documents', hash: '#charter' } },
+        { text: this.getTranslations.charters || "{ charters }", to: { name: 'Documents', hash: '#plan2018' } },
+        { text: this.getTranslations.plans || "{ plans }", to: { name: 'Documents', hash: '#report2017' } },
+        { text: this.getTranslations.projects || "{ projects }", to: { name: 'Documents', hash: '#projects' } },
+      ]
+    },
+    pressCenterLinks() {
+      return [
+        {text: "Последние новости", to: {name: 'PressCenter', hash: '#news'}},
+        {text: "Видео материалы", to: {name: 'PressCenter', hash: '#video'}},
+        {text: "Фотогалерея", to: {name: 'PressCenter', hash: '#gallery'}},
+        {text: "Интервью", to: {name: 'PressCenter', hash: '#interviews'}},
+        {text: "Благотворительная помощь", to: {name: 'PressCenter', hash: '#charity'}},
+      ]
+    },
+    contactsLinks() {
+      return [
+        {text: "Центральные контакты", to: {name: 'Contacts', hash: '#republic'}},
+        {text: "Региональные контакты", to: {name: 'Contacts', hash: '#regions'}},
+      ]
+    },
   },
   methods: {
     openDonate() {
@@ -105,15 +110,15 @@ export default {
       </div>
     </div>
     <div class="content">
-      <footer-sandbars :title="translate.about_us || '{ about_us }'" :links="aboutLinks"></footer-sandbars>
-      <footer-sandbars :title="translate.regions || '{ regions }'" :links="regionsLinks"></footer-sandbars>
-      <footer-sandbars :title="translate.documents || '{ documents }'" :links="documentsLinks"></footer-sandbars>
-      <footer-sandbars :title="translate.press_center || '{ press_center }'" :links="pressCenterLinks"></footer-sandbars>
+      <footer-sandbars :title="getTranslations.about_us || '{ about_us }'" :links="aboutLinks"></footer-sandbars>
+      <footer-sandbars :title="getTranslations.regions || '{ regions }'" :links="regionsLinks"></footer-sandbars>
+      <footer-sandbars :title="getTranslations.documents || '{ documents }'" :links="documentsLinks"></footer-sandbars>
+      <footer-sandbars :title="getTranslations.press_center || '{ press_center }'" :links="pressCenterLinks"></footer-sandbars>
       <div>
-        <footer-sandbars :title="translate.contacts || '{ contacts }'" :links="contactsLinks"></footer-sandbars>
+        <footer-sandbars :title="getTranslations.contacts || '{ contacts }'" :links="contactsLinks"></footer-sandbars>
         <div class="sandbars hidden-bar">
-          <h2 class="main-text">{{ translate.donates || '{ donates }' }}</h2>
-          <basic-button @click="openDonate" :title_button="translate.donates || '{ donates }'" :is-blue="true"></basic-button>
+          <h2 class="main-text">{{ getTranslations.donates || '{ donates }' }}</h2>
+          <basic-button @click="openDonate" :title_button="getTranslations.donates || '{ donates }'" :is-blue="true"></basic-button>
         </div>
       </div>
     </div>
@@ -157,10 +162,10 @@ export default {
       </div>
     </div>
     <div class="text-line">
-      <div class="text-end">{{ translate.footerNote1 || '{ footerNote1 }' }}</div>
+      <div class="text-end">{{ getTranslations.footerNote1 || '{ footerNote1 }' }}</div>
       <div class="text-line">
-        <div class="text-end">{{ translate.footerNote2 || '{ footerNote2 }' }}</div>
-        <div class="text-end">{{ translate.footerNote3 || '{ footerNote3 }' }}</div>
+        <div class="text-end">{{ getTranslations.footerNote2 || '{ footerNote2 }' }}</div>
+        <div class="text-end">{{ getTranslations.footerNote3 || '{ footerNote3 }' }}</div>
       </div>
     </div>
   </div>

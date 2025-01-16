@@ -2,7 +2,7 @@
 import {mapActions, mapGetters} from 'vuex';
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-import api, {getAllTranslations} from "@/axios";
+import api, {getTranslations} from "@/axios";
 
 export default {
   name: "FullMainPage",
@@ -13,35 +13,19 @@ export default {
       contacts: {},
       lang: [],
   }},
+  created() {
+    this.initializeApp();
+    this.getContacts();
+  },
   computed: {
-    ...mapGetters(['currentLanguage', 'getTranslations']),
-  },
-  watch: {
-    currentLanguage(newLang, oldLang) {
-      if (newLang !== oldLang) {
-        this.updateLanguageResources();
-      }
-    },
-  },
-  async mounted() {
-    this.updateLanguageResources();
-    if (!this.currentLanguage && this.lang.length > 0) {
-      this.changeLanguage(this.lang[0]);
-    }
+    ...mapGetters(['currentLanguage', 'availableLanguages']),
   },
   methods: {
-    ...mapActions(['updateTranslations']),
-    updateLanguageResources() {
-      this.getContacts();
-      this.getLang();
-      this.fetchAndSetTranslations();
-    },
-    async fetchAndSetTranslations() {
-      try {
-        const result = await getAllTranslations(this.currentLanguage);
-        await this.updateTranslations(result);
-      } catch (error) {
-        console.error('Ошибка при загрузке переводов:', error);
+    ...mapActions(['fetchLanguages', 'updateLanguage']),
+    async initializeApp() {
+      await this.fetchLanguages();
+      if (!this.currentLanguage && this.availableLanguages.length > 0) {
+        await this.updateLanguage(this.availableLanguages[0].code);
       }
     },
     async getContacts() {
@@ -52,24 +36,6 @@ export default {
         console.error('Ошибка при загрузке контактов:', error);
       }
     },
-    async getLang() {
-      try {
-        const response = await api.get('/languages/');
-        if (Array.isArray(response.data)) {
-          this.lang = response.data.map(item => ({
-            code: item.kod,
-            title: item.title,
-          }));
-          if (!this.currentLanguage && this.lang.length > 0) {
-            this.changeLanguage(this.lang[0]);
-          }
-        } else {
-          this.lang = [];
-        }
-      } catch (error) {
-        console.error('Ошибка при загрузке языка:', error);
-      }
-    },
   }
 }
 </script>
@@ -77,7 +43,7 @@ export default {
 <template>
   <div class="main">
     <div style="width: 100%" class="main__header">
-      <Header :translate="getTranslations" :contacts="contacts" :lang="lang"/>
+      <Header :contacts="contacts"/>
     </div>
     <div class="content">
       <transition name="fade" mode="out-in">
@@ -85,7 +51,7 @@ export default {
       </transition>
     </div>
     <div class="main__footer">
-      <Footer :translate="getTranslations" :contact_line="contacts"/>
+      <Footer :contact_line="contacts"/>
     </div>
   </div>
 </template>

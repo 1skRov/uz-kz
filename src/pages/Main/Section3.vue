@@ -72,7 +72,7 @@ export default {
           <more @click="goToAboutUsSection" :title="btn_title"/>
         </template>
         <template #content>
-          <div class="content-body">
+          <div class="content-body" v-if="culture">
             <div class="gradient-overlay"></div>
             <img :src="BASE_URL + culture.image" alt="culture and traditions" style="width: 100%; height: 100%;">
             <div class="abs-text">
