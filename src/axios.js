@@ -2,6 +2,9 @@ import axios from 'axios';
 export const BASE_URL = "https://uzbek.kz/media/";
 const api = axios.create({
     baseURL: 'https://uzbek.kz/api/',
+    headers: {
+        'Content-Type': 'application/json',
+    },
 });
 
 export const getTranslations = async (language) => {
@@ -12,8 +15,8 @@ export const getTranslations = async (language) => {
         if (translations[language]) {
             return translations[language];
         } else {
-            console.error(`Переводы для языка "${language}" не найдены`);
-            return null;
+            console.warn(`Переводы для языка "${language}" не найдены`);
+            return {};
         }
     } catch (error) {
         console.error("Ошибка при загрузке переводов:", error);
