@@ -43,17 +43,16 @@ export default {
     },
     pressCenterLinks() {
       return [
-        {text: "Последние новости", to: {name: 'PressCenter', hash: '#news'}},
-        {text: "Видео материалы", to: {name: 'PressCenter', hash: '#video'}},
-        {text: "Фотогалерея", to: {name: 'PressCenter', hash: '#gallery'}},
-        {text: "Интервью", to: {name: 'PressCenter', hash: '#interviews'}},
-        {text: "Благотворительная помощь", to: {name: 'PressCenter', hash: '#charity'}},
+        {text: this.getTranslations.latest_news  || "{ latest_news  }", to: {name: 'PressCenter', hash: '#news'}},
+        {text: this.getTranslations.video_material  || "{ video_material  }", to: {name: 'PressCenter', hash: '#video'}},
+        {text: this.getTranslations.photos  || "{ photos  }", to: {name: 'PressCenter', hash: '#gallery'}},
+        {text: this.getTranslations.interview  || "{ interview  }", to: {name: 'PressCenter', hash: '#interviews'}},
       ]
     },
     contactsLinks() {
       return [
-        {text: "Центральные контакты", to: {name: 'Contacts', hash: '#republic'}},
-        {text: "Региональные контакты", to: {name: 'Contacts', hash: '#regions'}},
+        {text: this.getTranslations.republic_contacts  || "{ republic_contacts  }", to: {name: 'Contacts', hash: '#republic'}},
+        {text: this.getTranslations.region_contacts  || "{ region_contacts  }", to: {name: 'Contacts', hash: '#regions'}},
       ]
     },
   },
