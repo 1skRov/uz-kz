@@ -1,37 +1,52 @@
 <script>
 import QRCode from "qrcode";
+import api from "@/axios";
 
 export default {
   name: "DonatesQr",
-  data(){
+  data() {
     return {
       qrData: null,
-    }
+      donate: {},
+    };
   },
-  mounted() {
+  async mounted() {
+    await this.getContacts();
     this.generateQrCode();
   },
   methods: {
-    generateQrCode() {
-      const qrContent = `KZPAY|2|KASPIBANK|+7|1000|KZT|Donation for support`;
-      QRCode.toCanvas(this.$refs.qrCanvas, qrContent, { width: 200 }, (error) => {
-        if (error) {
-          console.error("Ошибка генерации QR-кода:", error);
-        } else {
-          this.qrData = qrContent;
-        }
-      });
+    async getContacts() {
+      try {
+        const response = await api.get(`/pay-link/`);
+        this.donate = response.data;
+      } catch (error) {
+        console.error("Error loading payment details:", error);
+      }
     },
-  }
-}
+    generateQrCode() {
+      if (this.donate.link && this.donate.card_number) {
+        const qrContent = `Link: ${this.donate.link}\nCard: ${this.donate.card_number}`;
+        QRCode.toCanvas(this.$refs.qrCanvas, qrContent, {width: 200}, (error) => {
+          if (error) {
+            console.error("QR code generation error:", error);
+          } else {
+            this.qrData = qrContent;
+          }
+        });
+      } else {
+        console.error("Insufficient data for QR code generation");
+      }
+    },
+  },
+};
 </script>
 
 <template>
-<div class="qr">
-  <div style="width: 50vh; display: flex; align-items: center; justify-content: center;">
-    <canvas ref="qrCanvas"></canvas>
+  <div class="qr">
+    <div style="width: 50vh; display: flex; align-items: center; justify-content: center;">
+      <canvas ref="qrCanvas"></canvas>
+    </div>
   </div>
-</div>
 </template>
 
 <style scoped>
@@ -43,6 +58,6 @@ export default {
   width: 100%;
   height: auto;
   border: 1px solid red;
-  border-radius: 8px
+  border-radius: 8px;
 }
 </style>
