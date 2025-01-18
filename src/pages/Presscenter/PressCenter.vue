@@ -22,10 +22,10 @@ export default {
   <div class="main">
     <side-bar :title="getTranslations.press_center || '{ press_center }'"/>
     <div class="content">
-      <latest-news :title="getTranslations.latest_news"></latest-news>
-      <video-materials :title="getTranslations.video_material"></video-materials>
-      <photo-gallery :title="getTranslations.photos"></photo-gallery>
-      <interview :title="getTranslations.interview" :btn_title="getTranslations.watch"></interview>
+      <div id="news"><latest-news :title="getTranslations.latest_news"></latest-news></div>
+      <div id="video"><video-materials :title="getTranslations.video_material"></video-materials></div>
+      <div id="gallery"><photo-gallery :title="getTranslations.photos"></photo-gallery></div>
+      <div id="interviews"><interview :title="getTranslations.interview" :btn_title="getTranslations.watch"></interview></div>
 <!--      <div style="padding: 60px 0">-->
 <!--        <help></help>-->
 <!--      </div>-->

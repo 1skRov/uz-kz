@@ -13,18 +13,18 @@ const routes = [
         component: () => import('@/pages/Main/MainPage.vue')
       },
       {
-        path: '/about-us',
+        path: 'about-us',
         name: 'AboutUs',
         component: () => import('@/pages/aboutus/AboutUs.vue')
       },
       {
-        path: '/about-us/organization/:id',
+        path: 'about-us/organization/:id',
         name: 'OrganizationDetails',
         component: () => import('@/pages/aboutus/OrganizationDetails.vue'),
         props: true,
       },
       {
-        path: '/regions',
+        path: 'regions',
         name: 'Regions',
         component: () => import('@/pages/Regions/Regions.vue'),
         redirect: '/regions/guide',
@@ -48,29 +48,29 @@ const routes = [
         ]
       },
       {
-        path: '/documents',
+        path: 'documents',
         name: 'Documents',
         component: () => import('@/pages/Documents/Documents.vue')
       },
       {
-        path: '/press-center',
+        path: 'press-center',
         name: 'PressCenter',
         component: () => import('@/pages/Presscenter/PressCenter.vue')
       },
       {
-        path: '/news/:id',
+        path: 'news/:id',
         name: 'NewsDetails',
         component: () => import('@/pages/Presscenter/NewsDetail.vue'),
         props: true,
       },
       {
-        path: '/video-materials/:id',
+        path: 'video-materials/:id',
         name: 'VideoDetails',
         component: () => import('@/pages/Presscenter/VideoDetail.vue'),
         props: true,
       },
       {
-        path: '/contacts',
+        path: 'contacts',
         name: 'Contacts',
         redirect: '/contacts/republic',
         component: () => import('@/pages/Contacts/Contacts.vue'),
@@ -88,7 +88,7 @@ const routes = [
         ]
       },
       {
-        path: '/donates',
+        path: 'donates',
         name: 'Donates',
         redirect: '/donates/card',
         component: () => import('@/pages/Donates/Donates.vue'),
@@ -106,23 +106,23 @@ const routes = [
         ]
       },
       {
-        path:'/famous-persons',
+        path:'famous-persons',
         name:'FamousPersons',
         component: () => import('@/pages/aboutus/FamousPersonsPage.vue')
       },
       {
-        path: '/famous-persons/:id',
+        path: 'famous-persons/:id',
         name: 'FamousPersonDetails',
         component: () => import('@/pages/aboutus/PersonDetail.vue'),
         props: true
       },
       {
-        path:'/sport',
+        path:'sport',
         name:'Sport',
         component: () => import('@/pages/Regions/Sport.vue')
       },
       {
-        path:'/education',
+        path:'education',
         name:'Education',
         component: () => import('@/pages/Regions/Education.vue')
       },

@@ -12,43 +12,46 @@ export default {
       type: Object,
     }
   },
+  data(){
+    return {}
+  },
   computed: {
     ...mapGetters(['getTranslations']),
     aboutLinks() {
       return [
-        { text: this.getTranslations.our_history || "{ our_history }", to: { name: 'AboutUs', hash: '#section-1' } },
-        { text: this.getTranslations.culture_traditions || "{ culture_traditions }", to: { name: 'AboutUs', hash: '#section-2' } },
-        { text: this.getTranslations.popular_persons || "{ popular_persons }", to: { name: 'AboutUs', hash: '#section-3' } },
-        { text: this.getTranslations.youth_organizations || "{ youth_organizations }", to: { name: 'AboutUs', hash: '#section-4' } },
-        { text: this.getTranslations.education || "{ education }", to: { name: 'AboutUs', hash: '#section-5' } },
-        { text: this.getTranslations.sport || "{ sport }", to: { name: 'AboutUs', hash: '#section-5' } },
+        { text: this.getTranslations.our_history || "{ our_history }", to: { name: 'AboutUs', hash: 'section-1' } },
+        { text: this.getTranslations.culture_traditions || "{ culture_traditions }", to: { name: 'AboutUs', hash: 'section-2' } },
+        { text: this.getTranslations.popular_persons || "{ popular_persons }", to: { name: 'AboutUs', hash: 'section-3' } },
+        { text: this.getTranslations.youth_organizations || "{ youth_organizations }", to: { name: 'AboutUs', hash: 'section-4' } },
+        { text: this.getTranslations.education || "{ education }", to: { name: 'AboutUs', hash: 'section-5' } },
+        { text: this.getTranslations.sport || "{ sport }", to: { name: 'AboutUs', hash: 'section-5' } },
       ]
     },
     regionsLinks() {
       return [
-        { text: "Все регионы", to: { name: 'Regions', hash: '#guide' } },
+        { text: "Все регионы", to: { name: 'Regions' } },
       ]
     },
     documentsLinks(){
       return [
-        { text: this.getTranslations.important_documents || "{ important_documents }", to: { name: 'Documents', hash: '#charter' } },
-        { text: this.getTranslations.charters || "{ charters }", to: { name: 'Documents', hash: '#plan2018' } },
-        { text: this.getTranslations.plans || "{ plans }", to: { name: 'Documents', hash: '#report2017' } },
-        { text: this.getTranslations.projects || "{ projects }", to: { name: 'Documents', hash: '#projects' } },
+        { text: this.getTranslations.important_documents || "{ important_documents }", to: { name: 'Documents', hash: 'important' } },
+        { text: this.getTranslations.charters || "{ charters }", to: { name: 'Documents', hash: 'charter' } },
+        { text: this.getTranslations.plans || "{ plans }", to: { name: 'Documents', hash: 'plan' } },
+        { text: this.getTranslations.projects || "{ projects }", to: { name: 'Documents', hash: 'projects' } },
       ]
     },
     pressCenterLinks() {
       return [
-        {text: this.getTranslations.latest_news  || "{ latest_news  }", to: {name: 'PressCenter', hash: '#news'}},
-        {text: this.getTranslations.video_material  || "{ video_material  }", to: {name: 'PressCenter', hash: '#video'}},
-        {text: this.getTranslations.photos  || "{ photos  }", to: {name: 'PressCenter', hash: '#gallery'}},
-        {text: this.getTranslations.interview  || "{ interview  }", to: {name: 'PressCenter', hash: '#interviews'}},
+        {text: this.getTranslations.latest_news  || "{ latest_news  }", to: {name: 'PressCenter', hash: 'news'}},
+        {text: this.getTranslations.video_material  || "{ video_material  }", to: {name: 'PressCenter', hash: 'video'}},
+        {text: this.getTranslations.photos  || "{ photos  }", to: {name: 'PressCenter', hash: 'gallery'}},
+        {text: this.getTranslations.interview  || "{ interview  }", to: {name: 'PressCenter', hash: 'interviews'}},
       ]
     },
     contactsLinks() {
       return [
-        {text: this.getTranslations.republic_contacts  || "{ republic_contacts  }", to: {name: 'Contacts', hash: '#republic'}},
-        {text: this.getTranslations.region_contacts  || "{ region_contacts  }", to: {name: 'Contacts', hash: '#regions'}},
+        {text: this.getTranslations.republic_contacts  || "{ republic_contacts  }", to: {name: 'Contacts', hash: 'republic'}},
+        {text: this.getTranslations.region_contacts  || "{ region_contacts  }", to: {name: 'Contacts', hash: 'regions'}},
       ]
     },
   },
@@ -105,12 +108,12 @@ export default {
       </div>
     </div>
     <div class="content">
-      <footer-sandbars :title="getTranslations.about_us || '{ about_us }'" :links="aboutLinks"></footer-sandbars>
-      <footer-sandbars :title="getTranslations.regions || '{ regions }'" :links="regionsLinks"></footer-sandbars>
-      <footer-sandbars :title="getTranslations.documents || '{ documents }'" :links="documentsLinks"></footer-sandbars>
-      <footer-sandbars :title="getTranslations.press_center || '{ press_center }'" :links="pressCenterLinks"></footer-sandbars>
+      <footer-sandbars :title="getTranslations.about_us || '{ about_us }'" :links="aboutLinks" :to="{ name: 'AboutUs' }"></footer-sandbars>
+      <footer-sandbars :title="getTranslations.regions || '{ regions }'" :links="regionsLinks" :to="{ name: 'Regions' }"></footer-sandbars>
+      <footer-sandbars :title="getTranslations.documents || '{ documents }'" :links="documentsLinks" :to="{ name: 'Documents' }"></footer-sandbars>
+      <footer-sandbars :title="getTranslations.press_center || '{ press_center }'" :links="pressCenterLinks" :to="{ name: 'PressCenter' }"></footer-sandbars>
       <div>
-        <footer-sandbars :title="getTranslations.contacts || '{ contacts }'" :links="contactsLinks"></footer-sandbars>
+        <footer-sandbars :title="getTranslations.contacts || '{ contacts }'" :links="contactsLinks" :to="{ name: 'Contacts' }"></footer-sandbars>
         <div class="sandbars hidden-bar">
           <h2 class="main-text">{{ getTranslations.donates || '{ donates }' }}</h2>
           <basic-button @click="openDonate" :title_button="getTranslations.donates || '{ donates }'" :is-blue="true"></basic-button>

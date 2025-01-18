@@ -19,9 +19,15 @@ export default {
   <div style="display: flex">
     <side-bar :title="translations.documents_side || '{ documents_side }'"></side-bar>
     <div class="documents">
-      <important :title="translations.important_documents"/>
-      <articles :title="translations.charters"/>
-      <plans :title="translations.plans"/>
+      <div id="important">
+        <important :title="translations.important_documents"/>
+      </div>
+      <div id="charter">
+        <articles :title="translations.charters"/>
+      </div>
+      <div is="plan">
+        <plans :title="translations.plans"/>
+      </div>
     </div>
   </div>
 </template>

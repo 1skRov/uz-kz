@@ -18,7 +18,9 @@ name: "Documents",
 <template>
   <div>
     <doc-imp :translations="getTranslations"/>
-    <projects :title="getTranslations.projects" :title_side="getTranslations.projects_side"/>
+    <div id="projects">
+      <projects :title="getTranslations.projects" :title_side="getTranslations.projects_side"/>
+    </div>
   </div>
 </template>
 
