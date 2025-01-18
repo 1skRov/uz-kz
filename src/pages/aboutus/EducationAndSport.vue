@@ -129,6 +129,7 @@ export default {
   display: flex;
   gap: 2rem;
 }
+
 .ed, .sp {
   width: 50%;
   border: 1px solid #EBEEF0;
@@ -137,6 +138,7 @@ export default {
   padding: 2.5rem;
   background-color: rgba(0, 114, 171, 0.02);
 }
+
 .icon{
   position: absolute;
   bottom:0;
@@ -145,10 +147,12 @@ export default {
   width: 205px;
   height: 165px
 }
+
 .title {
   font-size: 40px;
   line-height: 50px;
 }
+
 .text {
   line-height: 38px;
 }
@@ -158,10 +162,12 @@ export default {
     font-size: 28px;
     line-height: 32px;
   }
+
   .text {
     line-height: 28px;
   }
-  .icon{
+
+  .icon {
     width: 150px;
     height: 120px
   }
@@ -172,13 +178,16 @@ export default {
     display: flex;
     flex-direction: column;
   }
+
   .title {
     font-size: 24px;
     line-height: 28px;
   }
+
   .text {
     line-height: 28px;
   }
+
   .ed, .sp {
     width: 83%;
   }

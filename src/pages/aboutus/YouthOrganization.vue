@@ -174,6 +174,7 @@ export default {
 .mobile-swiper {
   display: none;
 }
+
 .cards-container {
   display: flex;
   flex-direction: column;
@@ -185,6 +186,7 @@ export default {
   justify-content: space-between;
   gap: 1rem;
 }
+
 .row + .row {
   margin-top: 1rem;
 }
@@ -281,13 +283,16 @@ export default {
   .card {
     height: 20rem;
   }
+
   .card-overlay {
     opacity: 1;
     background: linear-gradient(to top, rgba(0, 114, 171, 0.7) 0%, rgba(0, 114, 171, 0) 100%);
   }
+
   .card-button {
     display: none;
   }
+
   .inside {
     padding: 0.5rem 1rem;
   }
@@ -334,6 +339,7 @@ export default {
   .cards-container {
     display: none;
   }
+
   .mobile-swiper {
     display: block;
   }

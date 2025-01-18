@@ -113,6 +113,7 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+
 .text-container {
   display: flex;
   flex-direction: column;
@@ -121,6 +122,7 @@ export default {
   width: 50%;
   box-sizing: border-box;
 }
+
 .image-container {
   width: 50%;
   display: flex;
@@ -135,6 +137,7 @@ export default {
   object-fit: cover;
   max-width: 100%;
 }
+
 @media (max-width: 1024px) {
   .title {
     font-size: 28px;
@@ -151,16 +154,19 @@ export default {
     display: flex;
     flex-direction: column;
   }
+
   .text-container {
     width: 100%;
     padding: 30px;
   }
+
   .image-container {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
+
   .responsive-image {
     width: 100%;
     height: auto;

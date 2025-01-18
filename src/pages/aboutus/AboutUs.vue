@@ -29,7 +29,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["currentLanguage", "getTranslations"]),
+    ...mapGetters(["getTranslations"]),
     sections(){
       return [
         this.getTranslations.who_we_are,

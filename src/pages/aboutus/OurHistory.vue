@@ -94,7 +94,7 @@ export default {
         </div>
       </template>
       <template #content>
-        <section class="game-section">
+        <section class="g-section">
           <div class="btn-mobile">
             <div @click="scrollLeft"><left  :is-white="true"/></div>
             <div @click="scrollRight"><right :is-white="true" /></div>
@@ -255,7 +255,7 @@ export default {
     gap: 0;
   }
 
-  .game-section {
+  .g-section {
     position: relative;
     background-color: red;
   }
