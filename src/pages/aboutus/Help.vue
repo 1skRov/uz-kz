@@ -78,8 +78,8 @@ export default {
       <div class="btn">
         <basic-button :title_button="btn_title" :is-blue="true" @click="goToDonate" />
         <div style="display: flex; gap: 1rem">
-          <left @click="goLeft" />
-          <right @click="goRight" />
+          <div @click="goLeft"><left /></div>
+          <div @click="goRight"><right /></div>
         </div>
       </div>
     </div>

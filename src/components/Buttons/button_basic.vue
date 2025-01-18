@@ -33,7 +33,7 @@ export default {
 }
 b  {
   letter-spacing: 1.5px;
-  color: #333333;
+  text-transform: uppercase;
 }
 
 .btn:hover {
@@ -51,7 +51,10 @@ b  {
 }
 @media (max-width: 1024px) {
   .btn {
-    padding: 16px 26px;
+    padding: 13px 18px;
+  }
+  b  {
+    font-size: 12px;
   }
 }
 

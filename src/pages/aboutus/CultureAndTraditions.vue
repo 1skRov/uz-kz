@@ -93,15 +93,13 @@ export default {
         }"
             :modules="modules"
             :preventClicks="false"
-            class="mySwiper py-6 -my-6 h-40"
+            class="mySwiper"
         >
           <swiper-slide
               v-for="(slide, index) in slides"
               :key="index"
           >
-            <div
-                class="h-full flex items-center justify-center border border-blue-500 rounded-lg font-black text-xl"
-            >
+            <div>
               <img :src="BASE_URL + slide.image" :alt="slide.title" class="carousel-image" />
               <div class="carousel-caption">
                 <h3 class="font-gilroy">{{ slide.title }}</h3>

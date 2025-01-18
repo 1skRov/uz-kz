@@ -56,14 +56,17 @@ export default {
             console.error(error);
           });
     },
-    slideNext() {
-      if (this.swiperRef) {
-        this.swiperRef.slideNext();
-      }
+    onSwiper(swiper) {
+      this.swiperInstance = swiper
     },
     slidePrev() {
-      if (this.swiperRef) {
-        this.swiperRef.slidePrev();
+      if (this.swiperInstance) {
+        this.swiperInstance.slidePrev()
+      }
+    },
+    slideNext() {
+      if (this.swiperInstance) {
+        this.swiperInstance.slideNext()
       }
     },
     goToDetails(newsId) {
@@ -93,7 +96,7 @@ export default {
               <div class="card-overlay">
                 <div class="inside">
                   <div class="card-title font-gilroy">{{ card.title }}</div>
-                  <div class="card-description" v-html="card.desc"></div>
+                  <div class="card-description truncate-text" v-html="card.desc"></div>
                   <button class="card-button" @click="goToDetails(card.id)">{{ btn_title }}</button>
                 </div>
               </div>
@@ -125,11 +128,16 @@ export default {
           </div>
         </div>
         <swiper
+            @swiper="onSwiper"
             ref="swiperRef"
             :slides-per-view="1"
-            space-between="20"
-            pagination
+            :space-between="0"
+            :loop="true"
             class="mobile-swiper"
+            :autoplay="{
+              delay: 2000,
+              disableOnInteraction: true,
+            }"
         >
           <swiper-slide
               v-for="(card, index) in cards"
@@ -147,15 +155,15 @@ export default {
                   class="card-description truncate-text"
                   v-html="card.desc"
               ></div>
-              <button class="card-button" @click="$router.push({ name: 'OrganizationDetails', params: { id: card.id, card: card } })">{{ btn_title }}</button>
+              <button class="card-button" @click="$router.push({ name: 'OrganizationDetails', params: { id: card.id, card: card } })"><b>{{ btn_title }}</b></button>
             </div>
           </swiper-slide>
         </swiper>
       </template>
       <template #btn>
         <div style="display: flex; justify-content: center; margin-top: 1rem; gap: 10px">
-          <left @click="slidePrev" />
-          <right @click="slideNext" />
+          <div @click="slidePrev"><left /></div>
+          <div  @click="slideNext"><right /></div>
         </div>
       </template>
     </sections>
@@ -206,7 +214,6 @@ export default {
   width: 100%;
   height: 100%;
   display: block;
-  border-radius: 8px;
 }
 
 .card-overlay {
@@ -234,7 +241,7 @@ export default {
 
 .card-title {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 500;
   margin-bottom: 0.5rem;
   color: #FFFFFF;
 }
@@ -251,8 +258,10 @@ export default {
   padding: 0.9rem 1.5rem;
   cursor: pointer;
   max-width: 12rem;
-  font-weight: 500;
   text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 500;
+  margin-top: 10px;
 }
 
 .mobile-swiper {
@@ -270,7 +279,7 @@ export default {
 
 @media (max-width: 1024px) {
   .card {
-    height: 15rem;
+    height: 20rem;
   }
   .card-overlay {
     opacity: 1;
@@ -315,7 +324,6 @@ export default {
   background: #0072AB;
   color: white;
   border: none;
-  border-radius: 8px;
   padding: 0.8rem 1.5rem;
   cursor: pointer;
   font-weight: 500;
