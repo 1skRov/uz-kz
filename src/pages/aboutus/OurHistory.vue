@@ -89,15 +89,15 @@ export default {
       <template #title v-if="!isMobile">{{ title }}</template>
       <template #title-button>
         <div class="btn">
-          <left @click="scrollLeft" />
-          <right @click="scrollRight" />
+          <div @click="scrollLeft"><left  /></div>
+          <div @click="scrollRight"><right  /></div>
         </div>
       </template>
       <template #content>
         <section class="game-section">
           <div class="btn-mobile">
-            <left @click="scrollLeft" :is-white="true"/>
-            <right @click="scrollRight" :is-white="true"/>
+            <div @click="scrollLeft"><left  :is-white="true"/></div>
+            <div @click="scrollRight"><right :is-white="true" /></div>
           </div>
           <div class="carousel-container">
             <div

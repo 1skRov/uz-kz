@@ -4,10 +4,13 @@ import Right from "@/components/Buttons/right.vue";
 import Left from "@/components/Buttons/left.vue";
 import api, {BASE_URL} from "@/axios";
 import {mapGetters} from "vuex";
-
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import {Pagination, Navigation,} from 'swiper/modules'
+const modules = [Pagination, Navigation]
 export default {
   name: "CultureAndTraditions",
-  components: { Left, Right, Sections },
+  components: { Left, Right, Sections, Swiper,
+    SwiperSlide, },
   props:{
     title: {
       type: String,
@@ -19,7 +22,9 @@ export default {
     return {
       slides: [],
       activeIndex: 0,
-      BASE_URL
+      BASE_URL,
+      modules: modules,
+      swiperInstance: {},
     };
   },
   computed: {
@@ -34,6 +39,19 @@ export default {
     this.getCulture();
   },
   methods: {
+    onSwiper(swiper) {
+      this.swiperInstance = swiper
+    },
+    slidePrev() {
+      if (this.swiperInstance) {
+        this.swiperInstance.slidePrev()
+      }
+    },
+    slideNext() {
+      if (this.swiperInstance) {
+        this.swiperInstance.slideNext()
+      }
+    },
     getCulture() {
       api
           .get(`/traditions/?lang_code=${this.currentLanguage}`)
@@ -49,14 +67,6 @@ export default {
             console.error(error);
           });
     },
-    prevSlide() {
-      this.activeIndex =
-          this.activeIndex === 0 ? this.slides.length - 1 : this.activeIndex - 1;
-    },
-    nextSlide() {
-      this.activeIndex =
-          this.activeIndex === this.slides.length - 1 ? 0 : this.activeIndex + 1;
-    },
   },
 };
 </script>
@@ -67,30 +77,44 @@ export default {
       <template #title>{{ title }}</template>
       <template #title-button>
         <div class="btn">
-          <left @click="prevSlide" />
-          <right @click="nextSlide" />
+          <div @click="slidePrev"><left /></div>
+          <div @click="slideNext"><right /></div>
         </div>
       </template>
       <template #content>
-        <div class="fade-carousel">
-          <div
-              class="carousel-item"
+        <swiper
+            @swiper="onSwiper"
+            :slidesPerView="1"
+            :spaceBetween="0"
+            :loop="true"
+            :autoplay="{
+          delay: 2000,
+          disableOnInteraction: true,
+        }"
+            :modules="modules"
+            :preventClicks="false"
+            class="mySwiper py-6 -my-6 h-40"
+        >
+          <swiper-slide
               v-for="(slide, index) in slides"
               :key="index"
-              :class="{ active: activeIndex === index }"
           >
-            <img :src="slide.image" :alt="BASE_URL + slide.image" class="carousel-image" />
-            <div class="carousel-caption">
-              <h3 class="font-gilroy">{{ slide.title }}</h3>
-              <p v-html="slide.content"></p>
+            <div
+                class="h-full flex items-center justify-center border border-blue-500 rounded-lg font-black text-xl"
+            >
+              <img :src="BASE_URL + slide.image" :alt="slide.title" class="carousel-image" />
+              <div class="carousel-caption">
+                <h3 class="font-gilroy">{{ slide.title }}</h3>
+                <p v-html="slide.content"></p>
+              </div>
             </div>
-          </div>
-        </div>
+          </swiper-slide>
+        </swiper>
       </template>
       <template #btn>
         <div class="btn">
-          <left @click="prevSlide" />
-          <right @click="nextSlide" />
+          <div @click="slidePrev"><left /></div>
+          <div @click="slideNext"><right /></div>
         </div>
       </template>
     </sections>
@@ -102,19 +126,6 @@ export default {
   display: flex;
   align-items: center;
   gap: 1em;
-}
-.fade-carousel {
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-}
-.carousel-item {
-  width: 100%;
-  height: auto;
-  display: none;
-}
-.carousel-item.active {
-  display: block;
 }
 .carousel-image {
   width: 100%;

@@ -18,7 +18,6 @@ export default {
   <div
       class="btn"
       :class="{ 'btn--disabled': disabled }"
-      @click="!disabled && $emit('click')"
   >
     <svg
         width="40"

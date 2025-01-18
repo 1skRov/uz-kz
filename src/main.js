@@ -6,6 +6,7 @@ import "swiper/swiper-bundle.css";
 import 'leaflet/dist/leaflet.css';
 import 'swiper/css';
 import 'swiper/css/grid';
+import "swiper/css/navigation";
 import "@/index.css"
 
 createApp(App).use(store).use(router).mount('#app')
