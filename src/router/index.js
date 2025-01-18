@@ -64,6 +64,12 @@ const routes = [
         props: true,
       },
       {
+        path: '/video-materials/:id',
+        name: 'VideoDetails',
+        component: () => import('@/pages/Presscenter/VideoDetail.vue'),
+        props: true,
+      },
+      {
         path: '/contacts',
         name: 'Contacts',
         redirect: '/contacts/republic',

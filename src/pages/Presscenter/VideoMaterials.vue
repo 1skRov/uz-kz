@@ -167,9 +167,15 @@ export default {
           >
             <div class="card">
               <div class="image-card">
-                <video width="400" height="300" controls="controls" :poster="BASE_URL + m.video">
+                <video controls="controls" :poster="BASE_URL + m.image">
                   <source :src="BASE_URL + m.video">
                 </video>
+                <div class="card__overlay">
+                  <svg width="49" height="48" viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24.333 44C35.3787 44 44.333 35.0457 44.333 24C44.333 12.9543 35.3787 4 24.333 4C13.2873 4 4.33301 12.9543 4.33301 24C4.33301 35.0457 13.2873 44 24.333 44Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M20.333 16L32.333 24L20.333 32V16Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
               </div>
               <div class="card-content">
                 <div class="title font-gilroy truncate-text">{{ m.title }}</div>
@@ -216,8 +222,9 @@ export default {
     width: 100%;
     border-radius: 8px;
     overflow: hidden;
+    position: relative;
 
-    img {
+    video {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -247,6 +254,29 @@ export default {
       font-weight: 500;
     }
   }
+}
+
+.card__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 114, 171, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 8px;
+}
+.card__overlay svg {
+  width: 50px;
+  height: 50px;
+  color: white;
+}
+.card:hover .card__overlay {
+  opacity: 1;
 }
 
 @media (max-width: 1024px) {

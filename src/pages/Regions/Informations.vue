@@ -33,7 +33,7 @@ export default {
   methods: {
     getPersons(regionId) {
       if (regionId) {
-        api.get(`/etno-center/?region_id=${regionId}`)
+        api.get(`/etno-center-info/?region_id=${regionId}&lang_code=${this.currentLanguage}`)
             .then(response => {
               this.info = response.data;
             })
@@ -48,7 +48,6 @@ export default {
 
 <template>
 <div>
-  {{ info }} - {{ rid }}
   <div style="width: 100%; height: auto;">
     <img :src="BASE_URL + info.image" :alt="BASE_URL + info.image">
   </div>

@@ -5,7 +5,7 @@ import BasicButton from "@/components/Buttons/button_basic.vue";
 import {SwiperSlide} from "swiper/vue";
 
 export default {
-  name: "NewsDetail",
+  name: "VideoDetail",
   components: {SwiperSlide, BasicButton},
   props: {
     id: {
@@ -40,7 +40,7 @@ export default {
   methods: {
     getNews() {
       api
-          .get(`/last-news/?lang_code=${this.currentLanguage}`)
+          .get(`/video-materials/?lang_code=${this.currentLanguage}`)
           .then((response) => {
             const data = response.data;
             if (Array.isArray(data) && data.length > 0) {
@@ -73,7 +73,7 @@ export default {
     goToNewsDetails(newsId) {
       this.$router.push({ name: 'NewsDetails', params: { id: newsId } });
     },
-    goToAllNews() {
+    goToAllVideo() {
       this.$router.push({ name: 'PressCenter' });
     },
   },
@@ -84,53 +84,54 @@ export default {
   <div style="position: relative">
     <div class="back">
       <basic-button style="padding: 10px 14px; font-weight: 500;"
-          title_button="Назад к новостям" @click="goToAllNews"
+                    title_button="Назад к новостям" @click="goToAllVideo"
       ></basic-button>
     </div>
     <div class="newsItem">
       <div class="newsItem___detail">
-      <nav style="display: flex; align-items: center; gap: 20px">
-        <div class="item-back">
-          <basic-button style="padding: 10px 14px; font-weight: 500;"
-                        title_button="Назад к новостям"
-          ></basic-button>
-        </div>
-        <div style="display: flex; align-items: center;">
-          <basic-button title_button="Олимпиада" style="padding: 10px 14px; font-weight: 500;" :is-blue="true"></basic-button>
-          <div class="time">{{ formatDate(news_item.posted_date) }}</div>
-        </div>
-      </nav>
-      <div class="page">
-        <div class="newsItem__main">
-          <div class="newsItem__image">
-            <img :src="BASE_URL + news_item.image" :alt="BASE_URL + news_item.image">
+        <nav style="display: flex; align-items: center; gap: 20px">
+          <div class="item-back">
+            <basic-button style="padding: 10px 14px; font-weight: 500;"
+                          title_button="Назад к новостям"
+            ></basic-button>
           </div>
-          <div class="newsItem__text">
-            <p class="title font-gilroy">{{news_item.title}}</p>
-            <div class="content-text" v-html="news_item.desc"></div>
+          <div style="display: flex; align-items: center;">
+            <basic-button title_button="Олимпиада" style="padding: 10px 14px; font-weight: 500;" :is-blue="true"></basic-button>
+            <div class="time">{{ formatDate(news_item.posted_date) }}</div>
           </div>
-        </div>
-        <div class="recommendNews">
-          <div class="recommendNews___title">recommand</div>
-          <div class="recommendNews___content" v-for="(n, index) in news"
-               :key="index"
-               @click="goToNewsDetails(n.id)">
-            <div class="card">
-              <div class="image-card">
-                <img
-                    :src="BASE_URL + n.image"
-                    alt="Новость"
-                />
-              </div>
-              <div class="card-content">
-                <div class="title font-gilroy truncate-text">{{ n.title }}</div>
-                <div class="time">{{ formatDate(n.posted_date)  }}</div>
+        </nav>
+        <div class="page">
+          <div class="newsItem__main">
+            <div class="newsItem__image">
+              <video controls="controls">
+                <source :src="BASE_URL + news_item.video" type="video/mp4">
+              </video>
+            </div>
+            <div class="newsItem__text">
+              <p class="title font-gilroy">{{news_item.title}}</p>
+              <div class="content-text" v-html="news_item.desc"></div>
+            </div>
+          </div>
+          <div class="recommendNews">
+            <div class="recommendNews___title">recommand</div>
+            <div class="recommendNews___content" v-for="(n, index) in news"
+                 :key="index"
+                 @click="goToNewsDetails(n.id)">
+              <div class="card">
+                <div class="image-card">
+                  <video :poster="BASE_URL + n.image" controls="controls">
+                    <source :src="BASE_URL + n.video" type="video/mp4">
+                  </video>
+                </div>
+                <div class="card-content">
+                  <div class="title font-gilroy truncate-text">{{ n.title }}</div>
+                  <div class="time">{{ formatDate(n.posted_date)  }}</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
@@ -189,7 +190,7 @@ nav {
   border-radius: 8px;
   overflow: hidden;
 
-  img {
+  video {
     width: 100%;
     height: 100%;
   }
@@ -252,7 +253,7 @@ nav {
       border-radius: 8px;
       overflow: hidden;
 
-      img {
+      video {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -299,10 +300,10 @@ nav {
       line-height: 30px;
     }
 
-      .time {
-        color: #575F6C;
-        font-weight: 500;
-      }
+    .time {
+      color: #575F6C;
+      font-weight: 500;
+    }
   }
 
   .item-back {

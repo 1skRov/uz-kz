@@ -19,7 +19,6 @@ export default {
   props: {
     title: {
       type: String,
-      default: "{ latest_news }",
     },
     rows: {
       type: Number,
@@ -87,6 +86,7 @@ export default {
         day: "numeric",
         hour: "2-digit",
         minute: "2-digit",
+        hour12: false,
       };
       return new Date(dateString).toLocaleDateString(this.currentLanguage || "en-US", options);
     },

@@ -296,6 +296,7 @@ export default {
 @media (max-width: 768px) {
   .btn {
     gap: 2em;
+    display: flex;
   }
 
   .card {

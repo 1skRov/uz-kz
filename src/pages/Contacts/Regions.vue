@@ -26,31 +26,15 @@ export default defineComponent({
     isMobile() {
       return this.windowWidth <= 768;
     },
-    filteredRegions() {
-      return this.regions.map(region => {
-        const regionCopy = { ...region };
-        switch (this.currentLanguage) {
-          case 'kk':
-            regionCopy.name = region.titli_kk;
-            break;
-          case 'en':
-            regionCopy.name = region.titli_en;
-            break;
-          default:
-            regionCopy.name = region.titli_ru;
-            break;
-        }
-        return regionCopy;
-      });
-    }
   },
   mounted(){
-    this.getContacts();
     this.getRegion();
+    this.getContacts();
   },
   methods: {
-    getContacts(){
-      api.get('/contacts/')
+    getContacts(regionId = null) {
+      const url = regionId ? `etno-center-contact/?region_id=${regionId}` : '';
+      api.get(url)
           .then(response => {
             const data = response.data[0];
             if (data) {
@@ -61,8 +45,8 @@ export default defineComponent({
             console.error(error);
           });
     },
-    getRegion(){
-      api.get('/etno-center-region/')
+    getRegion() {
+      api.get(`/etno-center-region/?lang_code=${this.currentLanguage}`)
           .then(response => {
             const data = response.data;
             if (data) {
@@ -75,6 +59,7 @@ export default defineComponent({
     },
     selectRegion(region) {
       this.selectedItem = region;
+      this.getContacts(region.id);
     },
   }
 })
@@ -89,16 +74,16 @@ export default defineComponent({
       <div class="left__city">
         <details class="custom-select" ref="customSelect">
           <summary class="radios">
-            <span>{{ selectedItem?.name || 'Выберите регион' }}</span>
+            <span>{{ selectedItem?.title || 'Выберите регион' }}</span>
           </summary>
           <ul class="list">
             <li
-                v-for="region in filteredRegions"
+                v-for="region in regions"
                 :key="region.id"
                 :class="{ selected: selectedItem && selectedItem.id === region.id }"
                 @click="selectRegion(region)"
             >
-              {{ region.name }}
+              {{ region.title }}
             </li>
           </ul>
         </details>
@@ -199,7 +184,7 @@ p {
 }
 .right {
   width: 50%;
-  min-height: 30vh;
+  min-height: 35vh;
 }
 @media (max-width: 1024px) {
   .contacts {
@@ -297,8 +282,7 @@ p {
 
 .custom-select li {
   margin: 0;
-  padding: 1rem 0;
-  text-align: center;
+  padding: 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 }
