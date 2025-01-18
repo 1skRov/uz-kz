@@ -45,7 +45,6 @@ export default {
       this.$router.push({
         name: "FamousPersonDetails",
         params: { id: this.id },
-        query: { name: this.name, text: this.text, job: this.position, image: this.img },
       });
     },
     updateWindowWidth() {
@@ -67,7 +66,7 @@ export default {
       <img
           :src="BASE_URL + img"
           alt="Person Image"
-          style="width: 100%; height: 100%; object-fit: cover;"
+          style="width: 100%; height: 100%; object-fit: fill;"
       />
     </div>
     <div class="right-content">
@@ -112,6 +111,9 @@ span {
   color: #575F6C;
 }
 @media (max-width: 1024px) {
+  .main {
+    height: 10rem;
+  }
   .left-img {
     width: 20%;
   }

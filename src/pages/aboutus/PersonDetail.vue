@@ -1,24 +1,39 @@
 <script>
-import {BASE_URL} from "@/axios";
+import api, {BASE_URL} from "@/axios";
+import {mapGetters} from "vuex";
 
 export default {
   name: "PersonDetails",
   props: {
     id: {
-      type: Number,
+      type: [Number, String],
       required: true,
     },
   },
   data() {
     return {
-      name: this.$route.query.name || '',
-      text: this.$route.query.text || '',
-      job: this.$route.query.job || '',
-      image: this.$route.query.image || '',
-      BASE_URL
+      BASE_URL,
+      person: {},
     };
   },
+  computed:{
+    ...mapGetters(['currentLanguage']),
+  },
+  mounted() {
+    this.getPerson();
+  },
   methods: {
+    getPerson() {
+      api.get(`/famous-persons/?lang_code=${this.currentLanguage}`)
+          .then(response => {
+            console.log(response.data)
+            this.person = response.data.find(item => item.id === Number(this.id)) || {};
+            console.log("person", this.person)
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    },
     closeModal() {
       this.$router.go(-1);
     },
@@ -31,15 +46,15 @@ export default {
     <div class="dialog-content">
       <div class="left">
         <div class="left-image">
-          <img :src="BASE_URL + image" alt="person" />
+          <img :src="BASE_URL + person.image" :alt="person.image" />
         </div>
       </div>
       <div class="right">
         <button class="close-btn" @click="closeModal">&times;</button>
         <div class="over">
-          <div class="dialog-title font-gilroy">{{ name }}</div>
-          <div class="job">{{ job }}</div>
-          <div class="dialog-text" v-html="text"></div>
+          <div class="dialog-title font-gilroy">{{ person.position }}</div>
+          <em class="job">{{ person.position }}</em>
+          <div class="dialog-text" v-html="person.desc"></div>
         </div>
       </div>
     </div>
@@ -54,7 +69,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 8000;
 }
 
 .dialog-content {
@@ -83,7 +98,7 @@ export default {
 
 .left-image {
   width: 100%;
-  height: 50vh;
+  height: 60vh;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -91,7 +106,7 @@ export default {
 .left img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: fill;
 }
 
 .right {
@@ -114,6 +129,10 @@ export default {
   border: none;
   font-size: 35px;
   cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #0072ab;
 }
 
 .dialog-title {

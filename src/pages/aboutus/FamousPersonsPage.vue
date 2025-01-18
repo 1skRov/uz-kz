@@ -11,14 +11,13 @@ export default {
   components: {PopularItem, SideBar, Left, Right, Sections},
   data(){
     return{
-      translations: {},
-      persons:[],
+      persons: [],
       currentPage: 0,
-      itemsPerPage: 1,
+      itemsPerPage: 3,
     }
   },
   computed: {
-    ...mapGetters(['currentLanguage']),
+    ...mapGetters(['currentLanguage', 'getTranslations']),
     paginatedPersons() {
       const start = this.currentPage * this.itemsPerPage;
       const end = start + this.itemsPerPage;
@@ -31,29 +30,12 @@ export default {
   watch: {
     currentLanguage(newLang) {
       this.getPersons();
-      this.getTranslations();
     },
   },
   mounted() {
     this.getPersons();
-    this.getTranslations();
   },
   methods:{
-    getTranslations() {
-      api.get('/trans/')
-          .then((response) => {
-            const translations = response.data;
-            const currentLang = this.currentLanguage;
-            if (translations[currentLang]) {
-              this.translations = translations[currentLang];
-            } else {
-              console.error(`Переводы для языка "${currentLang}" не найдены`);
-            }
-          })
-          .catch((error) => {
-            console.error("Ошибка при загрузке переводов:", error);
-          });
-    },
     getPersons() {
       api.get(`/famous-persons/?lang_code=${this.currentLanguage}`)
           .then(response => {
@@ -80,14 +62,14 @@ export default {
 
 <template>
   <div style="display: flex">
-    <side-bar :title="translations.popular_side || '{ popular_side }'"></side-bar>
+    <side-bar :title="getTranslations.popular_side || '{ popular_side }'"></side-bar>
     <div class="persons">
       <sections>
-        <template #title>{{ translations.popular_persons || '{ popular_persons }' }}</template>
+        <template #title>{{ getTranslations.popular_persons || '{ popular_persons }' }}</template>
         <template #title-button>
           <div class="btn">
-            <left @click="prevPage"/>
-            <right @click="nextPage"/>
+            <div @click="prevPage"><left/></div>
+            <div @click="nextPage"><right/></div>
           </div>
         </template>
         <template #content>
@@ -100,14 +82,14 @@ export default {
                 :text="person.desc"
                 :img="person.image"
                 :position="person.position"
-                :btn_title="translations.popular_person || '{ popular_person }'"
+                :btn_title="getTranslations.popular_person || '{ popular_person }'"
             />
           </div>
         </template>
         <template #btn>
           <div class="btn">
-            <left @click="prevPage"/>
-            <right  @click="nextPage"/>
+            <div @click="prevPage"><left/></div>
+            <div @click="nextPage"><right/></div>
           </div>
         </template>
       </sections>
