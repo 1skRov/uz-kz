@@ -26,10 +26,6 @@ export default {
     },
     regionsLinks() {
       return [
-        { text: "Ассоциация узбеков РК 'Дустлик'", to: { name: 'Regions', hash: '#some-section' } },
-        { text: "АСТАНА Узбекский ЭКЦ г. Астаны", to: { name: 'Regions', hash: '#some-section' } },
-        { text: "АЛМАТЫ Узбекский ЭКЦ г. Алматы", to: { name: 'Regions', hash: '#some-section' } },
-        { text: "Узбекский ЭКЦ г. Шымкент", to: { name: 'Regions', hash: '#some-section' } },
         { text: "Все регионы", to: { name: 'Regions', hash: '#guide' } },
       ]
     },

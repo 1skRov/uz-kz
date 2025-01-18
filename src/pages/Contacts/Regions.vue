@@ -33,8 +33,7 @@ export default defineComponent({
   },
   methods: {
     getContacts(regionId = null) {
-      const url = regionId ? `etno-center-contact/?region_id=${regionId}` : '';
-      api.get(url)
+      api.get(`etno-center-contact/?region_id=${regionId}`)
           .then(response => {
             const data = response.data[0];
             if (data) {
@@ -51,6 +50,10 @@ export default defineComponent({
             const data = response.data;
             if (data) {
               this.regions = data;
+              if (this.regions.length > 0) {
+                this.selectedItem = this.regions[0];
+                this.getContacts(this.selectedItem.id);
+              }
             }
           })
           .catch(error => {
