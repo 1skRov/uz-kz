@@ -62,7 +62,6 @@ export default {
   <div class="main">
     <side-bar :title="getTranslations.regions || '{ regions }'"/>
     <div class="main__content">
-      {{id}} - test
       <div v-if="cardItem">
         <div class="main__image">
           <img :src="BASE_URL + cardItem.image" :alt="BASE_URL + cardItem.image" style="width: 100%; height: 100%">
