@@ -102,6 +102,10 @@ export default {
     padding: 50px 0;
     width: 90%;
   }
+  .text-content {
+    gap: 1rem;
+  }
+
   .title {
     font-size: 28px;
   }

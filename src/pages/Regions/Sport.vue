@@ -3,28 +3,28 @@ import Sections from "@/components/Sections.vue";
 import SideBar from "@/components/SideBarText.vue";
 import {mapGetters} from "vuex";
 import api, {getTranslations, BASE_URL} from "@/axios";
+import LatestNews from "@/pages/Presscenter/LatestNews.vue";
+import VideoMaterials from "@/pages/Presscenter/VideoMaterials.vue";
+import PhotoGallery from "@/pages/Presscenter/PhotoGallery.vue";
 
 export default {
   name: "Education",
-  components: {SideBar, Sections},
+  components: {PhotoGallery, VideoMaterials, LatestNews, SideBar, Sections},
   data(){
     return {
-      trans: {},
       sport: {},
       BASE_URL
     }
   },
   computed: {
-    ...mapGetters(['currentLanguage']),
+    ...mapGetters(['currentLanguage', 'getTranslations']),
   },
   watch: {
     currentLanguage(newLang) {
-      this.getTranslations();
       this.getEducation();
     },
   },
   async mounted() {
-    this.trans = await getTranslations(this.currentLanguage);
     this.getEducation();
   },
   methods: {
@@ -46,7 +46,7 @@ export default {
 
 <template>
   <div class="main">
-    <side-bar :title="trans.regions || '{ regions }'"/>
+    <side-bar :title="getTranslations.regions || '{ regions }'"/>
     <div class="content">
       <div class="image_content">
         <img :src="BASE_URL + sport.image" :alt="BASE_URL + sport.image" style="width: 100%; height: 100%">
@@ -55,6 +55,9 @@ export default {
         <div class="title">{{ sport.title }}</div>
         <div class="text" v-html="sport.full_desc"></div>
       </div>
+      <latest-news :rows="1" :title="getTranslations.news || '{ news }'"></latest-news>
+      <video-materials :title="getTranslations.video_material || '{ video_material }'"></video-materials>
+      <photo-gallery :title="getTranslations.photos  || '{ photos  }'"></photo-gallery>
     </div>
   </div>
 </template>
@@ -62,34 +65,66 @@ export default {
 <style scoped>
 .main {
   display: flex;
+}
+
+.content {
+  margin: 0 auto;
+  padding: 64px 0;
+  width: 65%;
+  height: 100%;
+}
+
+.image_content {
+  width: 100%;
+  height: 65%;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.text-content {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.title {
+  font-size: 40px;
+  color: #333333;
+}
+
+.text {
+  line-height: 32px;
+}
+
+@media (max-width: 1024px) {
   .content {
-    margin: 0 auto;
-    padding: 64px 0;
-    width: 65%;
-    height: 100%;
+    padding: 50px 0;
+    width: 90%;
+  }
+  .text-content {
+    gap: 1rem;
+  }
 
-    .image_content {
-      width: 100%;
-      height: 65%;
-      border-radius: 8px;
-      overflow: hidden;
-      margin-bottom: 30px;
-    }
-    .text-content {
-      height: 100%;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
+  .title {
+    font-size: 28px;
+  }
+  .text {
+    line-height: 24px;
+  }
+}
 
-      .title {
-        font-size: 40px;
-        color: #333333;
-      }
-      .text {
-        line-height: 32px;
-      }
-    }
+@media (max-width: 768px) {
+  .content {
+    padding: 30px 0;
+  }
+  .title {
+    font-size: 26px;
+  }
+  .text {
+    line-height: 20px;
   }
 }
 </style>
