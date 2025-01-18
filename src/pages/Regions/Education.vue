@@ -2,7 +2,7 @@
 import Sections from "@/components/Sections.vue";
 import SideBar from "@/components/SideBarText.vue";
 import {mapGetters} from "vuex";
-import api, {getTranslations, BASE_URL} from "@/axios";
+import api, {BASE_URL} from "@/axios";
 import LatestNews from "@/pages/Presscenter/LatestNews.vue";
 import VideoMaterials from "@/pages/Presscenter/VideoMaterials.vue";
 import PhotoGallery from "@/pages/Presscenter/PhotoGallery.vue";
@@ -12,13 +12,12 @@ export default {
   components: {PhotoGallery, VideoMaterials, LatestNews, SideBar, Sections},
   data(){
     return {
-      trans: {},
       education: {},
       BASE_URL
     }
   },
   computed: {
-    ...mapGetters(['currentLanguage']),
+    ...mapGetters(['currentLanguage', 'getTranslations']),
   },
   watch: {
     currentLanguage(newLang) {
@@ -26,7 +25,6 @@ export default {
     },
   },
   async mounted() {
-    this.trans = await getTranslations(this.currentLanguage);
     this.getEducation();
   },
   methods: {
@@ -48,7 +46,7 @@ export default {
 
 <template>
 <div class="main">
-  <side-bar :title="trans.regions || '{ regions }'"/>
+  <side-bar :title="getTranslations.regions || '{ regions }'"/>
   <div class="content">
     <div class="image_content">
       <img :src="BASE_URL + education.image" :alt="BASE_URL + education.image" style="width: 100%; height: 100%">
@@ -57,9 +55,9 @@ export default {
       <div class="title">{{ education.title }}</div>
       <div class="text" v-html="education.full_desc"></div>
     </div>
-    <latest-news :rows="1" title="Новости"></latest-news>
-    <video-materials></video-materials>
-    <photo-gallery></photo-gallery>
+    <latest-news :rows="1" :title="getTranslations.news || '{ news }'"></latest-news>
+    <video-materials :title="getTranslations.video_material || '{ video_material }'"></video-materials>
+    <photo-gallery :title="getTranslations.photos  || '{ photos  }'"></photo-gallery>
   </div>
 </div>
 </template>

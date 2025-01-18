@@ -32,8 +32,6 @@ export default {
       Grid,
       BASE_URL,
       swiperInstance: null,
-      isBeginning: true,
-      isEnd: false,
       isModalOpen: false,
       currentImage: null,
     };
@@ -44,13 +42,6 @@ export default {
   watch: {
     currentLanguage(newLang) {
       this.getNews();
-      this.$nextTick(() => {
-        if (this.swiperInstance) {
-          this.swiperInstance.update();
-          this.isBeginning = this.swiperInstance.isBeginning;
-          this.isEnd = this.swiperInstance.isEnd;
-        }
-      });
     },
   },
   mounted() {
@@ -67,13 +58,6 @@ export default {
                 ...item,
                 formattedDate: this.formatDate(item.posted_date),
               }));
-              this.$nextTick(() => {
-                if (this.swiperInstance) {
-                  this.swiperInstance.update();
-                  this.isBeginning = this.swiperInstance.isBeginning;
-                  this.isEnd = this.swiperInstance.isEnd;
-                }
-              });
             } else {
               this.materials = [];
             }
@@ -94,12 +78,6 @@ export default {
     },
     onSwiper(swiper) {
       this.swiperInstance = swiper;
-      this.isBeginning = swiper.isBeginning;
-      this.isEnd = swiper.isEnd;
-    },
-    onSlideChange(swiper) {
-      this.isBeginning = swiper.isBeginning;
-      this.isEnd = swiper.isEnd;
     },
     prevSlide() {
       if (this.swiperInstance) {
@@ -148,7 +126,6 @@ export default {
             :spaceBetween="10"
             :grid="{ rows: rows, fill: 'row' }"
             :onSwiper="onSwiper"
-            :onSlideChange="onSlideChange"
             :breakpoints="{
               0: {
                 slidesPerView: 1,

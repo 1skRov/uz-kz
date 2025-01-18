@@ -32,8 +32,6 @@ export default {
       Grid,
       BASE_URL,
       swiperInstance: null,
-      isBeginning: true,
-      isEnd: false,
     };
   },
   computed: {
@@ -42,13 +40,6 @@ export default {
   watch: {
     currentLanguage(newLang) {
       this.getNews();
-      this.$nextTick(() => {
-        if (this.swiperInstance) {
-          this.swiperInstance.update();
-          this.isBeginning = this.swiperInstance.isBeginning;
-          this.isEnd = this.swiperInstance.isEnd;
-        }
-      });
     },
   },
   mounted() {
@@ -65,13 +56,6 @@ export default {
                 ...item,
                 formattedDate: this.formatDate(item.posted_date),
               }));
-              this.$nextTick(() => {
-                if (this.swiperInstance) {
-                  this.swiperInstance.update();
-                  this.isBeginning = this.swiperInstance.isBeginning;
-                  this.isEnd = this.swiperInstance.isEnd;
-                }
-              });
             } else {
               this.materials = [];
             }
@@ -92,12 +76,6 @@ export default {
     },
     onSwiper(swiper) {
       this.swiperInstance = swiper;
-      this.isBeginning = swiper.isBeginning;
-      this.isEnd = swiper.isEnd;
-    },
-    onSlideChange(swiper) {
-      this.isBeginning = swiper.isBeginning;
-      this.isEnd = swiper.isEnd;
     },
     prevSlide() {
       if (this.swiperInstance) {
@@ -122,14 +100,8 @@ export default {
       <template #title>{{ title }}</template>
       <template #title-button>
         <div class="btn">
-          <left
-              :disabled="isBeginning"
-              @click="prevSlide"
-          />
-          <right
-              :disabled="isEnd"
-              @click="nextSlide"
-          />
+          <div @click="prevSlide"><left/></div>
+          <div  @click="nextSlide"><right/></div>
         </div>
       </template>
       <template #content>
@@ -140,7 +112,6 @@ export default {
             :spaceBetween="10"
             :grid="{ rows: rows, fill: 'row' }"
             :onSwiper="onSwiper"
-            :onSlideChange="onSlideChange"
             :breakpoints="{
               0: {
                 slidesPerView: 1,
@@ -187,14 +158,8 @@ export default {
       </template>
       <template #btn>
         <div class="btn">
-          <left
-              :disabled="isBeginning"
-              @click="prevSlide"
-          />
-          <right
-              :disabled="isEnd"
-              @click="nextSlide"
-          />
+          <div @click="prevSlide"><left/></div>
+          <div  @click="nextSlide"><right/></div>
         </div>
       </template>
     </sections>
