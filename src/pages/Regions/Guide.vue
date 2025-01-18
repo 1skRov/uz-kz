@@ -55,6 +55,7 @@ export default {
         :text="person.desc"
         :img="person.image"
         :position="person.position"
+        route_name="ManagerDetail"
     />
   </div>
 </template>

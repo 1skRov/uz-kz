@@ -3,7 +3,7 @@ import api, {BASE_URL} from "@/axios";
 import {mapGetters} from "vuex";
 
 export default {
-  name: "PersonDetails",
+  name: "ManagerDetails",
   props: {
     id: {
       type: [Number, String],
@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     getPerson() {
-      api.get(`/famous-persons/?lang_code=${this.currentLanguage}`)
+      api.get(`/etno-center-manager/`)
           .then(response => {
             console.log(response.data)
             this.person = response.data.find(item => item.id === Number(this.id)) || {};
@@ -52,7 +52,7 @@ export default {
       <div class="right">
         <button class="close-btn" @click="closeModal">&times;</button>
         <div class="over">
-          <div class="dialog-title font-gilroy">{{ person.sur_name }}</div>
+          <div class="dialog-title font-gilroy">{{ person.full_name }}</div>
           <em class="job">{{ person.position }}</em>
           <div class="dialog-text" v-html="person.desc"></div>
         </div>

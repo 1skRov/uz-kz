@@ -48,6 +48,12 @@ const routes = [
         ]
       },
       {
+        path: 'regions/:id',
+        name: 'ManagerDetail',
+        component: () => import('@/pages/Regions/ManagerDetail.vue'),
+        props: true
+      },
+      {
         path: 'documents',
         name: 'Documents',
         component: () => import('@/pages/Documents/Documents.vue')
@@ -130,11 +136,6 @@ const routes = [
       //   path:'/project',
       //   name:'Project',
       //   component: () => import('@/pages/Regions/Project.vue')
-      // },
-      // {
-      //   path:'/organization',
-      //   name:'Sport',
-      //   component: () => import('@/pages/Regions/Sport.vue')
       // },
       {
         path:'/member-association',

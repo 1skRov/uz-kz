@@ -23,6 +23,10 @@ export default {
       type: String,
     },
     position : "",
+    route_name: {
+      type: String,
+      default: "FamousPersonDetails"
+    }
   },
   data(){
     return {
@@ -43,7 +47,7 @@ export default {
     },
     openDetails() {
       this.$router.push({
-        name: "FamousPersonDetails",
+        name: this.route_name,
         params: { id: this.id },
       });
     },
