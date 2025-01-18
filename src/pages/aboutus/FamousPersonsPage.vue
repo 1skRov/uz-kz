@@ -40,7 +40,8 @@ export default {
       api.get(`/famous-persons/?lang_code=${this.currentLanguage}`)
           .then(response => {
             this.persons = response.data;
-            this.currentPage = parseInt(this.$route.query.page) || 0;
+            const pageFromQuery = parseInt(this.$route.query.page);
+            this.currentPage = isNaN(pageFromQuery) ? 0 : pageFromQuery;
           })
           .catch(error => {
             console.error(error);
@@ -49,12 +50,17 @@ export default {
     prevPage() {
       if (this.currentPage > 0) {
         this.currentPage--;
+        this.updateRoute();
       }
     },
     nextPage() {
       if (this.currentPage < this.totalPages - 1) {
         this.currentPage++;
+        this.updateRoute();
       }
+    },
+    updateRoute() {
+      this.$router.push({ query: { ...this.$route.query, page: this.currentPage } });
     },
   }
 }
