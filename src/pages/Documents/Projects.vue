@@ -65,6 +65,9 @@ export default {
         behavior: 'smooth',
       });
     },
+    goToDetails(newsId) {
+      this.$router.push({ name: 'Project', params: { id: newsId } });
+    },
   },
 }
 </script>
@@ -77,8 +80,8 @@ export default {
         <template #title>{{ title }}</template>
         <template #title-button>
           <div class="btn">
-            <left @click="scrollLeft" />
-            <right @click="scrollRight" />
+            <div @click="scrollLeft"><left /></div>
+            <div @click="scrollRight"><right /></div>
           </div>
         </template>
         <template #content>
@@ -88,18 +91,20 @@ export default {
                 v-for="(p, index) in projects"
                 :key="index"
                 :style="{ backgroundImage: `url(${BASE_URL + p.image})` }"
+                @click="goToDetails(p.id)"
+
             >
               <div class="item-desc">
                 <h3>{{ p.title }}</h3>
-                <p>{{ p?.description }}</p>
+                <p v-html="p.mini_desc" class="truncate-text-line"></p>
               </div>
             </div>
           </div>
         </template>
         <template #btn>
           <div class="btn">
-            <left @click="scrollLeft" />
-            <right @click="scrollRight" />
+            <div @click="scrollLeft"><left /></div>
+            <div @click="scrollRight"><right /></div>
           </div>
         </template>
       </sections>

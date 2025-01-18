@@ -130,13 +130,15 @@ const routes = [
       {
         path:'education',
         name:'Education',
-        component: () => import('@/pages/Regions/Education.vue')
+        component: () => import('@/pages/Regions/Education.vue'),
+        props: true,
       },
-      // {
-      //   path:'/project',
-      //   name:'Project',
-      //   component: () => import('@/pages/Regions/Project.vue')
-      // },
+      {
+        path:'documents/project/:id',
+        name:'Project',
+        component: () => import('@/pages/Regions/Project.vue'),
+        props: true
+      },
       {
         path:'/member-association',
         name:'MemberAssociation',
