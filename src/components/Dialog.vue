@@ -41,10 +41,10 @@ export default {
     validateForm() {
       let isValid = true;
       this.errors = {
-        name: !this.form.name ? "ФИО обязательно." : null,
-        birthDate: !this.form.birthDate ? "Дата рождения обязательна." : null,
-        iin: !this.form.iin ? "ИИН обязателен." : null,
-        phone: !this.form.phone ? "Телефон обязателен." : null,
+        name: !this.form.name ? 'ФИО обязательно.' : null,
+        birthDate: !this.form.birthDate ? 'Дата рождения обязательна.' : null,
+        iin: !this.form.iin ? 'ИИН обязателен.' : null,
+        phone: !this.form.phone ? 'Телефон обязателен.' : null,
       };
       for (const key in this.errors) {
         if (this.errors[key]) {
@@ -53,8 +53,19 @@ export default {
       }
       return isValid;
     },
+    scrollToFirstError() {
+      const errorField = Object.keys(this.errors).find(key => this.errors[key]);
+      if (errorField) {
+        const fieldElement = this.$el.querySelector(`#${errorField}`);
+        if (fieldElement) {
+          fieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          fieldElement.focus();
+        }
+      }
+    },
     async submitForm() {
       if (!this.validateForm()) {
+        this.scrollToFirstError();
         return;
       }
 
@@ -68,15 +79,15 @@ export default {
 
       this.submitting = true;
       try {
-        const response = await api.post("/jointogroups/", payload, {
+        const response = await api.post('/jointogroups/', payload, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         });
         this.closeModal();
       } catch (error) {
-        console.error("Ошибка при отправке заявки:", error);
-        alert("Произошла ошибка при отправке заявки. Попробуйте позже.");
+        console.error('Ошибка при отправке заявки:', error);
+        alert('Произошла ошибка при отправке заявки. Попробуйте позже.');
       } finally {
         this.submitting = false;
       }

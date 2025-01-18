@@ -18,7 +18,7 @@ export default {
 <template>
   <button
       :class="['btn', { 'btn-blue': isBlue }]">
-    {{ title_button }}
+    <b>{{ title_button }}</b>
   </button>
 </template>
 
@@ -27,10 +27,13 @@ export default {
   cursor: pointer;
   border: 1px solid #CFD3DA;
   border-radius: 6px;
-  font-weight: 500;
   background: #FFF;
   padding: 16px 36px;
   transition: background 0.1s;
+}
+b  {
+  letter-spacing: 1.5px;
+  color: #333333;
 }
 
 .btn:hover {
