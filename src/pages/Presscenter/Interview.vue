@@ -52,9 +52,6 @@ export default {
             console.error(error);
           });
     },
-    goToDonate() {
-      this.$router.push("/donates");
-    },
     goLeft() {
       if (this.list.length > 0) {
         this.currentHelpIndex =
@@ -72,29 +69,31 @@ export default {
 </script>
 
 <template>
-  <div class="main">
+  <div class="content">
     <div class="text-container">
       <div class="title font-gilroy">{{ title }}</div>
       <div class="text" v-html="currentHelp.mini_desc"></div>
       <div class="btn">
-        <basic-button :title_button="btn_title" :is-blue="true" @click="goToDonate" />
+        <basic-button :title_button="btn_title" :is-blue="true" />
         <div style="display: flex; gap: 1rem">
-          <left @click="goLeft" />
-          <right @click="goRight" />
+          <div @click="goLeft"><left /></div>
+          <div @click="goRight"><right /></div>
         </div>
       </div>
     </div>
     <div class="image-container">
-      <img :src="BASE_URL + currentHelp.image" alt="help" class="responsive-image" />
+      <img :src="BASE_URL + currentHelp.image" alt="interview" class="responsive-image" />
     </div>
   </div>
 </template>
 
 <style scoped>
-.main {
+.content {
+  border: 1px solid #EBEEF0;
+  border-radius: 8px;
   display: flex;
+  background-color: rgba(0, 114, 171, 0.02);
   overflow: hidden;
-  width: 100%;
 }
 
 .title {
@@ -112,13 +111,16 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+
 .text-container {
   display: flex;
   flex-direction: column;
   gap: 3.5rem;
+  padding: 50px;
   width: 50%;
   box-sizing: border-box;
 }
+
 .image-container {
   width: 50%;
   display: flex;
@@ -133,6 +135,7 @@ export default {
   object-fit: cover;
   max-width: 100%;
 }
+
 @media (max-width: 1024px) {
   .title {
     font-size: 28px;
@@ -149,16 +152,19 @@ export default {
     display: flex;
     flex-direction: column;
   }
+
   .text-container {
     width: 100%;
     padding: 30px;
   }
+
   .image-container {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
+
   .responsive-image {
     width: 100%;
     height: auto;

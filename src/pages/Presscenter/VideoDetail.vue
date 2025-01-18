@@ -21,7 +21,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["currentLanguage"]),
+    ...mapGetters(["currentLanguage", "getTranslations"]),
   },
   watch: {
     currentLanguage(newLang) {
@@ -83,20 +83,16 @@ export default {
 <template>
   <div style="position: relative">
     <div class="back">
-      <basic-button style="padding: 10px 14px; font-weight: 500;"
-                    title_button="Назад к новостям" @click="goToAllVideo"
-      ></basic-button>
+      <basic-button :title_button="getTranslations.goToNews || '{ goToNews }'" @click="goToAllVideo"></basic-button>
     </div>
     <div class="newsItem">
       <div class="newsItem___detail">
         <nav style="display: flex; align-items: center; gap: 20px">
-          <div class="item-back">
-            <basic-button style="padding: 10px 14px; font-weight: 500;"
-                          title_button="Назад к новостям"
-            ></basic-button>
+          <div class="item-back"  @click="goToAllVideo">
+            <basic-button :title_button="getTranslations.goToNews || '{ goToNews }'"></basic-button>
           </div>
           <div style="display: flex; align-items: center;">
-            <basic-button title_button="Олимпиада" style="padding: 10px 14px; font-weight: 500;" :is-blue="true"></basic-button>
+            <basic-button :title_button="getTranslations.olymp || '{ olymp }'" :is-blue="true"></basic-button>
             <div class="time">{{ formatDate(news_item.posted_date) }}</div>
           </div>
         </nav>
@@ -113,7 +109,7 @@ export default {
             </div>
           </div>
           <div class="recommendNews">
-            <div class="recommendNews___title">recommand</div>
+            <div class="recommendNews___title">{{ getTranslations.recommended || '{ recommended }' }}</div>
             <div class="recommendNews___content" v-for="(n, index) in news"
                  :key="index"
                  @click="goToNewsDetails(n.id)">

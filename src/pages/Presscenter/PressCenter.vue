@@ -21,7 +21,7 @@ export default {
 <template>
   <div class="main">
     <side-bar :title="getTranslations.press_center || '{ press_center }'"/>
-    <div class="content">
+    <div class="center">
       <div id="news"><latest-news :title="getTranslations.latest_news"></latest-news></div>
       <div id="video"><video-materials :title="getTranslations.video_material"></video-materials></div>
       <div id="gallery"><photo-gallery :title="getTranslations.photos"></photo-gallery></div>
@@ -37,13 +37,13 @@ export default {
 .main {
   display: flex;
 }
-.content {
+.center {
   width: 65%;
   margin: 0 auto;
   padding-bottom: 60px;
 }
 @media (max-width: 1024px) {
-  .content {
+  .center {
     width: 90%;
   }
 }

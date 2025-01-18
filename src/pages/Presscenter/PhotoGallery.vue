@@ -108,14 +108,8 @@ export default {
       <template #title>{{ title }}</template>
       <template #title-button>
         <div class="btns-carousel">
-          <left
-              :disabled="isBeginning"
-              @click="prevSlide"
-          />
-          <right
-              :disabled="isEnd"
-              @click="nextSlide"
-          />
+          <div @click="prevSlide"><left /></div>
+          <div @click="nextSlide"><right /></div>
         </div>
       </template>
       <template #content>
@@ -171,14 +165,8 @@ export default {
       </template>
       <template #btn>
         <div class="btn">
-          <left
-              :disabled="isBeginning"
-              @click="prevSlide"
-          />
-          <right
-              :disabled="isEnd"
-              @click="nextSlide"
-          />
+          <div @click="prevSlide"><left /></div>
+          <div @click="nextSlide"><right /></div>
         </div>
       </template>
     </sections>

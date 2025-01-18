@@ -21,7 +21,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["currentLanguage"]),
+    ...mapGetters(["currentLanguage", "getTranslations"]),
   },
   watch: {
     currentLanguage(newLang) {
@@ -82,21 +82,17 @@ export default {
 
 <template>
   <div style="position: relative">
-    <div class="back">
-      <basic-button style="padding: 10px 14px; font-weight: 500;"
-          title_button="Назад к новостям" @click="goToAllNews"
-      ></basic-button>
+    <div class="back" @click="goToAllNews">
+      <basic-button :title_button="getTranslations.goToNews || '{ goToNews }'"></basic-button>
     </div>
     <div class="newsItem">
       <div class="newsItem___detail">
       <nav style="display: flex; align-items: center; gap: 20px">
-        <div class="item-back">
-          <basic-button style="padding: 10px 14px; font-weight: 500;"
-                        title_button="Назад к новостям"
-          ></basic-button>
+        <div class="item-back" @click="goToAllNews">
+          <basic-button :title_button="getTranslations.goToNews || '{ goToNews }'"></basic-button>
         </div>
-        <div style="display: flex; align-items: center;">
-          <basic-button title_button="Олимпиада" style="padding: 10px 14px; font-weight: 500;" :is-blue="true"></basic-button>
+        <div style="display: flex; align-items: center; gap: 2rem">
+          <basic-button :title_button="getTranslations.olymp || '{ olymp }'" :is-blue="true"></basic-button>
           <div class="time">{{ formatDate(news_item.posted_date) }}</div>
         </div>
       </nav>
@@ -111,7 +107,7 @@ export default {
           </div>
         </div>
         <div class="recommendNews">
-          <div class="recommendNews___title">recommand</div>
+          <div class="recommendNews___title">{{ getTranslations.recommended || '{ recommended }' }}</div>
           <div class="recommendNews___content" v-for="(n, index) in news"
                :key="index"
                @click="goToNewsDetails(n.id)">
@@ -153,26 +149,15 @@ export default {
   flex-direction: column;
   height: 100%;
 }
+
 .item-back {
   display: none;
 }
+
 nav {
   margin-bottom: 20px;
   width: 100%;
   display: flex;
-
-  p {
-    font-weight: 500;
-    color: #CFD3DA;
-    margin: 0;
-  }
-
-  span {
-    color: #333333;
-    font-weight: 500;
-    max-width: 200px;
-    width: 200px;
-  }
 }
 
 .newsItem__main {
@@ -195,28 +180,18 @@ nav {
   }
 }
 
-.newsItem__text {
-  .title {
-    font-size: 40px;
-    font-weight: 500;
-  }
+.title {
+  font-size: 40px;
+  font-weight: 500;
+}
 
-  .content-text {
-    line-height: 30px;
-  }
+.content-text {
+  line-height: 30px;
+}
 
-  .time_buttons {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1.5rem;
-
-    .time {
-      color: #575F6C;
-      font-weight: 500;
-    }
-  }
+.time {
+  color: #575F6C;
+  font-weight: 500;
 }
 
 .page {
@@ -234,6 +209,7 @@ nav {
 .recommendNews___title {
   font-size: 32px;
   color: #333333;
+  margin-bottom: 12px;
 }
 
 .recommendNews___content {
@@ -330,8 +306,5 @@ nav {
 }
 
 @media (max-width: 768px) {
-  .btn {
-    padding: 10px 20px;
-  }
 }
 </style>

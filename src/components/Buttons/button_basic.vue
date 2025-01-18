@@ -33,7 +33,6 @@ export default {
 }
 b  {
   letter-spacing: 1.5px;
-  text-transform: uppercase;
 }
 
 .btn:hover {
