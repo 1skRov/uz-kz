@@ -18,22 +18,22 @@ export default {
     currentLanguage(newLang) {
       this.getPersons();
     },
-    '$route.query.region_id': {
-      handler(newRegionId) {
-        this.rid = newRegionId;
-        this.getPersons(newRegionId);
+    '$route.query.region_code': {
+      handler(newRegionCode) {
+        this.rid = newRegionCode;
+        this.getPersons(newRegionCode);
       },
       immediate: true,
     },
   },
   mounted() {
-    const regionId = this.$route.query.region_id;
-    this.getPersons(regionId);
+    const regionCode = this.$route.query.region_code;
+    this.getPersons(regionCode);
   },
   methods: {
-    getPersons(regionId) {
-      if (regionId) {
-        api.get(`/etno-center-info/?region_id=${regionId}&lang_code=${this.currentLanguage}`)
+    getPersons(regionCode) {
+      if (regionCode) {
+        api.get(`/etno-center-info/?region_code=${regionCode}&lang_code=${this.currentLanguage}`)
             .then(response => {
               this.info = response.data;
             })

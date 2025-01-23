@@ -22,22 +22,22 @@ export default defineComponent({
     currentLanguage(newLang) {
       this.getRegionContact();
     },
-    '$route.query.region_id': {
-      handler(newRegionId) {
-        this.rid = newRegionId;
-        this.getRegionContact(newRegionId);
+    '$route.query.region_code': {
+      handler(newRegionCode) {
+        this.rid = newRegionCode;
+        this.getRegionContact(newRegionCode);
       },
       immediate: true,
     },
   },
   mounted(){
-    const regionId = this.$route.query.region_id;
-    this.getRegionContact(regionId);
+    const regionCode = this.$route.query.region_code;
+    this.getRegionContact(regionCode);
   },
   methods: {
-    getRegionContact(regionId) {
-      if (regionId) {
-        api.get(`/etno-center-contact/?region_id=${regionId}`)
+    getRegionContact(regionCode) {
+      if (regionCode) {
+        api.get(`/etno-center-contact/?region_code=${regionCode}`)
             .then(response => {
               this.contacts = response.data[0];
             })

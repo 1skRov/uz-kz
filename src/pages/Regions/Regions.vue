@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     activeRegion(region) {
-      this.$router.push({ path: '', query: { region_id: region.id } });
+      this.$router.push({ path: '', query: { region_code: region.code } });
     }
   }
 }
