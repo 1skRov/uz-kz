@@ -33,7 +33,7 @@ export default defineComponent({
   },
   methods: {
     getContacts(regionId = null) {
-      api.get(`etno-center-contact/?region_id=${regionId}`)
+      api.get(`etno-center-contact/?region_code=${regionId}`)
           .then(response => {
             const data = response.data[0];
             if (data) {

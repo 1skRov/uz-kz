@@ -35,7 +35,7 @@ export default {
       if (regionCode) {
         api.get(`/etno-center-info/?region_code=${regionCode}&lang_code=${this.currentLanguage}`)
             .then(response => {
-              this.info = response.data;
+              this.info = response.data[0];
             })
             .catch(error => {
               console.error(error);
