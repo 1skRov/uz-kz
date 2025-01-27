@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const BASE_URL = "https://uzbek.kz/media/";
+export const BASE_URL = "https://uzbek.kz/";
 const api = axios.create({
     baseURL: 'https://uzbek.kz/api/',
     headers: {
