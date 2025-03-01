@@ -27,6 +27,11 @@ export default defineComponent({
       return this.windowWidth <= 768;
     },
   },
+  watch: {
+    currentLanguage(newLang) {
+      this.getRegion();
+    },
+  },
   mounted(){
     this.getRegion();
     this.getContacts();
@@ -63,6 +68,7 @@ export default defineComponent({
     selectRegion(region) {
       this.selectedItem = region;
       this.getContacts(region.id);
+      this.$refs.customSelect.removeAttribute('open');
     },
   }
 })
@@ -216,10 +222,6 @@ p {
     width: 100%;
     flex-direction: column;
     gap: 2rem;
-  }
-  .left__address,
-  .left__contacts,
-  .left__mail {
   }
 }
 
