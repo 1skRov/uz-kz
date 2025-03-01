@@ -26,7 +26,6 @@ button {
   background-color: transparent;
   cursor: pointer;
   display: flex;
-  text-transform: uppercase;
   gap: 2rem;
   align-items: center;
 

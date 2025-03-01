@@ -195,7 +195,6 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  text-transform: uppercase;
 }
 
 .submit-btn:disabled {

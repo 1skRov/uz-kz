@@ -354,6 +354,20 @@ p {
   }
 }
 @media (max-width: 768px) {
+  .header {
+    height: 50px;
+  }
+  .header__icon {
+    width: 99px;
+    min-width: 99px;
+  }
+  .header__menu-toggle {
+    height: 50px;
+  }
+  .header__hidden-menu {
+    top: 50px;
+    left: 0;
+  }
   .header__localAndContacts {
     display: none;
   }

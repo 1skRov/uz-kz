@@ -86,7 +86,7 @@ export default {
           <p class="desc" v-html="list.desc"></p>
         </div>
         <div>
-          <Button_basic :title_button="btn_title" @click="openModal" style="text-transform: uppercase" />
+          <Button_basic :title_button="btn_title" @click="openModal" />
         </div>
       </div>
     </div>
