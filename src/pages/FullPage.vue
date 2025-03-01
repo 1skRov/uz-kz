@@ -15,7 +15,6 @@ export default {
   }},
   created() {
     this.initializeApp();
-    this.getContacts();
   },
   computed: {
     ...mapGetters(['currentLanguage', 'availableLanguages']),
@@ -24,9 +23,13 @@ export default {
     ...mapActions(['fetchLanguages', 'updateLanguage']),
     async initializeApp() {
       await this.fetchLanguages();
+
       if (!this.currentLanguage && this.availableLanguages.length > 0) {
         await this.updateLanguage(this.availableLanguages[0].code);
+      } else if (this.currentLanguage) {
+        await this.updateLanguage(this.currentLanguage);
       }
+      await this.getContacts();
     },
     async getContacts() {
       try {

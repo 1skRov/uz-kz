@@ -41,6 +41,8 @@ export default createStore({
                 })));
                 if (!state.selectedLanguage && languages.length > 0) {
                     dispatch('updateLanguage', languages[0].kod);
+                } else if (state.selectedLanguage) {
+                    dispatch('updateLanguage', state.selectedLanguage);
                 }
             } catch (error) {
                 console.error('Ошибка при загрузке языков:', error);
