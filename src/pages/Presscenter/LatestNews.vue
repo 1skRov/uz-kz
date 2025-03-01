@@ -19,6 +19,7 @@ export default {
   props: {
     title: {
       type: String,
+      default: "{ latest_news }",
     },
     rows: {
       type: Number,

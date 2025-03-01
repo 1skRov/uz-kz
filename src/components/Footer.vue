@@ -29,7 +29,7 @@ export default {
     },
     regionsLinks() {
       return [
-        { text: "Все регионы", to: { name: 'Regions' } },
+        { text: this.getTranslations.all_regions || "{ all_regions }", to: { name: 'Regions' } },
       ]
     },
     documentsLinks(){
@@ -50,8 +50,8 @@ export default {
     },
     contactsLinks() {
       return [
-        {text: this.getTranslations.republic_contacts  || "{ republic_contacts  }", to: {name: 'Contacts', hash: 'republic'}},
-        {text: this.getTranslations.region_contacts  || "{ region_contacts  }", to: {name: 'Contacts', hash: 'regions'}},
+        {text: this.getTranslations.republic_contacts  || "{ republic_contacts  }", to: {name: 'republic'}},
+        {text: this.getTranslations.region_contacts  || "{ region_contacts  }", to: {name: 'regions'}},
       ]
     },
   },

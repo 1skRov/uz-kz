@@ -41,6 +41,7 @@ export default {
     changeLanguage(languageCode) {
       this.updateLanguage(languageCode);
       this.isDropdownOpen = false;
+      this.isMenuOpen = false;
     },
     isActive(route) {
       return this.$route.path === route;
@@ -51,7 +52,23 @@ export default {
     closeMenu() {
       this.isMenuOpen = false;
     },
-
+    handleOutsideClick(event) {
+      if (!this.$el.contains(event.target)) {
+        this.isMenuOpen = false;
+        this.isDropdownOpen = false;
+      }
+    }
+  },
+  mounted() {
+    window.addEventListener("click", this.handleOutsideClick);
+  },
+  beforeDestroy() {
+    window.removeEventListener("click", this.handleOutsideClick);
+  },
+  watch: {
+    $route() {
+      this.isMenuOpen = false;
+    }
   }
 }
 </script>
@@ -137,7 +154,7 @@ export default {
   </nav>
 
   <nav v-if="isMenuOpen" class="header__hidden-menu">
-    <tablet-header-menu :translate="getTranslations"></tablet-header-menu>
+    <tablet-header-menu :translate="getTranslations" @close-menu="closeMenu"></tablet-header-menu>
     <div class="for-mobile">
       <nav class="mobile__langAAndMail">
         <div class="mobile__lang" @click="toggleDropdown">
