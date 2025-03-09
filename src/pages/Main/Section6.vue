@@ -1,16 +1,16 @@
 <script>
-import { Swiper, SwiperSlide } from "swiper/vue";
+import {Swiper, SwiperSlide} from "swiper/vue";
 import Sections from "@/components/Sections.vue";
 import SideBar from "@/pages/Main/SideBar.vue";
 import More from "@/components/Buttons/more.vue";
 import Left from "@/components/Buttons/left.vue";
 import Right from "@/components/Buttons/right.vue";
-import api, { BASE_URL } from "@/axios";
-import { mapGetters } from "vuex";
+import api, {BASE_URL} from "@/axios";
+import {mapGetters} from "vuex";
 
 export default {
   name: "Section6",
-  components: { Swiper, SwiperSlide, Right, Left, More, SideBar, Sections },
+  components: {Swiper, SwiperSlide, Right, Left, More, SideBar, Sections},
   props: {
     title: {
       type: String,
@@ -72,7 +72,7 @@ export default {
 
 <template>
   <div class="section">
-    <side-bar :page="page" :icon="false" />
+    <side-bar :page="page" :icon="false"/>
     <div class="right-content">
       <div class="title-section">
         <sections style="padding-bottom: 0">
@@ -81,8 +81,8 @@ export default {
           </template>
           <template #title-button>
             <div class="btns">
-              <left @click="moveLeft" />
-              <right @click="moveRight" />
+              <left @click="moveLeft"/>
+              <right @click="moveRight"/>
             </div>
           </template>
         </sections>
@@ -115,8 +115,8 @@ export default {
         </swiper>
       </div>
       <div class="btns btn-mob">
-        <left @click="moveLeft" />
-        <right @click="moveRight" />
+        <left @click="moveLeft"/>
+        <right @click="moveRight"/>
       </div>
     </div>
   </div>
@@ -175,8 +175,8 @@ export default {
 }
 
 .swiper-slide .images {
-  width: 100%;
-  height: 10rem;
+  width: 10rem;
+  height: auto;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -204,9 +204,11 @@ export default {
     align-items: center;
     margin: 1.5rem 0;
   }
+
   .btns {
     margin-left: 20px;
   }
+
   .carousel-container::before {
     left: 0;
     background: none;
