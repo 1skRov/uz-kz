@@ -16,7 +16,7 @@ export default {
       person: {},
     };
   },
-  computed:{
+  computed: {
     ...mapGetters(['currentLanguage']),
   },
   mounted() {
@@ -42,19 +42,26 @@ export default {
 </script>
 
 <template>
-  <div class="dialog-overlay">
-    <div class="dialog-content">
-      <div class="left">
-        <div class="left-image">
-          <img :src="BASE_URL + person.image" :alt="person.image" />
-        </div>
+  <div class="modal-overlay" @click.self="closeModal">
+    <div class="modal">
+      <div class="modal-close">
+        <button @click="closeModal">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </div>
-      <div class="right">
-        <button class="close-btn" @click="closeModal">&times;</button>
-        <div class="over">
-          <div class="dialog-title font-gilroy">{{ person.sur_name }}</div>
-          <em class="job">{{ person.position }}</em>
-          <div class="dialog-text" v-html="person.desc"></div>
+      <div class="modal-content">
+        <div class="modal-image">
+          <img :src="BASE_URL + person.image" :alt="person.image"/>
+        </div>
+        <div class="modal-information">
+          <p class="font-gilroy title">{{ person.sur_name }}</p>
+          <p class="position">{{ person.position }}</p>
+          <div class="text">
+            <div v-html="person.desc"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -62,125 +69,144 @@ export default {
 </template>
 
 <style scoped>
-.dialog-overlay {
+.modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10000;
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 8000;
+  justify-content: center;
 }
 
-.dialog-content {
-  display: flex;
-  background: white;
+.modal {
   border-radius: 8px;
-  width: 80%;
-  max-width: 80vw;
-  max-height: 70vh;
-  min-height: 70vh;
-  padding: 20px;
+  background: #FFFFFF;
+  width: 60vw;
+  max-width: 60vw;
   position: relative;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-}
-
-.left {
-  flex-basis: 50%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  padding: 10px;
-}
-
-.left-image {
-  width: 100%;
-  height: 60vh;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.left img {
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-}
-
-.right {
-  flex-basis: 50%;
-  height: 100%;
+  height: 80vh;
+  padding: 15px;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
-  padding: 10px;
-  overflow-y: auto;
-  max-height: 60vh;
-  margin-top: 30px;
+  overflow: hidden;
 }
 
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
+.modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.modal-close button {
   border: none;
-  font-size: 35px;
+  width: 35px;
+  height: 35px;
+  background: none;
   cursor: pointer;
 }
 
-.close-btn:hover {
+.modal-close button svg {
+  fill: none;
   color: #0072ab;
 }
 
-.dialog-title {
-  font-weight: 500;
-  font-size: 40px;
-  margin-bottom: 10px;
-}
-.job {
-  margin-bottom: 15px;
+.modal-close button:hover svg {
+  color: #078fd3;
 }
 
-.dialog-text {
+.modal-content {
+  display: flex;
+}
+
+.modal-image {
+  display: flex;
+  width: 370px;
+  min-width: 370px;
+  height: 500px;
+  max-height: 500px;
+  padding: 0 20px;
+}
+
+.modal-image img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.modal-information {
+  padding: 0 5px 0 10px;
+  height: 100%;
+  max-height: 75vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin: 0 0 10px 0;
+  font-weight: 500;
+  font-size: 40px;
+}
+
+.position {
+  margin: 10px 0;
+  color: #575F6C;
+}
+
+.text {
   line-height: 2rem;
   color: #333;
+  overflow-y: auto;
 }
+
 @media (max-width: 1024px) {
-  .dialog-title {
+  .modal {
+    width: 85vw;
+    max-width: 85vw;
+  }
+
+  .modal-image {
+    width: 300px;
+    min-width: 300px;
+    height: 400px;
+    max-height: 400px;
+    padding: 0 10px;
+  }
+
+  .title {
     font-size: 28px;
   }
 }
 
 @media (max-width: 768px) {
-  .dialog-content {
+  .modal {
+    height: 90vh;
+  }
+
+  .modal-content {
     display: flex;
     flex-direction: column;
   }
 
-  .left {
-    padding: 20px 0 0 0;
+  .modal-information {
+    max-height: 35vh;
   }
 
-  .left-image {
-    width: 100%;
-    height: 20vh;
-  }
-
-  .right {
-    flex-basis: 100%;
-    height: 100%;
+  .modal-image {
     display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    overflow-y: auto;
-    max-height: 60vh;
-    margin-top: 10px;
+    justify-content: center;
+    padding: 0;
+    width: 350px;
+    min-width: 350px;
+    height: 450px;
+    max-height: 450px;
   }
-  .dialog-title {
-    font-size: 24px;
+
+  .title {
+    font-size: 20px;
   }
 }
 </style>
+

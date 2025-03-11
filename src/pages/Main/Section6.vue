@@ -177,7 +177,7 @@ export default {
 .swiper-slide .images {
   width: 10rem;
   height: auto;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 8px;
 }
 
