@@ -43,19 +43,23 @@ body {
     scrollbar-color: #0072AB #FFFFFF;
     scrollbar-width: thin;
 }
+
 ::-webkit-scrollbar {
     width: 7px;
 }
+
 ::-webkit-scrollbar-thumb {
     background-color: #0072AB;
     border-radius: 8px;
 }
+
 .font-gilroy {
     font-family: 'Gilroy', sans-serif;
     font-size: 16px;
     font-weight: 400;
     color: #333333;
 }
+
 .truncate-text {
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -63,6 +67,7 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .truncate-text-line {
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -70,6 +75,7 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 /*for footer*/
 .sandbars {
     display: flex;
@@ -95,6 +101,7 @@ body {
         text-decoration: underline;
     }
 }
+
 .btns-carousel {
     display: flex;
     align-items: center;
@@ -105,6 +112,7 @@ body {
     * {
         font-size: 14px;
     }
+
     .font-gilroy {
         font-size: 14px;
     }
@@ -114,9 +122,11 @@ body {
     * {
         font-size: 12px;
     }
+
     .font-gilroy {
         font-size: 12px;
     }
+
     .sandbars {
         gap: 0;
         width: 100%;
@@ -125,6 +135,7 @@ body {
             display: none;
         }
     }
+
     .btns-carousel {
         gap: 2rem;
     }

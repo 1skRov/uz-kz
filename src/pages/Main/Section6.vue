@@ -17,6 +17,10 @@ export default {
       required: true,
       default: "{{ partners }}",
     },
+    isBackground: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -71,8 +75,8 @@ export default {
 </script>
 
 <template>
-  <div class="section">
-    <side-bar :page="page" :icon="false"/>
+  <div class="section" id="section6">
+    <side-bar :page="page" :icon="false" :isBackground="isBackground"/>
     <div class="right-content">
       <div class="title-section">
         <sections style="padding-bottom: 0">
@@ -126,7 +130,6 @@ export default {
 .section {
   display: flex;
   width: 100%;
-  margin-bottom: 3rem;
 }
 
 .right-content {
@@ -146,6 +149,7 @@ export default {
   position: relative;
   width: 100%;
   overflow: hidden;
+  padding: 0 0 3rem 0;
 }
 
 .carousel-container .my-swiper {

@@ -32,16 +32,16 @@ export default {
   justify-content: space-between;
   align-items: center;
   flex-shrink: 0;
-
-  p {
-    text-align: center;
-    font-size: 32px;
-    font-weight: 500;
-    text-transform: uppercase;
-  }
-  svg {
-    stroke-width: 2px;
-  }
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+p {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+svg {
+  stroke-width: 2px;
 }
 @media (max-width: 1024px) {
   .side-bar {

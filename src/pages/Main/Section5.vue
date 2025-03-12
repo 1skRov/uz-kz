@@ -16,6 +16,10 @@ export default {
     btn_title: {
       type: String,
       default: "{{ learn_more }}"
+    },
+    isBackground: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -32,8 +36,8 @@ export default {
 </script>
 
 <template>
-  <div class="section">
-    <side-bar :page="page"/>
+  <div class="section" id="section5">
+    <side-bar :page="page" :isBackground="isBackground"/>
     <div class="content">
       <sections>
         <template #title>
@@ -61,6 +65,7 @@ export default {
 .section {
   display: flex;
 }
+
 .content {
   width: 70%;
   display: flex;
@@ -69,6 +74,7 @@ export default {
   margin-right: auto;
   align-items: center;
 }
+
 span {
   position: absolute;
   top: 0;

@@ -2,20 +2,24 @@
 import SideBar from "@/pages/Main/SideBar.vue";
 import Button_basic from "@/components/Buttons/button_basic.vue";
 import Dialog from "@/components/Dialog.vue";
-import api, { BASE_URL }  from "@/axios";
+import api, {BASE_URL} from "@/axios";
 import {mapGetters} from "vuex";
 
 export default {
   name: "section1",
   components: {Dialog, Button_basic, SideBar},
-  props:{
-    title:{
+  props: {
+    title: {
       type: String,
       default: "{{ main_title }}"
     },
-    btn_title:{
+    btn_title: {
       type: String,
       default: "{{ join_button }}"
+    },
+    isBackground: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -48,7 +52,9 @@ export default {
                 image3: `${BASE_URL}/${arr[0].image3}`,
                 image4: `${BASE_URL}/${arr[0].image4}`,
               };
-            }else {this.list = {}}
+            } else {
+              this.list = {}
+            }
           })
           .catch((error) => {
             console.error(error);
@@ -62,36 +68,36 @@ export default {
 </script>
 
 <template>
-<div style="display: flex">
-  <side-bar :page="page" />
-  <div class="content">
-    <div class="tablet-space">
-      <div class="tablet-space-img">
-        <div class="image-grid">
-          <div class="large-image">
-            <img :src="list.image1" alt="Large image" />
-          </div>
-          <div class="small-images">
-            <img :src="list.image2" alt="Small image" />
-            <img :src="list.image3" alt="Small image" />
-            <img :src="list.image4" alt="Small image" />
+  <div style="display: flex" id="section1">
+    <side-bar :page="page" :isBackground="isBackground"/>
+    <div class="content">
+      <div class="tablet-space">
+        <div class="tablet-space-img">
+          <div class="image-grid">
+            <div class="large-image">
+              <img :src="list.image1" alt="Large image"/>
+            </div>
+            <div class="small-images">
+              <img :src="list.image2" alt="Small image"/>
+              <img :src="list.image3" alt="Small image"/>
+              <img :src="list.image4" alt="Small image"/>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="backdrop-blur-container">
-        <div style="position: relative; z-index: 2;">
-          <h1 class="font-gilroy title" style="word-wrap: break-word;">
-            {{ title }}
-          </h1>
-          <p class="desc" v-html="list.desc"></p>
-        </div>
-        <div>
-          <Button_basic :title_button="btn_title" @click="openModal" />
+        <div class="backdrop-blur-container">
+          <div style="position: relative; z-index: 2;">
+            <h1 class="font-gilroy title" style="word-wrap: break-word;">
+              {{ title }}
+            </h1>
+            <p class="desc" v-html="list.desc"></p>
+          </div>
+          <div>
+            <Button_basic :title_button="btn_title" @click="openModal"/>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <style scoped>
@@ -103,6 +109,7 @@ export default {
   margin-right: auto;
   align-items: center;
 }
+
 .tablet-space {
   position: relative;
   width: 100%;

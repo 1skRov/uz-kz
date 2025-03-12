@@ -8,7 +8,7 @@ import {mapGetters} from "vuex";
 export default {
   name: "section2",
   components: {Sections, More, SideBar},
-  props:{
+  props: {
     title: {
       type: String,
       default: "{{ about_us }}"
@@ -16,9 +16,13 @@ export default {
     btn_title: {
       type: String,
       default: "{{ more_detail }}"
+    },
+    isBackground: {
+      type: Boolean,
+      default: false
     }
   },
-  data(){
+  data() {
     return {
       page: "02",
       about: {},
@@ -43,7 +47,7 @@ export default {
             this.about = aboutAray[0];
           })
           .catch((error) => {
-            console.error("о нас",error);
+            console.error("о нас", error);
           });
     },
     goToAboutUS() {
@@ -54,8 +58,8 @@ export default {
 </script>
 
 <template>
-<div class="section">
-    <side-bar :page="page" :icon="false"/>
+  <div class="section" id="section2">
+    <side-bar :page="page" :icon="false" :isBackground="isBackground"/>
     <div class="content">
       <sections :is-had="true">
         <template #title>
@@ -68,14 +72,15 @@ export default {
           <more @click="goToAboutUS" :title="btn_title"/>
         </template>
       </sections>
+    </div>
   </div>
-</div>
 </template>
 
 <style scoped>
 .section {
   display: flex;
 }
+
 .content {
   width: 70%;
   display: flex;
@@ -86,6 +91,7 @@ export default {
   align-items: center;
   border-top: 1px solid #DDE2E4;
 }
+
 @media (max-width: 1024px) {
   .content {
     width: 90%;

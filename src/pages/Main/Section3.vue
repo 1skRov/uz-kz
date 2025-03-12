@@ -16,12 +16,16 @@ export default {
     btn_title: {
       type: String,
       default: "{{ learn_more }}"
+    },
+    isBackground: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       page: "03",
-      culture:{},
+      culture: {},
       BASE_URL
     };
   },
@@ -44,25 +48,25 @@ export default {
             this.culture = cultureArray[0];
           })
           .catch((error) => {
-            console.error("культура и традиция",error);
+            console.error("культура и традиция", error);
           });
     },
     goToAboutUsSection() {
-      this.$router.push({ path: '/about-us', hash: '#section-2' })
+      this.$router.push({path: '/about-us', hash: '#section-2'})
     }
   }
 }
 </script>
 
 <template>
-  <div class="section">
+  <div class="section" id="section3">
     <div class="icon-top">
       <img src="@/assets/images/cult-top.png" alt="icon top">
     </div>
     <div class="icon-btm">
       <img src="@/assets/images/cult-bottom.png" alt="icon bottom">
     </div>
-    <side-bar :page="page" :is-background="true"/>
+    <side-bar :page="page" :isBackground="isBackground"/>
     <div class="content">
       <sections>
         <template #title>
@@ -95,18 +99,21 @@ export default {
   background: #F7F8FA;
   position: relative;
 }
+
 .section .icon-btm {
   position: absolute;
   bottom: 0;
   right: 0;
   z-index: 2;
 }
+
 .section .icon-top {
   position: absolute;
   top: 0;
   right: 0;
   z-index: 2;
 }
+
 .content {
   width: 70%;
   display: flex;
@@ -114,6 +121,7 @@ export default {
   margin: 0 auto;
   align-items: center;
 }
+
 .content-body {
   width: 100%;
   height: 85vh;
@@ -122,12 +130,14 @@ export default {
   overflow: hidden;
   border-radius: 6px;
 }
+
 .abs-text {
   position: absolute;
   bottom: 0;
   left: 0;
   padding: 40px;
 }
+
 .content-body .image-title {
   position: relative;
   color: #fff;
@@ -136,15 +146,18 @@ export default {
   margin-bottom: 16px;
   z-index: 10;
 }
+
 .content-body .image-desc {
   position: relative;
   line-height: 2rem;
   z-index: 10;
   color: rgba(255, 255, 255, 0.7);
 }
+
 .content-body .image-desc > p {
   margin: 0 !important;
 }
+
 .content-body .gradient-overlay {
   position: absolute;
   bottom: 0;
@@ -154,13 +167,16 @@ export default {
   background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
   z-index: 1;
 }
+
 @media (max-width: 1024px) {
   .content {
     width: 90%;
   }
+
   .content-body {
     height: 40vh;
   }
+
   .icon-top {
     display: none;
   }
