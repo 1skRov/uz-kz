@@ -72,11 +72,6 @@ export default {
         <template #content>
           <CardGrid :cards="persons"></CardGrid>
         </template>
-        <template #btn>
-          <div class="mob-has">
-            <more @click="goToFamousPersons" :title="btn_title"/>
-          </div>
-        </template>
       </sections>
     </div>
   </div>
