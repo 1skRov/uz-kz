@@ -182,30 +182,33 @@ export default {
 
 @media (max-width: 768px) {
   .modal {
-    height: 90vh;
+    height: 85vh;
+    overflow: hidden;
   }
 
   .modal-content {
     display: flex;
     flex-direction: column;
-  }
-
-  .modal-information {
-    max-height: 35vh;
+    max-height: 80vh;
+    overflow-y: auto;
   }
 
   .modal-image {
     display: flex;
     justify-content: center;
     padding: 0;
-    width: 350px;
-    min-width: 350px;
+    width: 100%;
+    min-width: 320px;
     height: 450px;
     max-height: 450px;
   }
 
   .title {
     font-size: 20px;
+    margin: 10px 0;
+  }
+  .text {
+    overflow-y: unset;
   }
 }
 </style>
