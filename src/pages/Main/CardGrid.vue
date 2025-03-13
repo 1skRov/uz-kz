@@ -9,18 +9,26 @@ export default {
       required: true
     }
   },
-  data(){
+  data() {
     return {
       BASE_URL
     }
-  }
+  },
+  methods: {
+    openDetails(id) {
+      this.$router.push({
+        name: "FamousPersonDetails",
+        params: { id: id },
+      });
+    },
+  },
 }
 </script>
 
 <template>
   <div class="hero-section">
     <div class="card-grid">
-      <div class="card" v-for="(card, index) in cards" :key="card.id">
+      <div class="card" v-for="(card, index) in cards" :key="card.id" @click="openDetails(card.id)">
         <div
             class="card__background"
             :style="{ backgroundImage: `url(${BASE_URL + card.image})` }"
@@ -67,6 +75,7 @@ export default {
   border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .card:hover {
   transform: scale(1.015);
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
