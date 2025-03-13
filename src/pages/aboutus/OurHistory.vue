@@ -95,7 +95,7 @@ export default {
       </template>
       <template #content>
         <section class="g-section">
-          <div class="btn-mobile">
+          <div class="btn-mobile" v-if="history.length > 0">
             <div @click="scrollLeft"><left  :is-white="true"/></div>
             <div @click="scrollRight"><right :is-white="true" /></div>
           </div>

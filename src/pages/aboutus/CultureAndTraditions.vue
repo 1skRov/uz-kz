@@ -158,5 +158,9 @@ export default {
   }
 }
 
-@media (max-width: 768px) {  }
+@media (max-width: 768px) {
+  .btn {
+    justify-content: center;
+  }
+}
 </style>
