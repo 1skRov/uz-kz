@@ -194,5 +194,9 @@ ul {
   #section-1 {
     width: 100%;
   }
+  #section-3 {
+    width: 100%;
+    margin-left: 20px;
+  }
 }
 </style>

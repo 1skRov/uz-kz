@@ -61,9 +61,6 @@ export default {
     <template #content>
      <CardGrid :cards="cards"></CardGrid>
     </template>
-    <template #btn>
-      <more :title="btn_title" @click="goToFamousPersons"/>
-    </template>
   </sections>
 </div>
 </template>
