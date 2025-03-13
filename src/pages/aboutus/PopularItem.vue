@@ -4,7 +4,7 @@ import {BASE_URL} from "@/axios";
 
 export default {
   name: "PopularItem",
-  components: { BasicButton },
+  components: {BasicButton},
   props: {
     img: "",
     id: {
@@ -22,13 +22,13 @@ export default {
     btn_title: {
       type: String,
     },
-    position : "",
+    position: "",
     route_name: {
       type: String,
       default: "FamousPersonDetails"
     }
   },
-  data(){
+  data() {
     return {
       windowWidth: window.innerWidth,
       BASE_URL
@@ -48,7 +48,7 @@ export default {
     openDetails() {
       this.$router.push({
         name: this.route_name,
-        params: { id: this.id },
+        params: {id: this.id},
       });
     },
     updateWindowWidth() {
@@ -77,7 +77,7 @@ export default {
       <p class="font-gilroy">{{ name }}</p>
       <span class="truncate-text-line" v-html="text"></span>
       <div class="btn">
-        <basic-button :is-blue="true" @click="openDetails" />
+        <basic-button :is-blue="true" @click="openDetails"/>
       </div>
     </div>
   </div>
@@ -93,6 +93,7 @@ export default {
   display: flex;
   overflow: hidden;
 }
+
 .left-img {
   width: 15%;
   min-width: 15%;
@@ -100,24 +101,29 @@ export default {
   flex-shrink: 0;
   height: auto;
 }
+
 .right-content {
   display: flex;
   flex-direction: column;
   padding: 20px 35px;
   gap: 1rem;
 }
+
 p {
   font-size: 32px;
   margin: 0;
   font-weight: 500;
 }
+
 span {
   color: #575F6C;
 }
+
 @media (max-width: 1024px) {
   .main {
     height: 10rem;
   }
+
   .left-img {
     width: 20%;
   }
@@ -135,21 +141,23 @@ span {
   .main {
     flex-direction: column;
     overflow: hidden;
+    height: 300px;
   }
+
   .left-img {
-    height: 15rem;
+    height: 210px;
     width: 100%;
-    max-width: 100%;
     min-width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
+
   p {
     font-size: 18px;
+    margin: 0;
   }
+
   .right-content {
     padding: 15px 20px;
+    gap:0
   }
 }
 </style>
