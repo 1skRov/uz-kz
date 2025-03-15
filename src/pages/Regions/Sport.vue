@@ -46,7 +46,7 @@ export default {
 
 <template>
   <div class="main">
-    <side-bar :title="getTranslations.regions || '{ regions }'"/>
+    <side-bar :title="getTranslations.sport || '{ sport }'"/>
     <div class="content">
       <div class="image_content">
         <img :src="BASE_URL + sport.image" :alt="BASE_URL + sport.image" style="width: 100%; height: 100%">
