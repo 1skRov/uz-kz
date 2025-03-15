@@ -60,7 +60,7 @@ export default {
 
 <template>
   <div class="main">
-    <side-bar :title="getTranslations.regions || '{ regions }'"/>
+    <side-bar :title="getTranslations.projects || '{ projects }'"/>
     <div class="main__content">
       <div v-if="cardItem">
         <div class="main__image">
