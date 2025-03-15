@@ -10,14 +10,18 @@ export default {
   props: {
     translations: {
       type: Object,
+    },
+    isBackground: {
+      type: Boolean,
+      default: false
     }
   },
 }
 </script>
 
 <template>
-  <div style="display: flex">
-    <side-bar :title="translations.documents_side || '{ documents_side }'"></side-bar>
+  <div style="display: flex" id="doc1">
+    <side-bar :title="translations.documents_side || '{ documents_side }'" :isBackground="isBackground"></side-bar>
     <div class="documents">
       <div id="important">
         <important :title="translations.important_documents"/>
@@ -37,6 +41,7 @@ export default {
   width: 65%;
   margin: 0 auto;
 }
+
 @media (max-width: 1024px) {
   .documents {
     width: 90%;

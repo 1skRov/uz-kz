@@ -11,7 +11,7 @@ import api, {BASE_URL} from "@/axios";
 export default {
   name: "Projects",
   components: {Left, Right, Sections, Important, Articles, SideBar},
-  props:{
+  props: {
     title: {
       type: String,
       default: "{ projects }",
@@ -19,6 +19,10 @@ export default {
     title_side: {
       type: String,
       default: "{ projects_side }",
+    },
+    isBackground: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -66,22 +70,26 @@ export default {
       });
     },
     goToDetails(newsId) {
-      this.$router.push({ name: 'Project', params: { id: newsId } });
+      this.$router.push({name: 'Project', params: {id: newsId}});
     },
   },
 }
 </script>
 
 <template>
-  <div style="display: flex">
-    <side-bar :title="title_side" :is-background="true"></side-bar>
+  <div style="display: flex" id="doc2">
+    <side-bar :title="title_side" :isBackground="isBackground"></side-bar>
     <div class="content">
       <sections>
         <template #title>{{ title }}</template>
         <template #title-button>
           <div class="btn">
-            <div @click="scrollLeft"><left /></div>
-            <div @click="scrollRight"><right /></div>
+            <div @click="scrollLeft">
+              <left/>
+            </div>
+            <div @click="scrollRight">
+              <right/>
+            </div>
           </div>
         </template>
         <template #content>
@@ -103,8 +111,12 @@ export default {
         </template>
         <template #btn>
           <div class="btn">
-            <div @click="scrollLeft"><left /></div>
-            <div @click="scrollRight"><right /></div>
+            <div @click="scrollLeft">
+              <left/>
+            </div>
+            <div @click="scrollRight">
+              <right/>
+            </div>
           </div>
         </template>
       </sections>
@@ -113,21 +125,24 @@ export default {
 </template>
 
 <style scoped>
-.content{
+.content {
   width: 65%;
   margin: 0 auto;
 }
+
 .btn {
   display: flex;
   align-items: center;
   gap: 1em;
 }
+
 .carousel-container {
   display: flex;
   gap: 20px;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
+
 .carousel-container .item {
   flex: 0 0 auto;
   width: 30vw;
@@ -147,26 +162,31 @@ export default {
   color: #333;
   position: absolute;
   bottom: 0;
-  right:0;
+  right: 0;
   max-width: 45%;
   max-height: 45%;
   z-index: 2;
 }
+
 h3 {
   font-size: 18px;
   margin: 0;
 }
+
 p {
   margin: 0
 }
+
 @media (max-width: 1024px) {
   .content {
     width: 90%;
   }
+
   .carousel-container .item {
     width: 40vw;
     height: 250px;
   }
+
   h3 {
     font-size: 16px;
   }
@@ -176,6 +196,7 @@ p {
   .carousel-container {
     gap: 0;
   }
+
   .carousel-container .item {
     width: 100%;
     height: 450px;
@@ -187,6 +208,7 @@ p {
     position: relative;
     cursor: pointer;
   }
+
   .btn {
     justify-content: center;
   }
