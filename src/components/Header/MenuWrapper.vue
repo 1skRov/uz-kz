@@ -1,4 +1,5 @@
 <script setup>
+  import { ref } from 'vue';
   import LocationIcon from '@/assets/icons/LocationIcon.vue';
   import GlobeIcon from '@/assets/icons/GlobeIcon.vue';
   import MailIcon from '@/assets/icons/MailIcon.vue';
@@ -13,6 +14,10 @@
       type: String,
       default: 'RU',
     },
+    availableLanguages: {
+      type: Array,
+      default: () => [],
+    },
     contacts: {
       type: Object,
       default: () => ({}),
@@ -20,6 +25,16 @@
   });
 
   const emit = defineEmits(['select-navigation', 'donats', 'open-mail']);
+  const isLangSelectOpen = ref(false);
+
+  const toggleLangSelect = () => {
+    isLangSelectOpen.value = !isLangSelectOpen.value;
+  };
+
+  const selectLanguage = (code) => {
+    emit('change-language', code);
+    isLangSelectOpen.value = false;
+  };
 </script>
 
 <template>
@@ -40,10 +55,24 @@
 
     <div class="menu-footer">
       <div class="actions-row">
-        <div class="action-box lang-box">
-          <globe-icon />
-          <span>{{ lang }}</span>
+        <div class="lang-wrapper">
+          <div class="action-box lang-box" @click="toggleLangSelect">
+            <globe-icon />
+            <span>{{ lang }}</span>
+          </div>
+
+          <div v-if="isLangSelectOpen" class="lang-menu">
+            <p
+              v-for="a in availableLanguages"
+              :key="a.code"
+              :class="{ selected: a.code === lang }"
+              @click="selectLanguage(a.code)"
+            >
+              {{ a.title }}
+            </p>
+          </div>
         </div>
+
         <a
           :href="`mailto:${contacts.email}`"
           class="action-box mail-box"
@@ -78,6 +107,7 @@
     width: 100%;
     background: #ffffff;
     border-bottom: 1px solid var(--color-gray-main);
+    border-top: 1px solid var(--color-gray-main);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     box-sizing: border-box;
     padding: 24px 20px;
@@ -136,11 +166,43 @@
     cursor: pointer;
   }
 
+  .lang-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
   .lang-box {
     display: flex;
     gap: 10px;
     padding: 0 24px 0 16px;
     font-size: 14px;
+  }
+
+  .lang-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    width: 109px;
+    border-radius: 8px;
+    border: 1px solid var(--color-primary);
+    background: #ffffff;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .lang-menu p {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    height: 48px;
+    padding: 0 16px;
+    font-size: 12px;
+    color: var(--color-text-dark);
+    text-transform: uppercase;
+  }
+
+  .lang-menu p.selected {
+    color: var(--color-primary);
   }
 
   .lang-box span {
