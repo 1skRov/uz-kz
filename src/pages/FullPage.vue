@@ -1,6 +1,6 @@
 <script>
 import {mapActions, mapGetters} from 'vuex';
-import Header from "@/components/Header.vue";
+import Header from "@/components/Header/HeaderWrapper.vue";
 import Footer from "@/components/Footer.vue";
 import api, {getTranslations} from "@/axios";
 
@@ -59,19 +59,12 @@ export default {
   </div>
 </template>
 
-<style>
+<style scoped>
 .main__header {
   position: sticky;
   top: 0;
   left: 0;
   z-index: 5000;
   background-color: #fff;
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
 }
 </style>
