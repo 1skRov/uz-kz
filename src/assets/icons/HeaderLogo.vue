@@ -40,7 +40,7 @@
 
 <style scoped>
   .logo {
-    width: 160px;
+    min-width: 160px;
     height: 80px;
   }
 

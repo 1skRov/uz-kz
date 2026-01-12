@@ -8,6 +8,10 @@
   import CloseIcon from '@/assets/icons/CloseIcon.vue';
 
   import MenuWrapper from '@/components/Header/MenuWrapper.vue';
+  import LangWrapper from '@/components/Header/LangWrapper.vue';
+  import MailIcon from '@/assets/icons/MailIcon.vue';
+  import LocationIcon from '@/assets/icons/LocationIcon.vue';
+  import PhoneIcon from '@/assets/icons/PhoneIcon.vue';
 
   const props = defineProps({
     contacts: {
@@ -72,6 +76,38 @@
 <template>
   <header>
     <header-logo @click="returnMainPage"></header-logo>
+    <div class="navigation-wrapper">
+      <nav class="nav-box">
+        <ul>
+          <li v-for="(m, index) in menuLinks" :key="index">
+            {{ m.title }}
+          </li>
+        </ul>
+      </nav>
+      <div class="contacts-box">
+        <div class="contacts-item">
+          <location-icon />
+          <span>{{ contacts.address }}</span>
+        </div>
+        <div class="contacts-item">
+          <phone-icon />
+          <div class="phones-col">
+            <a :href="`tel:${contacts.phone1}`">{{ contacts.phone1 }}</a>
+            <a v-if="contacts.phone2" :href="`tel:${contacts.phone2}`">{{ contacts.phone2 }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions-wrapper">
+      <LangWrapper
+        :available-languages="availableLanguages"
+        :lang="currentLanguage"
+        @change-language="handleChangeLanguage"
+      ></LangWrapper>
+      <div class="mail-box">
+        <mail-icon />
+      </div>
+    </div>
     <div class="menu-icon-wrapper" @click="toggleMenu">
       <close-icon v-if="isMenuOpen" />
       <burger-menu v-else />
@@ -91,22 +127,100 @@
 <style scoped>
   header {
     width: 100%;
-    height: 56px;
+    height: 79px;
     background-color: #fff;
     border-bottom: 1px solid var(--color-gray-main);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: relative;
     z-index: 100;
+    position: sticky;
+    top: 0;
+  }
+
+  .navigation-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .nav-box {
+    height: 100%;
+    display: flex;
+    margin: 0 auto;
+  }
+
+  .nav-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .nav-box li {
+    padding: 6px 16px;
+    color: var(--color-text-dark);
+    letter-spacing: 0.5px;
+  }
+
+  .actions-wrapper {
+    height: 100%;
+    display: flex;
+  }
+
+  .mail-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 80px;
+    border-left: 1px solid var(--color-gray-main);
+    cursor: pointer;
+  }
+
+  .contacts-box {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    gap: 40px;
+    max-width: 515px;
+    font-size: 14px;
+  }
+
+  .contacts-item {
+    display: flex;
+    gap: 16px;
+    max-width: 250px;
+  }
+
+  .phones-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
   }
 
   .menu-icon-wrapper {
+    display: none;
     width: 56px;
     height: 100%;
-    display: flex;
     justify-content: center;
     align-items: center;
     border-left: 1px solid var(--color-gray-main);
+  }
+
+  @media (max-width: 1024px) {
+    .menu-icon-wrapper {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 768px) {
   }
 </style>

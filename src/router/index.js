@@ -1,5 +1,5 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import FullMainPage from "@/pages/FullPage.vue";
+import { createRouter, createWebHashHistory } from 'vue-router';
+import FullMainPage from '@/pages/FullPage.vue';
 
 const routes = [
   {
@@ -10,12 +10,12 @@ const routes = [
       {
         path: '',
         name: 'MainPage',
-        component: () => import('@/pages/Main/MainPage.vue')
+        component: () => import('@/pages/Main/MainPage.vue'),
       },
       {
         path: 'about-us',
         name: 'AboutUs',
-        component: () => import('@/pages/aboutus/AboutUs.vue')
+        component: () => import('@/pages/aboutus/AboutUs.vue'),
       },
       {
         path: 'about-us/organization/:id',
@@ -45,23 +45,23 @@ const routes = [
             // component: () => import('@/pages/Regions/Contacts.vue'),
             component: () => import('@/pages/Regions/Contacts'),
           },
-        ]
+        ],
       },
       {
         path: 'regions/:id',
         name: 'ManagerDetail',
         component: () => import('@/pages/Regions/ManagerDetail.vue'),
-        props: true
+        props: true,
       },
       {
         path: 'documents',
         name: 'Documents',
-        component: () => import('@/pages/Documents/Documents.vue')
+        component: () => import('@/pages/Documents/Documents.vue'),
       },
       {
         path: 'press-center',
         name: 'PressCenter',
-        component: () => import('@/pages/Presscenter/PressCenter.vue')
+        component: () => import('@/pages/Presscenter/PressCenter.vue'),
       },
       {
         path: 'news/:id',
@@ -91,7 +91,7 @@ const routes = [
             name: 'regions',
             component: () => import('@/pages/Contacts/Regions.vue'),
           },
-        ]
+        ],
       },
       {
         path: 'donates',
@@ -109,65 +109,65 @@ const routes = [
             name: 'qr',
             component: () => import('@/pages/Donates/DonatesQr.vue'),
           },
-        ]
+        ],
       },
       {
-        path:'famous-persons',
-        name:'FamousPersons',
-        component: () => import('@/pages/aboutus/FamousPersonsPage.vue')
+        path: 'famous-persons',
+        name: 'FamousPersons',
+        component: () => import('@/pages/aboutus/FamousPersonsPage.vue'),
       },
       {
         path: 'famous-persons/:id',
         name: 'FamousPersonDetails',
         component: () => import('@/pages/aboutus/PersonDetail.vue'),
-        props: true
+        props: true,
       },
       {
-        path:'sport',
-        name:'Sport',
-        component: () => import('@/pages/Regions/Sport.vue')
+        path: 'sport',
+        name: 'Sport',
+        component: () => import('@/pages/Regions/Sport.vue'),
       },
       {
-        path:'education',
-        name:'Education',
+        path: 'education',
+        name: 'Education',
         component: () => import('@/pages/Regions/Education.vue'),
         props: true,
       },
       {
-        path:'documents/project/:id',
-        name:'Project',
+        path: 'documents/project/:id',
+        name: 'Project',
         component: () => import('@/pages/Regions/Project.vue'),
-        props: true
+        props: true,
       },
       {
-        path:'/member-association',
-        name:'MemberAssociation',
-        component: () => import('@/components/Dialog.vue')
-      }
-    ]
+        path: '/member-association',
+        name: 'MemberAssociation',
+        component: () => import('@/components/Dialog.vue'),
+      },
+    ],
   },
   {
     path: '/:pathMatch(.*)*',
     name: '404',
-    component: () => import('@/components/404Page.vue')
-  }
-]
+    component: () => import('@/components/404Page.vue'),
+  },
+];
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      return savedPosition
+      return savedPosition;
     }
     if (to.hash) {
       return {
         el: to.hash,
-        behavior: 'smooth'
-      }
+        behavior: 'smooth',
+      };
     }
-    return { top: 0 }
-  }
-})
+    return { top: 0 };
+  },
+});
 
-export default router
+export default router;
