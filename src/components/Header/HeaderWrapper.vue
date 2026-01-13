@@ -76,25 +76,23 @@
 <template>
   <header>
     <header-logo @click="returnMainPage"></header-logo>
-    <div class="navigation-wrapper">
-      <nav class="nav-box">
-        <ul>
-          <li v-for="(m, index) in menuLinks" :key="index">
-            {{ m.title }}
-          </li>
-        </ul>
-      </nav>
-      <div class="contacts-box">
-        <div class="contacts-item">
-          <location-icon />
-          <span>{{ contacts.address }}</span>
-        </div>
-        <div class="contacts-item">
-          <phone-icon />
-          <div class="phones-col">
-            <a :href="`tel:${contacts.phone1}`">{{ contacts.phone1 }}</a>
-            <a v-if="contacts.phone2" :href="`tel:${contacts.phone2}`">{{ contacts.phone2 }}</a>
-          </div>
+    <nav class="nav-box">
+      <ul>
+        <li v-for="(m, index) in menuLinks" :key="index" @click="handleNavigation(m.path)">
+          {{ m.title }}
+        </li>
+      </ul>
+    </nav>
+    <div class="contacts-box">
+      <div class="contacts-item">
+        <location-icon />
+        <span>{{ contacts.address }}</span>
+      </div>
+      <div class="contacts-item">
+        <phone-icon />
+        <div class="phones-col">
+          <a :href="`tel:${contacts.phone1}`">{{ contacts.phone1 }}</a>
+          <a v-if="contacts.phone2" :href="`tel:${contacts.phone2}`">{{ contacts.phone2 }}</a>
         </div>
       </div>
     </div>
@@ -138,17 +136,9 @@
     top: 0;
   }
 
-  .navigation-wrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
-
   .nav-box {
     height: 100%;
     display: flex;
-    margin: 0 auto;
   }
 
   .nav-box ul {
@@ -164,6 +154,7 @@
     padding: 6px 16px;
     color: var(--color-text-dark);
     letter-spacing: 0.5px;
+    cursor: pointer;
   }
 
   .actions-wrapper {
@@ -184,7 +175,6 @@
   .contacts-box {
     display: flex;
     align-items: center;
-    margin: 0 auto;
     gap: 40px;
     max-width: 515px;
     font-size: 14px;

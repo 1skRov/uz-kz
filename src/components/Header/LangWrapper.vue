@@ -47,6 +47,10 @@
 </template>
 
 <style scoped>
+  .lang-wrapper {
+    position: relative;
+  }
+
   .lang-box {
     display: flex;
     align-items: center;
