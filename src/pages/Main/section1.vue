@@ -148,7 +148,6 @@
     border-radius: 0 8px 8px 0;
     border-left: 1px solid var(--color-primary);
     overflow: hidden;
-
     width: 40%;
   }
 
@@ -162,13 +161,13 @@
   .blur-desc {
     margin: 0;
     color: var(--color-text-main);
-    line-height: 32px;
+    line-height: 200%;
     word-wrap: break-word;
   }
 
   @media (max-width: 1024px) {
     .section-content {
-      margin: 50px 40px;
+      padding: 45px 25px;
     }
 
     .image-grid {
@@ -176,9 +175,12 @@
     }
 
     .backdrop-blur-container {
-      padding: 40px 64px;
-      top: 50%;
-      width: 50%;
+      padding: 40px 15px;
+    }
+
+    .blur-box {
+      width: 60%;
+      padding: 60px 20px;
     }
 
     .blur-title {
@@ -188,7 +190,44 @@
 
   @media (max-width: 768px) {
     .section-content {
+      padding: 0;
+      margin-bottom: 325px;
+    }
+
+    .image-grid {
+      grid-template-columns: 1fr;
       width: 100%;
+    }
+
+    .small-images {
+      display: none;
+    }
+
+    .large-image img {
+      border-radius: 0;
+    }
+
+    .backdrop-blur-container {
+      padding: 25px;
+      display: flex;
+      margin: 0 auto;
+      top: 60%;
+    }
+
+    .blur-box {
+      padding: 20px;
+      border-radius: 8px;
+      border-left: none;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .blur-title {
+      font-size: 24px;
+    }
+
+    .blur-desc {
+      line-height: 180%;
     }
   }
 </style>
