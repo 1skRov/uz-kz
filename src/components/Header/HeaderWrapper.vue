@@ -177,6 +177,7 @@
     align-items: center;
     gap: 40px;
     max-width: 515px;
+    min-width: 515px;
     font-size: 14px;
   }
 
@@ -184,6 +185,7 @@
     display: flex;
     gap: 16px;
     max-width: 250px;
+    min-width: 250px;
   }
 
   .phones-col {
@@ -205,9 +207,15 @@
     border-left: 1px solid var(--color-gray-main);
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1280px) {
     .menu-icon-wrapper {
       display: flex;
+    }
+
+    .nav-box,
+    .contacts-box,
+    .actions-wrapper {
+      display: none;
     }
   }
 
