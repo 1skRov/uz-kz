@@ -1,47 +1,46 @@
 <script>
-import SideBar from "@/pages/Main/SideBar.vue";
-import Button_basic from "@/components/Buttons/button_basic.vue";
-import Dialog from "@/components/Dialog.vue";
-import api, {BASE_URL} from "@/axios";
-import {mapGetters} from "vuex";
+  import SideBar from '@/pages/Main/SideBar.vue';
+  import Button_basic from '@/components/Buttons/button_basic.vue';
+  import api, { BASE_URL } from '@/axios';
+  import { mapGetters } from 'vuex';
 
-export default {
-  name: "section1",
-  components: {Dialog, Button_basic, SideBar},
-  props: {
-    title: {
-      type: String,
-      default: "{{ main_title }}"
+  export default {
+    name: 'section1',
+    components: { Button_basic, SideBar },
+    props: {
+      title: {
+        type: String,
+        default: '{{ main_title }}',
+      },
+      btn_title: {
+        type: String,
+        default: '{{ join_button }}',
+      },
+      isBackground: {
+        type: Boolean,
+        default: false,
+      },
     },
-    btn_title: {
-      type: String,
-      default: "{{ join_button }}"
+    data() {
+      return {
+        page: '01',
+        list: {},
+      };
     },
-    isBackground: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data() {
-    return {
-      page: "01",
-      list: {},
-    };
-  },
-  computed: {
-    ...mapGetters(['currentLanguage']),
-  },
-  watch: {
-    currentLanguage(newLang) {
+    computed: {
+      ...mapGetters(['currentLanguage']),
+    },
+    watch: {
+      currentLanguage(newLang) {
+        this.getMain();
+      },
+    },
+    mounted() {
       this.getMain();
     },
-  },
-  mounted() {
-    this.getMain();
-  },
-  methods: {
-    getMain() {
-      api.get(`/association/?lang_code=${this.currentLanguage}`)
+    methods: {
+      getMain() {
+        api.get(`/association/?lang_code=${this.currentLanguage}`)
           .then((response) => {
             const arr = response.data;
             if (Array.isArray(arr) && arr.length > 0) {
@@ -53,46 +52,42 @@ export default {
                 image4: `${BASE_URL}/${arr[0].image4}`,
               };
             } else {
-              this.list = {}
+              this.list = {};
             }
           })
           .catch((error) => {
             console.error(error);
           });
+      },
+      openModal() {
+        this.$router.push('/member-association');
+      },
     },
-    openModal() {
-      this.$router.push('/member-association')
-    },
-  }
-}
+  };
 </script>
 
 <template>
   <div style="display: flex" id="section1">
-    <side-bar :page="page" :isBackground="isBackground"/>
-    <div class="content">
-      <div class="tablet-space">
-        <div class="tablet-space-img">
-          <div class="image-grid">
-            <div class="large-image">
-              <img :src="list.image1" alt="Large image"/>
-            </div>
-            <div class="small-images">
-              <img :src="list.image2" alt="Small image"/>
-              <img :src="list.image3" alt="Small image"/>
-              <img :src="list.image4" alt="Small image"/>
-            </div>
-          </div>
+    <side-bar :page="page" :isBackground="isBackground" />
+    <div class="section-content">
+      <div class="image-grid">
+        <div class="large-image">
+          <img :src="list.image1" alt="Large image" />
         </div>
-        <div class="backdrop-blur-container">
-          <div style="position: relative; z-index: 2;">
-            <h1 class="font-gilroy title" style="word-wrap: break-word;">
-              {{ title }}
-            </h1>
-            <p class="desc" v-html="list.desc"></p>
-          </div>
-          <div>
-            <Button_basic :title_button="btn_title" @click="openModal"/>
+        <div class="small-images">
+          <img :src="list.image2" alt="Small image" />
+          <img :src="list.image3" alt="Small image" />
+          <img :src="list.image4" alt="Small image" />
+        </div>
+      </div>
+      <div class="backdrop-blur-container">
+        <div class="blur-box">
+          <h1 class="blur-title font-gilroy">
+            {{ title }}
+          </h1>
+          <p class="blur-desc" v-html="list.desc"></p>
+          <div style="margin-top: 24px;">
+            <Button_basic :title_button="btn_title" @click="openModal" />
           </div>
         </div>
       </div>
@@ -101,165 +96,99 @@ export default {
 </template>
 
 <style scoped>
-.content {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
-  align-items: center;
-}
-
-.tablet-space {
-  position: relative;
-  width: 100%;
-
-  .tablet-space-img {
+  .section-content {
     width: 100%;
     display: flex;
-    justify-content: end;
-    align-items: center;
-    padding: 69px 0;
+    justify-content: flex-end;
+    gap: 10px;
+    position: relative;
+    padding: 60px 0;
+  }
 
-    .image-grid {
-      display: grid;
-      grid-template-columns: 3fr 1fr;
-      gap: 10px;
-      height: 100%;
-      width: 70%;
-      justify-content: end;
-    }
+  .image-grid {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 4px;
+    height: 100%;
+    width: 70%;
+  }
 
 
-    .large-image img,
-    .small-images img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 8px;
-    }
+  .large-image img,
+  .small-images img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
 
-    .small-images {
-      display: grid;
-      grid-template-rows: repeat(3, 1fr);
-      gap: 10px;
-    }
+  .small-images {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 4px;
+  }
 
-    .small-images img {
-      height: 100%;
-    }
+  .small-images img {
+    height: 100%;
   }
 
   .backdrop-blur-container {
+    position: absolute;
+    padding: 80px 0;
+    z-index: 10;
+  }
+
+  .blur-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
     padding: 40px 80px;
     border-radius: 0 8px 8px 0;
-    border-left: 1px solid #0072AB;
+    border-left: 1px solid var(--color-primary);
     overflow: hidden;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+
     width: 40%;
+  }
 
-    .title {
-      font-size: 40px;
-      line-height: 52px;
-      font-weight: 500;
+  .blur-title {
+    margin: 0;
+    font-size: 40px;
+    line-height: 130%;
+    font-weight: 500;
+  }
+
+  .blur-desc {
+    margin: 0;
+    color: var(--color-text-main);
+    line-height: 32px;
+    word-wrap: break-word;
+  }
+
+  @media (max-width: 1024px) {
+    .section-content {
+      margin: 50px 40px;
     }
 
-    .desc {
-      font-size: 14px;
-      margin-top: 24px;
-      margin-bottom: 40px;
-      color: #575F6C;
-      line-height: 32px;
-      word-wrap: break-word;
-    }
-  }
-}
-
-@media (max-width: 1024px) {
-  .content {
-    width: 90%;
-  }
-
-  .tablet-space {
-    .tablet-space-img {
-      padding: 40px 0;
-
-      .image-grid {
-        height: 100%;
-        width: 95%;
-      }
-    }
-  }
-
-  .tablet-space {
-    .backdrop-blur-container {
-      padding: 40px;
-      width: 60%;
-
-      .title {
-        font-size: 28px;
-        line-height: 36px;
-        margin: 0;
-      }
-
-      .desc {
-        font-size: 14px;
-        margin-top: 15px;
-        margin-bottom: 30px;
-        line-height: 28px;
-      }
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .content {
-    width: 100%;
-  }
-
-  .tablet-space {
-    margin-bottom: 40vh;
-
-    .tablet-space-img {
-      padding: 0;
-
-      .image-grid {
-        grid-template-columns: 1fr;
-        width: 100%;
-      }
-
-      .small-images {
-        display: none;
-      }
-
+    .image-grid {
+      width: 95%;
     }
 
     .backdrop-blur-container {
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 30px 20px;
-      border-radius: 8px;
-      width: 75%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      border: none;
+      padding: 40px 64px;
+      top: 50%;
+      width: 50%;
+    }
 
-      .title {
-        font-size: 24px;
-        line-height: 40px;
-      }
-
-      .desc {
-        font-size: 12px;
-        margin: 20px 0;
-        line-height: 30px;
-      }
+    .blur-title {
+      font-size: 28px;
     }
   }
-}
+
+  @media (max-width: 768px) {
+    .section-content {
+      width: 100%;
+    }
+  }
 </style>
