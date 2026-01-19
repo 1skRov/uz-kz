@@ -59,7 +59,7 @@ export default {
 
 <template>
   <div class="section" id="section2">
-    <side-bar :page="page" :icon="false" :isBackground="isBackground"/>
+    <side-bar class="side" :page="page" :icon="false" :isBackground="isBackground"/>
     <div class="content">
       <sections :is-had="true">
         <template #title>
@@ -79,10 +79,16 @@ export default {
 <style scoped>
 .section {
   display: flex;
+  position: relative;
+}
+
+.side {
+  position: absolute;
+  left: 0;
+  height: 100%;
 }
 
 .content {
-  width: 70%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -94,7 +100,7 @@ export default {
 
 @media (max-width: 1024px) {
   .content {
-    width: 90%;
+    padding: 0 20px;
   }
 }
 </style>

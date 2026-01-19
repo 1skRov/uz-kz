@@ -1,34 +1,34 @@
 <script>
-export default {
-  name: "Sections",
-  props:{
-    isHad:{
-      type: Boolean,
-      default: false,
+  export default {
+    name: 'Sections',
+    props: {
+      isHad: {
+        type: Boolean,
+        default: false,
+      },
     },
-  },
-  data() {
-    return {
-      windowWidth: window.innerWidth,
-    };
-  },
-  computed: {
-    isMobile() {
-      return (this.windowWidth <= 768 || this.isHad);
+    data() {
+      return {
+        windowWidth: window.innerWidth,
+      };
     },
-  },
-  mounted() {
-    window.addEventListener('resize', this.updateWindowWidth);
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.updateWindowWidth);
-  },
-  methods: {
-    updateWindowWidth() {
-      this.windowWidth = window.innerWidth;
+    computed: {
+      isMobile() {
+        return (this.windowWidth <= 768 || this.isHad);
+      },
     },
-  },
-};
+    mounted() {
+      window.addEventListener('resize', this.updateWindowWidth);
+    },
+    beforeDestroy() {
+      window.removeEventListener('resize', this.updateWindowWidth);
+    },
+    methods: {
+      updateWindowWidth() {
+        this.windowWidth = window.innerWidth;
+      },
+    },
+  };
 </script>
 
 <template>
@@ -55,59 +55,73 @@ export default {
 </template>
 
 <style scoped>
-.section {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 64px 0;
-}
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 56px;
-}
-.header .title {
-  font-size: 40px;
-  font-weight: 500;
-}
-.content{
-  line-height: 30px;
-}
-.end-button {
-  margin-top: 72px;
-}
+  .section {
+    display: flex;
+    flex-direction: column;
+    padding: 64px 0;
+    width: 1224px;;
+  }
 
-@media (max-width: 1024px) {
-  .section  {
-    padding: 48px 0;
-  }
   .header {
-    padding-bottom: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 56px;
   }
-  .header .title {
-    font-size: 28px;
-  }
-  .end-button {
-    margin-top: 48px;
-  }
-}
 
-@media (max-width: 768px) {
-  .section  {
-    padding: 32px 0;
-  }
-  .header {
-    padding-bottom: 25px;
-  }
   .header .title {
-    font-size: 24px;
+    line-height: 130%;
+    font-size: 40px;
+    font-weight: 500;
   }
+
+  .content {
+    line-height: 200%;
+    color: var(--color-text-main);
+  }
+
   .end-button {
-    margin-top: 20px;
+    margin-top: 72px;
   }
-  .content{
-    line-height: 25px;
+
+  @media (max-width: 1024px) {
+    .section {
+      width: 100%;
+      padding: 48px 0;
+    }
+
+    .header {
+      padding-bottom: 48px;
+    }
+
+    .header .title {
+      font-size: 28px;
+    }
+
+    .end-button {
+      margin-top: 48px;
+    }
   }
-}
+
+  @media (max-width: 768px) {
+    .section {
+      padding: 32px 0;
+    }
+
+    .header {
+      padding-bottom: 25px;
+    }
+
+    .header .title {
+      font-size: 24px;
+    }
+
+    .end-button {
+      margin-top: 20px;
+    }
+
+    .content {
+      line-height: 25px;
+    }
+  }
 </style>

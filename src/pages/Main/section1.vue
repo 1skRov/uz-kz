@@ -134,6 +134,7 @@
 
   .backdrop-blur-container {
     position: absolute;
+    left: 0;
     padding: 80px 0;
     z-index: 10;
   }
@@ -175,7 +176,9 @@
     }
 
     .backdrop-blur-container {
-      padding: 40px 15px;
+      padding: 40px 20px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .blur-box {
@@ -209,6 +212,8 @@
 
     .backdrop-blur-container {
       padding: 25px;
+      width: 100%;
+      box-sizing: border-box;
       display: flex;
       margin: 0 auto;
       top: 60%;
