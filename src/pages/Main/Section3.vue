@@ -83,6 +83,10 @@
               <div class="image-desc truncate-text" v-html="culture.desc"></div>
             </div>
           </div>
+          <div class="mobile-text">
+            <div class="image-title font-gilroy">{{ culture.title }}</div>
+            <div class="image-desc truncate-text" v-html="culture.desc"></div>
+          </div>
         </template>
         <template #btn>
           <more @click="goToAboutUsSection" :title="btn_title" />
@@ -159,6 +163,10 @@
     z-index: 3;
   }
 
+  .mobile-text {
+    display: none;
+  }
+
   .content-body .image-title {
     color: #fff;
     font-size: 24px;
@@ -191,5 +199,28 @@
   }
 
   @media (max-width: 768px) {
+    .content-body {
+      height: 200px;
+    }
+
+    .abs-text {
+      display: none;
+    }
+
+    .mobile-text {
+      display: block;
+    }
+
+    .mobile-text .image-title {
+      font-size: 18px;
+      font-weight: 500;
+      margin: 24px 0;
+      line-height: 130%;
+    }
+
+    .mobile-text .image-desc {
+      line-height: 180%;
+      color: var(--color-text-main);
+    }
   }
 </style>
