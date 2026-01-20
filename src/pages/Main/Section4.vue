@@ -1,67 +1,73 @@
 <script>
-  import SideBar from '@/pages/Main/SideBar.vue';
-  import Sections from '@/components/Sections.vue';
-  import More from '@/components/Buttons/more.vue';
-  import CardGrid from '@/pages/Main/CardGrid.vue';
-  import api from '@/axios';
-  import { mapGetters } from 'vuex';
+import SideBar from "@/pages/Main/SideBar.vue";
+import Sections from "@/components/Sections.vue";
+import More from "@/components/Buttons/more.vue";
+import CardGrid from "@/pages/Main/CardGrid.vue";
+import api from "@/axios";
+import { mapGetters } from "vuex";
 
-  export default {
-    name: 'Section4',
-    components: { CardGrid, More, Sections, SideBar },
-    props: {
-      title: {
-        type: String,
-        required: true,
-        default: '{{ popular_persons }}',
-      },
-      btn_title: {
-        type: String,
-        default: '{{ learn_more }}',
-      },
-      isBackground: {
-        type: Boolean,
-        default: false,
-      },
+export default {
+  name: "Section4",
+  components: { CardGrid, More, Sections, SideBar },
+  props: {
+    title: {
+      type: String,
+      required: true,
+      default: "{{ popular_persons }}",
     },
-    data() {
-      return {
-        page: '04',
-        persons: [],
-      };
+    btn_title: {
+      type: String,
+      default: "{{ learn_more }}",
     },
-    computed: {
-      ...mapGetters(['currentLanguage']),
+    isBackground: {
+      type: Boolean,
+      default: false,
     },
-    watch: {
-      currentLanguage(newLang) {
-        this.getCulture();
-      },
-    },
-    mounted() {
+  },
+  data() {
+    return {
+      page: "04",
+      persons: [],
+    };
+  },
+  computed: {
+    ...mapGetters(["currentLanguage"]),
+  },
+  watch: {
+    currentLanguage(newLang) {
       this.getCulture();
     },
-    methods: {
-      getCulture() {
-        api.get(`/famous-persons/?lang_code=${this.currentLanguage}`)
-          .then((response) => {
-            this.persons = response.data;
-          })
-          .catch((error) => {
-            console.error('известные личности', error);
-          });
-      },
-      goToFamousPersons() {
-        this.$router.push('/famous-persons');
-      },
+  },
+  mounted() {
+    this.getCulture();
+  },
+  methods: {
+    getCulture() {
+      api
+        .get(`/famous-persons/?lang_code=${this.currentLanguage}`)
+        .then((response) => {
+          this.persons = response.data;
+        })
+        .catch((error) => {
+          console.error("известные личности", error);
+        });
     },
-  };
+    goToFamousPersons() {
+      this.$router.push("/famous-persons");
+    },
+  },
+};
 </script>
 
 <template>
   <div class="section" id="section4">
-    <side-bar class="side" :page="page" :icon="false" :isBackground="isBackground" />
-    <div class="content">
+    <side-bar
+      class="side"
+      :page="page"
+      :icon="false"
+      :isBackground="isBackground"
+    />
+    <div class="section-content">
       <sections>
         <template #title>
           {{ title }}
@@ -72,27 +78,33 @@
         <template #content>
           <CardGrid :cards="persons"></CardGrid>
         </template>
+        <template #btn>
+          <more @click="goToFamousPersons" :title="btn_title" />
+        </template>
       </sections>
     </div>
   </div>
 </template>
 
 <style scoped>
-  .section {
-    display: flex;
-    position: relative;
-  }
+.section {
+  display: flex;
+  position: relative;
+}
 
-  .content {
-    display: flex;
-    margin: 0 auto;
-  }
+.section-content {
+  display: flex;
+  margin: 0 auto;
+}
 
-  @media (max-width: 1024px) {
-    .content {
-    }
+@media (max-width: 1024px) {
+  .section-content {
+    padding: 0 20px;
+    margin: 0;
+    width: 100%;
   }
+}
 
-  @media (max-width: 768px) {
-  }
+@media (max-width: 768px) {
+}
 </style>

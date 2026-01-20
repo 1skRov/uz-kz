@@ -1,84 +1,48 @@
 <script>
-  import { BASE_URL } from '@/axios';
-  import { Swiper, SwiperSlide } from 'swiper/vue';
+import { BASE_URL } from "@/axios";
 
-  export default {
-    name: 'CardGrid',
-    components: {
-      Swiper,
-      SwiperSlide,
+export default {
+  name: "CardGrid",
+  props: {
+    cards: {
+      type: Array,
+      required: true,
     },
-    props: {
-      cards: {
-        type: Array,
-        required: true,
-      },
+  },
+  data() {
+    return {
+      BASE_URL,
+    };
+  },
+  methods: {
+    openDetails(id) {
+      this.$router.push({
+        name: "FamousPersonDetails",
+        params: { id },
+      });
     },
-    data() {
-      return {
-        BASE_URL,
-        isMobile: false,
-      };
-    },
-    mounted() {
-      this.isMobile = window.innerWidth < 540;
-      window.addEventListener('resize', this.handleResize);
-    },
-    beforeDestroy() {
-      window.removeEventListener('resize', this.handleResize);
-    },
-    methods: {
-      handleResize() {
-        this.isMobile = window.innerWidth < 540;
-      },
-      openDetails(id) {
-        this.$router.push({
-          name: 'FamousPersonDetails',
-          params: { id },
-        });
-      },
-    },
-  };
+  },
+};
 </script>
 
 <template>
   <div class="hero-section">
-    <Swiper
-      v-if="isMobile"
-      :slides-per-view="1.5"
-      :space-between="30"
-      class="mobile-swiper"
-    >
-      <SwiperSlide
-        v-for="(card, index) in cards"
-        :key="card.id"
-        @click="openDetails(card.id)"
-      >
-        <div
-          class="swiper-card__background"
-          :style="{ backgroundImage: `url(${BASE_URL + card.image})` }"
-        >
-          <div class="swiper-card__overlay">
-            <div class="swiper-card__content">
-              <div class="swiper-card__category font-gilroy">{{ card.sur_name }}</div>
-              <div class="swiper-card__heading">{{ card.position }}</div>
-            </div>
-          </div>
-        </div>
-      </SwiperSlide>
-    </Swiper>
-
-    <div class="card-grid" v-else>
+    <div class="cards">
       <div
         class="card"
-        v-for="(card, index) in cards"
+        v-for="card in cards"
         :key="card.id"
         @click="openDetails(card.id)"
       >
         <div
           class="card__background"
-          :style="{ backgroundImage: `url(${BASE_URL + card.image})` }"
+          :style="
+            card.image
+              ? { backgroundImage: `url(${BASE_URL + card.image})` }
+              : {}
+          "
         ></div>
+
         <div class="card__overlay">
           <div class="card__content">
             <div class="card__category font-gilroy">{{ card.sur_name }}</div>
@@ -91,148 +55,158 @@
 </template>
 
 <style scoped>
-  .hero-section {
-    display: flex;
-    justify-content: center;
-  }
+.hero-section {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
 
-  .card-grid {
+.cards {
+  width: 100%;
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  box-sizing: border-box;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cards::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  flex: 0 0 70%;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: box-shadow 0.25s ease;
+}
+
+.card__background {
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 0;
+  padding-bottom: 150%;
+  transform: scale(1);
+  transition: transform 0.35s ease;
+}
+
+.card__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  opacity: 1;
+  visibility: visible;
+
+  background: linear-gradient(
+    to top,
+    rgba(0, 114, 171, 0.95) 0%,
+    rgba(0, 114, 171, 0.72) 36%,
+    rgba(0, 114, 171, 0) 70%
+  );
+
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
+}
+
+.card__overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 114, 171, 0.78);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.card__content {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.card__category {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #fff;
+  font-weight: 500;
+  line-height: 130%;
+}
+
+.card__heading {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 150%;
+}
+
+@media (min-width: 540px) {
+  .cards {
+    overflow: visible;
+    padding: 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 20px;
-    width: 100%;
+    scroll-snap-type: none;
+  }
+}
+
+@media (min-width: 540px) and (max-width: 959px) {
+  .cards {
+    grid-template-columns: repeat(4, 1fr);
   }
 
-  @media (min-width: 540px) and (max-width: 959px) {
-    .card-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
+  .card__category {
+    font-size: 20px;
+    margin-bottom: 12px;
   }
 
-  @media (min-width: 960px) {
-    .card-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
+  .card__heading {
+    font-size: 14px;
   }
+}
 
-  .card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .card:hover {
-    transform: scale(1.015);
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-  }
-
-  .card__background {
-    background-size: cover;
-    background-position: center;
-    width: 100%;
-    height: 0;
-    padding-bottom: 150%;
+@media (min-width: 960px) {
+  .cards {
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .card__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 114, 171, 0.9);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    display: flex;
-    align-items: flex-end;
-    border-radius: 8px;
-    padding: 20px;
-    box-sizing: border-box;
   }
 
-  @media (min-width: 960px) {
+  .card__category {
+    font-size: 24px;
+  }
+
+  .card__heading {
+    font-size: 14px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .card:hover {
+      border-color: rgba(0, 114, 171, 0.5);
+    }
+
     .card:hover .card__overlay {
       opacity: 1;
       visibility: visible;
     }
-  }
 
-  @media (max-width: 959px) {
-    .card__overlay {
-      opacity: 1 !important;
-      visibility: visible !important;
-      background: linear-gradient(to top, rgba(0, 114, 171, 0.7) 0%, rgba(0, 114, 171, 0) 100%);
-      padding: 10px;
+    .card:hover .card__overlay::before {
+      opacity: 1;
+    }
+
+    .card:hover .card__background {
+      transform: scale(1.03);
     }
   }
-
-  @media (max-width: 539px) {
-    .card:nth-child(n + 3) {
-      display: none;
-    }
-  }
-
-  .card__content {
-    width: 100%;
-  }
-
-  .card__category {
-    font-size: 1.25rem;
-    margin-bottom: 5px;
-    color: #fff;
-    font-weight: 500;
-  }
-
-  .card__heading {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 500;
-  }
-
-  .mobile-swiper {
-    width: 100%;
-  }
-
-  .swiper-card__background {
-    width: 100%;
-    padding-bottom: 150%;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .swiper-card__overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(
-      to top,
-      rgba(0, 114, 171, 0.9) 0%,
-      rgba(0, 114, 171, 0) 100%
-    );
-    padding: 15px;
-    box-sizing: border-box;
-  }
-
-  .swiper-card__content {
-    width: 100%;
-  }
-
-  .swiper-card__category {
-    font-size: 1.25rem;
-    margin-bottom: 5px;
-    color: #fff;
-    font-weight: 500;
-  }
-
-  .swiper-card__heading {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 500;
-  }
+}
 </style>
