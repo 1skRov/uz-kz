@@ -1,16 +1,16 @@
 <script>
-import {Swiper, SwiperSlide} from "swiper/vue";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Autoplay, Navigation } from "swiper/modules";
 import Sections from "@/components/Sections.vue";
 import SideBar from "@/pages/Main/SideBar.vue";
-import More from "@/components/Buttons/more.vue";
 import Left from "@/components/Buttons/left.vue";
 import Right from "@/components/Buttons/right.vue";
-import api, {BASE_URL} from "@/axios";
-import {mapGetters} from "vuex";
+import api, { BASE_URL } from "@/axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Section6",
-  components: {Swiper, SwiperSlide, Right, Left, More, SideBar, Sections},
+  components: { Swiper, SwiperSlide, Right, Left, SideBar, Sections },
   props: {
     title: {
       type: String,
@@ -19,8 +19,8 @@ export default {
     },
     isBackground: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -28,10 +28,21 @@ export default {
       partners: [],
       BASE_URL,
       swiperInstance: null,
+      swiperModules: [Autoplay, Navigation],
+      viewportWidth: window.innerWidth,
     };
   },
   computed: {
     ...mapGetters(["currentLanguage"]),
+    maxVisibleSlides() {
+      const w = this.viewportWidth;
+      if (w >= 1000) return 5;
+      if (w >= 600) return 3;
+      return 2;
+    },
+    hasEnoughPartnersToScroll() {
+      return this.partners.length > this.maxVisibleSlides;
+    },
   },
   watch: {
     currentLanguage(newLang) {
@@ -40,35 +51,62 @@ export default {
   },
   mounted() {
     this.getPartners();
+    window.addEventListener("resize", this.onResize, { passive: true });
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.onResize);
   },
   methods: {
     getPartners() {
       api
-          .get(`/our-partners/?lang_code=${this.currentLanguage}`)
-          .then((response) => {
-            const data = response.data;
-            if (Array.isArray(data) && data.length > 0) {
-              this.partners = data;
-            } else {
-              this.partners = [];
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        .get(`/our-partners/?lang_code=${this.currentLanguage}`)
+        .then((response) => {
+          const data = response.data;
+          if (Array.isArray(data) && data.length > 0) {
+            this.partners = data;
+          } else {
+            this.partners = [];
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    openPartner(rawUrl) {
+      if (rawUrl == null) return;
+
+      let url = String(rawUrl)
+        .replace(/[\u200B-\u200D\uFEFF]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+
+      if (!url) return;
+
+      if (!/^https?:\/\//i.test(url)) {
+        url = `https://${url.replace(/^\/+/, "")}`;
+      }
+
+      let finalUrl;
+      try {
+        finalUrl = new URL(url).toString();
+      } catch (e) {
+        console.warn("Bad partner url:", rawUrl);
+        return;
+      }
+
+      window.open(finalUrl, "_blank", "noopener,noreferrer");
     },
     moveLeft() {
-      if (this.swiperInstance) {
-        this.swiperInstance.slidePrev();
-      }
+      this.swiperInstance?.slidePrev();
     },
     moveRight() {
-      if (this.swiperInstance) {
-        this.swiperInstance.slideNext();
-      }
+      this.swiperInstance?.slideNext();
     },
     onSwiperReady(instance) {
       this.swiperInstance = instance;
+    },
+    onResize() {
+      this.viewportWidth = window.innerWidth;
     },
   },
 };
@@ -76,51 +114,84 @@ export default {
 
 <template>
   <div class="section" id="section6">
-    <side-bar :page="page" :icon="false" :isBackground="isBackground"/>
+    <side-bar
+      class="side"
+      :page="page"
+      :icon="false"
+      :isBackground="isBackground"
+    />
     <div class="right-content">
-      <div class="title-section">
-        <sections style="padding-bottom: 0">
-          <template #title>
-            {{ title }}
-          </template>
-          <template #title-button>
-            <div class="btns">
-              <left @click="moveLeft"/>
-              <right @click="moveRight"/>
-            </div>
-          </template>
-        </sections>
-      </div>
-      <div class="carousel-container">
+      <sections style="padding-bottom: 0">
+        <template #title>
+          {{ title }}
+        </template>
+        <template #title-button>
+          <div class="btns">
+            <left @click="moveLeft" />
+            <right @click="moveRight" />
+          </div>
+        </template>
+      </sections>
+      <div
+        class="carousel-container"
+        :class="{ 'is-static': !hasEnoughPartnersToScroll }"
+      >
         <swiper
-            class="my-swiper"
-            :loop="true"
-            :autoplay="{ delay: 3000, disableOnInteraction: false }"
-            :space-between="30"
-            :centeredSlides="true"
-            :slides-per-view="1"
-            :breakpoints="{
-              0: { slidesPerView: 2, centeredSlides: true },
-              600: { slidesPerView: 3, centeredSlides: true },
-              1000: { slidesPerView: 5, centeredSlides: true }
-            }"
-            pagination
-            @swiper="onSwiperReady"
+          :modules="swiperModules"
+          :loop="hasEnoughPartnersToScroll"
+          :speed="700"
+          :grabCursor="hasEnoughPartnersToScroll"
+          :centeredSlides="hasEnoughPartnersToScroll"
+          :space-between="24"
+          :autoplay="
+            hasEnoughPartnersToScroll
+              ? {
+                  delay: 2500,
+                  disableOnInteraction: false,
+                  pauseOnMouseEnter: true,
+                }
+              : false
+          "
+          :breakpoints="{
+            0: {
+              slidesPerView: 2,
+              spaceBetween: 24,
+              centeredSlides: hasEnoughPartnersToScroll,
+            },
+            600: {
+              slidesPerView: 3,
+              spaceBetween: 20,
+              centeredSlides: hasEnoughPartnersToScroll,
+            },
+            1000: {
+              slidesPerView: 5,
+              spaceBetween: 24,
+              centeredSlides: hasEnoughPartnersToScroll,
+            },
+          }"
+          @swiper="onSwiperReady"
         >
           <swiper-slide v-for="(partner, index) in partners" :key="index">
-            <div class="images">
+            <div
+              class="images"
+              role="link"
+              tabindex="0"
+              @click="openPartner(partner.title)"
+              @keydown.enter.prevent="openPartner(partner.title)"
+              @keydown.space.prevent="openPartner(partner.title)"
+            >
               <img
-                  style="width:100%; height:100%; display: block"
-                  :src="BASE_URL + partner.image"
-                  :alt="partner.name"
+                style="width: 100%; height: 100%; display: block"
+                :src="BASE_URL + partner.image"
+                :alt="partner.name"
               />
             </div>
           </swiper-slide>
         </swiper>
       </div>
       <div class="btns btn-mob">
-        <left @click="moveLeft"/>
-        <right @click="moveRight"/>
+        <left @click="moveLeft" />
+        <right @click="moveRight" />
       </div>
     </div>
   </div>
@@ -129,20 +200,12 @@ export default {
 <style scoped>
 .section {
   display: flex;
-  width: 100%;
+  position: relative;
 }
 
 .right-content {
-  width: 100%;
   overflow: hidden;
-}
-
-.right-content .title-section {
-  width: 78%;
-  display: flex;
-  justify-content: center;
   margin: 0 auto;
-  align-items: center;
 }
 
 .carousel-container {
@@ -150,11 +213,6 @@ export default {
   width: 100%;
   overflow: hidden;
   padding: 0 0 3rem 0;
-}
-
-.carousel-container .my-swiper {
-  width: 100%;
-  margin: auto;
 }
 
 .carousel-container::before,
@@ -170,19 +228,41 @@ export default {
 
 .carousel-container::before {
   left: 0;
-  background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0)
+  );
 }
 
 .carousel-container::after {
   right: 0;
-  background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  background: linear-gradient(
+    to left,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0)
+  );
 }
 
-.swiper-slide .images {
-  width: 10rem;
-  height: auto;
+.carousel-container.is-static :deep(.swiper-wrapper) {
+  justify-content: center;
+}
+
+.images {
+  width: 100%;
+  height: 92px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.images img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  border-radius: 8px;
+  display: block;
 }
 
 .btns {
@@ -196,8 +276,9 @@ export default {
 }
 
 @media (max-width: 1024px) {
-  .right-content .title-section {
-    width: 90%;
+  .right-content {
+    margin: 0;
+    padding: 0 20px;
   }
 }
 
