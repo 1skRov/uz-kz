@@ -6,45 +6,45 @@ import MapFill from "@/components/MapFill.vue";
 
 export default {
   name: "Section5",
-  components: {MapFill, More, Sections, SideBar},
+  components: { MapFill, More, Sections, SideBar },
   props: {
     title: {
       type: String,
       required: true,
-      default: "{{ ethno_center }}"
+      default: "{{ ethno_center }}",
     },
     btn_title: {
       type: String,
-      default: "{{ learn_more }}"
+      default: "{{ learn_more }}",
     },
     isBackground: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       page: "05",
-    }
+    };
   },
   methods: {
     goToRegions() {
       this.$router.push("/regions");
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <template>
   <div class="section" id="section5">
-    <side-bar :page="page" :isBackground="isBackground"/>
+    <side-bar class="side" :page="page" :isBackground="isBackground" />
     <div class="content">
       <sections>
         <template #title>
           {{ title }}
         </template>
         <template #title-button>
-          <more @click="goToRegions" :title="btn_title"/>
+          <more @click="goToRegions" :title="btn_title" />
         </template>
         <template #content>
           <div style="position: relative">
@@ -54,7 +54,7 @@ export default {
           </div>
         </template>
         <template #btn>
-          <more @click="goToRegions" :title="btn_title"/>
+          <more @click="goToRegions" :title="btn_title" />
         </template>
       </sections>
     </div>
@@ -64,10 +64,10 @@ export default {
 <style scoped>
 .section {
   display: flex;
+  position: relative;
 }
 
 .content {
-  width: 70%;
   display: flex;
   justify-content: center;
   margin-left: auto;
@@ -84,14 +84,15 @@ span {
 
 @media (max-width: 1024px) {
   .content {
-    width: 90%;
+    padding: 0 20px;
+    margin: 0;
   }
 }
 
 @media (max-width: 768px) {
   span {
     position: relative;
-    width: 100%
+    width: 100%;
   }
 }
 </style>
