@@ -186,7 +186,8 @@ export default {
   }
 
   .blur-box {
-    width: min(520px, 70%);
+    gap: 5px;
+    width: min(520px, 60%);
     padding: 32px 24px;
     margin-left: 20px;
   }
@@ -199,7 +200,9 @@ export default {
 @media (max-width: 768px) {
   .section-content {
     padding: 0;
-    margin-bottom: 325px;
+    margin-bottom: 0;
+    flex-direction: column;
+    gap: 0;
   }
 
   .image-grid {
@@ -216,20 +219,21 @@ export default {
   }
 
   .backdrop-blur-container {
-    padding: 25px;
-    width: 100%;
-    box-sizing: border-box;
+    position: static;
+    inset: auto;
+    padding: 0;
     display: flex;
-    margin: 0 auto;
-    top: 60%;
+    justify-content: center;
+    margin-top: -64px;
+    z-index: 10;
   }
 
   .blur-box {
+    width: calc(100% - 32px);
+    margin: 0 16px;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 12px;
     border-left: none;
-    overflow: hidden;
-    width: 100%;
   }
 
   .blur-title {
