@@ -10,23 +10,30 @@ export default {
       type: Array,
     },
     to: String,
+    isHeader: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     closeMenu() {
       this.$emit("close-menu");
     },
-  }
-}
+  },
+};
 </script>
 
 <template>
-  <div class="sandbars">
-    <router-link class="main-text" :to="to" @click="closeMenu">{{ title }}</router-link>
-    <div v-for="(link, index) in links" :key=index>
-      <router-link class="text" :to="link.to" @click="closeMenu">{{ link.text }}</router-link>
+  <div :class="isHeader ? 'header-sandbars' : 'sandbars'">
+    <router-link class="main-text font-gilroy" :to="to" @click="closeMenu">{{
+      title
+    }}</router-link>
+    <div v-for="(link, index) in links" :key="index">
+      <router-link class="text" :to="link.to" @click="closeMenu">{{
+        link.text
+      }}</router-link>
     </div>
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

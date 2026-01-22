@@ -104,24 +104,51 @@ body {
     flex-direction: column;
     width: 20vw;
     gap: 1rem;
+}
 
-    .main-text {
-        font-weight: 500;
-        color: #333;
-        font-size: 1rem;
-        text-decoration: none;
-    }
+.sandbars .main-text {
+    font-weight: 500;
+    color: #333;
+    font-size: 1rem;
+    text-decoration: none;
+}
 
-    .text {
-        color: #9098A5;
-        display: block;
-        margin-bottom: 0.5rem;
-        text-decoration: none;
-    }
+.sandbars .text {
+    color: #9098A5;
+    display: block;
+    margin-bottom: 0.5rem;
+    text-decoration: none;
+}
 
-    .text:hover {
-        text-decoration: underline;
-    }
+.sandbars .text:hover {
+    text-decoration: underline;
+}
+
+.header-sandbars {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.header-sandbars .main-text {
+    font-weight: 500;
+    color: var(--color-text-dark);
+    font-size: 24px;
+    text-decoration: none;
+    line-height: 130%;
+    margin-bottom: 8px;
+}
+
+.header-sandbars .text {
+    color: #9098A5;
+    display: block;
+    font-size: 13px;
+    margin-top: 16px;
+    text-decoration: none;
+    font-weight: 500;
+    line-height: 140%;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .btns-carousel {
