@@ -1,10 +1,10 @@
 <script>
 import BasicButton from "@/components/Buttons/button_basic.vue";
-import {BASE_URL} from "@/axios";
+import { BASE_URL } from "@/axios";
 
 export default {
   name: "PopularItem",
-  components: {BasicButton},
+  components: { BasicButton },
   props: {
     img: "",
     id: {
@@ -25,14 +25,14 @@ export default {
     position: "",
     route_name: {
       type: String,
-      default: "FamousPersonDetails"
-    }
+      default: "FamousPersonDetails",
+    },
   },
   data() {
     return {
       windowWidth: window.innerWidth,
-      BASE_URL
-    }
+      BASE_URL,
+    };
   },
   computed: {
     isMobile() {
@@ -48,7 +48,7 @@ export default {
     openDetails() {
       this.$router.push({
         name: this.route_name,
-        params: {id: this.id},
+        params: { id: this.id },
       });
     },
     updateWindowWidth() {
@@ -65,99 +65,121 @@ export default {
 </script>
 
 <template>
-  <div class="main" @click="handleMainClick">
+  <div class="popular-wrapper" @click="handleMainClick">
     <div class="left-img">
-      <img
-          :src="BASE_URL + img"
-          alt="Person Image"
-          style="width: 100%; height: 100%; object-fit: fill;"
-      />
+      <img :src="BASE_URL + img" alt="Person Image" style="" />
     </div>
     <div class="right-content">
       <p class="font-gilroy">{{ name }}</p>
-      <span class="truncate-text-line" v-html="text"></span>
+      <div class="truncate-text-line description" v-html="text"></div>
       <div class="btn">
-        <basic-button :is-blue="true" @click="openDetails"/>
+        <basic-button :is-blue="true" @click="openDetails" />
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.main {
+.popular-wrapper {
   width: 100%;
-  height: 25vh;
+  height: 240px;
   border-radius: 8px;
-  background-color: #FAFCFD;
-  border: 1px solid #EBEEF0;
+  background-color: #fafcfd;
+  border: 1px solid #ebeef0;
   display: flex;
   overflow: hidden;
 }
 
 .left-img {
-  width: 15%;
-  min-width: 15%;
-  max-width: 25%;
+  width: 184px;
+  min-width: 184px;
   flex-shrink: 0;
-  height: auto;
+  height: 100%;
+}
+
+.left-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .right-content {
   display: flex;
   flex-direction: column;
-  padding: 20px 35px;
-  gap: 1rem;
+  padding: 30px;
+  justify-content: space-between;
 }
 
-p {
+.right-content p {
   font-size: 32px;
   margin: 0;
   font-weight: 500;
+  line-height: 120%;
 }
 
-span {
-  color: #575F6C;
+.description {
+  color: #575f6c;
+  line-height: 150%;
+  font-size: 18px !important;
 }
 
 @media (max-width: 1024px) {
-  .main {
-    height: 10rem;
+  .popular-wrapper {
+    height: 180px;
   }
 
   .left-img {
-    width: 20%;
+    width: 140px;
+    min-width: 140px;
   }
 
-  p {
+  .left-img img {
+    object-position: top;
+  }
+
+  .right-content p {
     font-size: 28px;
   }
 
   .btn {
     display: none;
   }
+
+  .right-content {
+    padding: 20px;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 768px) {
-  .main {
+  .popular-wrapper {
     flex-direction: column;
     overflow: hidden;
     height: 300px;
   }
 
   .left-img {
-    height: 210px;
+    height: 220px;
     width: 100%;
     min-width: 100%;
   }
 
-  p {
+  .right-content p {
     font-size: 18px;
-    margin: 0;
+    margin-bottom: 5px;
   }
 
   .right-content {
-    padding: 15px 20px;
-    gap:0
+    padding: 10px;
+  }
+
+  .description {
+    font-size: 12px !important;
+  }
+
+  .description :deep(p) {
+    margin: 0;
   }
 }
 </style>
