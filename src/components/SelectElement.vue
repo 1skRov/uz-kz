@@ -1,14 +1,14 @@
 <template>
   <details class="custom-select" ref="customSelect">
     <summary class="radios">
-      <span>{{ selectedItem?.name || 'Выберите' }}</span>
+      <span>{{ selectedItem?.name || "Выберите" }}</span>
     </summary>
     <ul class="list">
       <li
-          v-for="(item, index) in items"
-          :key="index"
-          :class="{ selected: selectedIndex === index }"
-          @click="selectItem(index)"
+        v-for="(item, index) in items"
+        :key="index"
+        :class="{ selected: selectedIndex === index }"
+        @click="selectItem(index)"
       >
         {{ item.name }}
       </li>
@@ -18,22 +18,22 @@
 
 <script>
 export default {
-  name: 'CustomSelect',
+  name: "CustomSelect",
   props: {
     items: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      selectedIndex: 0
+      selectedIndex: 0,
     };
   },
   computed: {
     selectedItem() {
       return this.items[this.selectedIndex] || null;
-    }
+    },
   },
   methods: {
     selectItem(index) {
@@ -48,15 +48,18 @@ export default {
       if (details) {
         details.open = false;
       }
-    }
-  }
+    },
+  },
 };
-
 </script>
 
 <style scoped>
 .custom-select {
   position: relative;
+  width: 100%;
+}
+
+.radios {
   width: 100%;
 }
 
@@ -70,8 +73,8 @@ export default {
   border-radius: 8px;
   background-color: #0072ab;
   list-style: none;
-  border: 1px solid #EBEEF0;
-  color: #FFFFFF;
+  border: 1px solid #ebeef0;
+  color: #ffffff;
 }
 
 .custom-select summary::-webkit-details-marker {
@@ -79,11 +82,11 @@ export default {
 }
 
 .custom-select summary:after {
-  content: '';
+  content: "";
   display: inline-block;
   float: right;
-  width: .5rem;
-  height: .5rem;
+  width: 0.5rem;
+  height: 0.5rem;
   border-bottom: 1px solid currentColor;
   border-left: 1px solid currentColor;
   border-bottom-left-radius: 2px;
@@ -101,9 +104,9 @@ export default {
 
 .custom-select ul {
   width: 100%;
-  background: #FFFFFF;
+  background: #ffffff;
   position: absolute;
-  top: calc(100% + .5rem);
+  top: calc(100% + 0.5rem);
   left: 0;
   margin: 0;
   box-sizing: border-box;
@@ -112,7 +115,7 @@ export default {
   overflow-y: auto;
   list-style: none;
   padding: 0;
-  border: 1px solid #0072AB;
+  border: 1px solid #0072ab;
 }
 
 .custom-select li {
@@ -124,16 +127,15 @@ export default {
 }
 
 .custom-select li.selected {
-  background-color: #0072AB;
-  color: #FFFFFF;
+  background-color: #0072ab;
+  color: #ffffff;
 }
 
 .custom-select li:hover {
-  background-color: #F0F4F8;
+  background-color: #f0f4f8;
 }
 
 .custom-select li:last-child {
   border-bottom: none;
 }
-
 </style>
