@@ -364,7 +364,7 @@ watch(currentIndex, async () => {
 }
 @media (max-width: 1024px) {
   .section {
-    width: 90%;
+    width: 100%;
   }
 
   .side-nav {

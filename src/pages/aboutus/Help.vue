@@ -11,12 +11,12 @@ export default {
   props: {
     title: {
       type: String,
-      default: "{{ help }}"
+      default: "{{ help }}",
     },
     btn_title: {
       type: String,
-      default: "{{ more_detail }}"
-    }
+      default: "{{ more_detail }}",
+    },
   },
   data() {
     return {
@@ -30,7 +30,7 @@ export default {
     ...mapGetters(["currentLanguage"]),
     currentHelp() {
       return this.helpList[this.currentHelpIndex] || {};
-    }
+    },
   },
   watch: {
     currentLanguage(newLang) {
@@ -42,14 +42,15 @@ export default {
   },
   methods: {
     getHelp() {
-      api.get(`/help-those-in-need/?lang_code=${this.currentLanguage}`)
-          .then((response) => {
-            this.helpList = response.data;
-            this.currentHelpIndex = 0;
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+      api
+        .get(`/help-those-in-need/?lang_code=${this.currentLanguage}`)
+        .then((response) => {
+          this.helpList = response.data;
+          this.currentHelpIndex = 0;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     goToDonate() {
       this.$router.push("/donates");
@@ -57,26 +58,31 @@ export default {
     goLeft() {
       if (this.helpList.length > 0) {
         this.currentHelpIndex =
-            (this.currentHelpIndex - 1 + this.helpList.length) % this.helpList.length;
+          (this.currentHelpIndex - 1 + this.helpList.length) %
+          this.helpList.length;
       }
     },
     goRight() {
       if (this.helpList.length > 0) {
         this.currentHelpIndex =
-            (this.currentHelpIndex + 1) % this.helpList.length;
+          (this.currentHelpIndex + 1) % this.helpList.length;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <template>
-  <div class="content">
+  <div class="help-content">
     <div class="text-container">
       <div class="title font-gilroy">{{ title }}</div>
       <div class="text" v-html="currentHelp.mini_desc"></div>
       <div class="btn">
-        <basic-button :title_button="btn_title" :is-blue="true" @click="goToDonate" />
+        <basic-button
+          :title_button="btn_title"
+          :is-blue="true"
+          @click="goToDonate"
+        />
         <div style="display: flex; gap: 1rem">
           <div @click="goLeft"><left /></div>
           <div @click="goRight"><right /></div>
@@ -84,28 +90,35 @@ export default {
       </div>
     </div>
     <div class="image-container">
-      <img :src="BASE_URL + currentHelp.image" alt="help" class="responsive-image" />
+      <img
+        :src="BASE_URL + currentHelp.image"
+        alt="help"
+        class="responsive-image"
+      />
     </div>
   </div>
 </template>
 
 <style scoped>
-.content {
-  border: 1px solid #EBEEF0;
+.help-content {
+  width: 100%;
+  border: 1px solid #ebeef0;
   border-radius: 8px;
   display: flex;
   background-color: rgba(0, 114, 171, 0.02);
   overflow: hidden;
+  margin-bottom: 40px;
 }
 
 .title {
   font-size: 40px;
-  line-height: 42px;
   font-weight: 500;
+  line-height: 130%;
 }
 
 .text {
-  line-height: 35px;
+  line-height: 200%;
+  color: var(--color-text-main);
 }
 
 .btn {
@@ -135,13 +148,21 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   max-width: 100%;
 }
 
 @media (max-width: 1024px) {
+  .help-content {
+    width: 90%;
+    margin: 0 auto 40px auto;
+  }
+  .text-container {
+    gap: 10px;
+    padding: 30px;
+  }
   .title {
     font-size: 28px;
-    line-height: 32px;
   }
 
   .text {
@@ -150,14 +171,18 @@ export default {
 }
 
 @media (max-width: 768px) {
-  .content {
+  .help-content {
+    width: 100%;
     display: flex;
     flex-direction: column;
+    border: none;
+    background: #ffffff;
+    border-radius: 0;
   }
 
   .text-container {
     width: 100%;
-    padding: 30px;
+    padding: 20px;
   }
 
   .image-container {

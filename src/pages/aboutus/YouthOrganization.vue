@@ -48,122 +48,163 @@ export default {
     },
     getOrganization() {
       api
-          .get(`/youth-organizations/?lang_code=${this.currentLanguage}`)
-          .then((response) => {
-            this.cards = response.data;
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        .get(`/youth-organizations/?lang_code=${this.currentLanguage}`)
+        .then((response) => {
+          this.cards = response.data;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     onSwiper(swiper) {
-      this.swiperInstance = swiper
+      this.swiperInstance = swiper;
     },
     slidePrev() {
       if (this.swiperInstance) {
-        this.swiperInstance.slidePrev()
+        this.swiperInstance.slidePrev();
       }
     },
     slideNext() {
       if (this.swiperInstance) {
-        this.swiperInstance.slideNext()
+        this.swiperInstance.slideNext();
       }
     },
     goToDetails(newsId) {
-      this.$router.push({ name: 'OrganizationDetails', params: { id: newsId } });
+      this.$router.push({
+        name: "OrganizationDetails",
+        params: { id: newsId },
+      });
     },
   },
 };
 </script>
 <template>
-  <div>
+  <div class="youth-organization">
     <sections>
       <template #title>{{ title }}</template>
       <template #content>
         <div class="cards-container">
           <div class="row">
             <div
-                v-for="(card, index) in cards.slice(0, 2)"
-                :key="index"
-                class="card"
-                @click="goToDetails(card.id)"
+              v-for="(card, index) in cards.slice(0, 2)"
+              :key="index"
+              class="card"
+              @click="goToDetails(card.id)"
             >
               <img
-                  :src="BASE_URL + card.image"
-                  alt="card.title"
-                  class="card-image"
+                :src="BASE_URL + card.image"
+                alt="card.title"
+                class="card-image"
               />
               <div class="card-overlay">
                 <div class="inside">
                   <div class="card-title font-gilroy">{{ card.title }}</div>
-                  <div class="card-description truncate-text" v-html="card.desc"></div>
-                  <button class="card-button" @click="goToDetails(card.id)">{{ btn_title }}</button>
+                  <div
+                    class="card-description truncate-text"
+                    v-html="card.desc"
+                  ></div>
+                  <button class="card-button" @click="goToDetails(card.id)">
+                    {{ btn_title }}
+                  </button>
                 </div>
               </div>
             </div>
           </div>
           <div class="row">
             <div
-                v-for="(card, index) in cards.slice(2, 5)"
-                :key="index"
-                class="card"
-                @click="goToDetails(card.id)"
+              v-for="(card, index) in cards.slice(2, 5)"
+              :key="index"
+              class="card"
+              @click="goToDetails(card.id)"
             >
               <img
-                  :src="BASE_URL + card.image"
-                  alt="card.title"
-                  class="card-image"
+                :src="BASE_URL + card.image"
+                alt="card.title"
+                class="card-image"
               />
               <div class="card-overlay">
                 <div class="inside">
                   <div class="card-title font-gilroy">{{ card.title }}</div>
                   <div
-                      class="card-description truncate-text"
-                      v-html="card.desc"
+                    class="card-description truncate-text"
+                    v-html="card.desc"
                   ></div>
-                  <button class="card-button" @click="$router.push({ name: 'OrganizationDetails', params: { id: card.id, card: card } })">{{ btn_title }}</button>
+                  <button
+                    class="card-button"
+                    @click="
+                      $router.push({
+                        name: 'OrganizationDetails',
+                        params: { id: card.id, card: card },
+                      })
+                    "
+                  >
+                    {{ btn_title }}
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <swiper
-            @swiper="onSwiper"
-            ref="swiperRef"
-            :slides-per-view="1"
-            :space-between="0"
-            :loop="true"
-            class="mobile-swiper"
-            :autoplay="{
-              delay: 2000,
-              disableOnInteraction: true,
-            }"
+          @swiper="onSwiper"
+          ref="swiperRef"
+          :slides-per-view="1"
+          :space-between="0"
+          :loop="true"
+          class="mobile-swiper"
+          :autoplay="{
+            delay: 2000,
+            disableOnInteraction: true,
+          }"
         >
           <swiper-slide
-              v-for="(card, index) in cards"
-              :key="index"
-              class="card-slide"
+            v-for="(card, index) in cards"
+            :key="index"
+            class="card-slide"
+            @click="
+              $router.push({
+                name: 'OrganizationDetails',
+                params: { id: card.id, card: card },
+              })
+            "
           >
             <img
-                :src="BASE_URL + card.image"
-                alt="card.title"
-                class="card-image"
+              :src="BASE_URL + card.image"
+              alt="card.title"
+              class="card-image"
             />
             <div class="mobile-card-content">
               <div class="card-title font-gilroy">{{ card.title }}</div>
               <div
-                  class="card-description truncate-text"
-                  v-html="card.desc"
+                class="card-description truncate-text"
+                v-html="card.desc"
               ></div>
-              <button class="card-button" @click="$router.push({ name: 'OrganizationDetails', params: { id: card.id, card: card } })"><b>{{ btn_title }}</b></button>
+              <!--              <button-->
+              <!--                class="card-button"-->
+              <!--                @click="-->
+              <!--                  $router.push({-->
+              <!--                    name: 'OrganizationDetails',-->
+              <!--                    params: { id: card.id, card: card },-->
+              <!--                  })-->
+              <!--                "-->
+              <!--              >-->
+              <!--                <b>{{ btn_title }}</b>-->
+              <!--              </button>-->
             </div>
           </swiper-slide>
         </swiper>
       </template>
       <template #btn>
-        <div style="display: flex; justify-content: center; margin-top: 1rem; gap: 10px">
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            gap: 10px;
+          "
+        >
           <div @click="slidePrev"><left /></div>
-          <div  @click="slideNext"><right /></div>
+          <div @click="slideNext"><right /></div>
         </div>
       </template>
     </sections>
@@ -171,6 +212,9 @@ export default {
 </template>
 
 <style scoped>
+.youth-organization {
+  width: 100%;
+}
 .mobile-swiper {
   display: none;
 }
@@ -198,7 +242,9 @@ export default {
   border-radius: 8px;
   cursor: pointer;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .card:nth-child(3),
@@ -216,6 +262,8 @@ export default {
   width: 100%;
   height: 100%;
   display: block;
+  object-fit: cover;
+  object-position: center;
 }
 
 .card-overlay {
@@ -244,12 +292,14 @@ export default {
 .card-title {
   font-size: 1.5rem;
   font-weight: 500;
+  line-height: 120%;
   margin-bottom: 0.5rem;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .card-description {
   font-size: 0.9rem;
+  line-height: 140%;
 }
 
 .card-button {
@@ -278,15 +328,22 @@ export default {
   width: 100%;
 }
 
-
 @media (max-width: 1024px) {
+  .youth-organization {
+    width: 90%;
+    margin: 0 auto;
+  }
   .card {
     height: 20rem;
   }
 
   .card-overlay {
     opacity: 1;
-    background: linear-gradient(to top, rgba(0, 114, 171, 0.7) 0%, rgba(0, 114, 171, 0) 100%);
+    background: linear-gradient(
+      to top,
+      rgba(0, 114, 171, 0.7) 0%,
+      rgba(0, 114, 171, 0) 100%
+    );
   }
 
   .card-button {
@@ -313,8 +370,10 @@ export default {
 }
 
 .mobile-card-content .card-title {
-  font-weight: bold;
-  margin: 2rem 0 1rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 120%;
+  margin: 2rem 0 0.5rem 0;
   color: #333;
 }
 
@@ -326,7 +385,7 @@ export default {
 
 .mobile-card-content .card-button {
   display: flex;
-  background: #0072AB;
+  background: #0072ab;
   color: white;
   border: none;
   padding: 0.8rem 1.5rem;
@@ -342,6 +401,10 @@ export default {
 
   .mobile-swiper {
     display: block;
+  }
+
+  .card-image {
+    border-radius: 8px;
   }
 }
 </style>

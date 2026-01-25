@@ -2,17 +2,17 @@
 import Sections from "@/components/Sections.vue";
 import Left from "@/components/Buttons/left.vue";
 import Right from "@/components/Buttons/right.vue";
-import api, {BASE_URL} from "@/axios";
-import {mapGetters} from "vuex";
+import api, { BASE_URL } from "@/axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "OurHistory",
-  components: {Right, Left, Sections},
+  components: { Right, Left, Sections },
   props: {
     title: {
       type: String,
       default: "{{ our_history }}",
-    }
+    },
   },
   data() {
     return {
@@ -26,17 +26,18 @@ export default {
     isMobile() {
       return this.windowWidth <= 768;
     },
-    ...mapGetters(['currentLanguage']),
+    ...mapGetters(["currentLanguage"]),
   },
   methods: {
     getHistory() {
-      api.get(`/our-history/?lang_code=${this.currentLanguage}`)
-          .then((response) => {
-            this.history = response.data;
-          })
-          .catch((error) => {
-            console.error("Ошибка при загрузке данных About Us:", error);
-          });
+      api
+        .get(`/our-history/?lang_code=${this.currentLanguage}`)
+        .then((response) => {
+          this.history = response.data;
+        })
+        .catch((error) => {
+          console.error("Ошибка при загрузке данных About Us:", error);
+        });
     },
     updateWindowWidth() {
       this.windowWidth = window.innerWidth;
@@ -63,13 +64,13 @@ export default {
       this.getHistory();
     },
     activeIndex(newIndex) {
-      const container = this.$el.querySelector('.carousel-container');
+      const container = this.$el.querySelector(".carousel-container");
       const itemWidth = this.isMobile
-          ? container.offsetWidth
-          : container.querySelector('.item').offsetWidth;
+        ? container.offsetWidth
+        : container.querySelector(".item").offsetWidth;
       container.scrollTo({
         left: newIndex * itemWidth,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     },
   },
@@ -89,39 +90,62 @@ export default {
       <template #title v-if="!isMobile">{{ title }}</template>
       <template #title-button>
         <div class="btn">
-          <div @click="scrollLeft"><left  /></div>
-          <div @click="scrollRight"><right  /></div>
+          <div @click="scrollLeft">
+            <left />
+          </div>
+          <div @click="scrollRight">
+            <right />
+          </div>
         </div>
       </template>
       <template #content>
         <section class="g-section">
           <div class="btn-mobile" v-if="history.length > 0">
-            <div @click="scrollLeft"><left  :is-white="true"/></div>
-            <div @click="scrollRight"><right :is-white="true" /></div>
+            <div @click="scrollLeft">
+              <left :is-white="true" />
+            </div>
+            <div @click="scrollRight">
+              <right :is-white="true" />
+            </div>
           </div>
           <div class="carousel-container">
             <div
-                class="item"
-                v-for="(h, index) in history"
-                :key="index"
-                :style="{ backgroundImage: `url(${BASE_URL + h.image})` }"
-                :class="{ active: activeIndex === index }"
-                @click="onCardClick(index)"
+              class="item"
+              v-for="(h, index) in history"
+              :key="index"
+              :style="{ backgroundImage: `url(${BASE_URL + h.image})` }"
+              :class="{ active: activeIndex === index }"
+              @click="onCardClick(index)"
             >
               <div class="overlay" v-if="activeIndex === index"></div>
               <div class="item-desc">
-                <h3>{{ h.title }}</h3>
-                <p v-html="h?.desc" class="truncate-text" style="word-wrap: break-word"></p>
+                <h3 class="font-gilroy">{{ h.title }}</h3>
+                <p
+                  v-html="h?.desc"
+                  class="truncate-text"
+                  style="word-wrap: break-word"
+                ></p>
               </div>
             </div>
           </div>
-          <div class="dots" v-if="!isMobile">
-            <span
+          <div class="timeline-mask" v-if="!isMobile && history.length">
+            <div class="timeline">
+              <button
                 v-for="(h, index) in history"
                 :key="index"
-                :class="{ active: activeIndex === index }"
+                class="step"
+                :class="{
+                  active: activeIndex === index,
+                  done: index < activeIndex,
+                }"
+                type="button"
                 @click="setActive(index)"
-            ></span>
+                :aria-current="activeIndex === index ? 'true' : 'false'"
+              >
+                <span class="dot"></span>
+                <span v-if="index !== history.length - 1" class="line"></span>
+              </button>
+            </div>
           </div>
         </section>
       </template>
@@ -130,12 +154,17 @@ export default {
 </template>
 
 <style scoped>
+.mob-section {
+  width: 100%;
+}
+
 .btn {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1em;
 }
+
 .carousel-container {
   display: flex;
   gap: 20px;
@@ -145,6 +174,7 @@ export default {
   height: 100%;
   position: relative;
 }
+
 .carousel-container .item {
   flex: 0 0 auto;
   width: 390px;
@@ -158,9 +188,11 @@ export default {
   transition: all 0.4s ease-in-out;
   cursor: pointer;
 }
+
 .carousel-container .item.active {
   width: 500px;
 }
+
 .carousel-container .item:after {
   content: "";
   display: block;
@@ -171,6 +203,7 @@ export default {
   top: 0;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
 }
+
 .carousel-container .item .overlay {
   position: absolute;
   top: 0;
@@ -181,6 +214,7 @@ export default {
   z-index: 1;
   pointer-events: none;
 }
+
 .item-desc {
   padding: 0 24px 12px;
   color: #fff;
@@ -190,36 +224,134 @@ export default {
   transform: translateY(calc(100% - 54px));
   transition: all 0.4s ease-in-out;
 }
+
 .item.active .item-desc {
   transform: none;
 }
+
+.item-desc h3 {
+  margin: 0;
+  font-size: 24px;
+  color: #ffffff;
+  font-weight: 500;
+  line-height: 120%;
+}
+
 .item-desc p {
   opacity: 0;
   transform: translateY(32px);
   transition: all 0.4s ease-in-out 0.2s;
 }
+
 .item.active .item-desc p {
   opacity: 1;
   transform: translateY(0);
 }
 
-.dots {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 40px;
+.timeline-mask {
+  margin-top: 28px;
+  position: relative;
+  overflow: hidden;
+  padding: 8px 0;
 }
-.dots span {
-  width: 10px;
-  height: 10px;
-  background: #ddd;
-  border-radius: 50%;
+
+.timeline-mask::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 180px;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(to left, #fff 20%, rgba(255, 255, 255, 0));
+}
+
+.timeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.step {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: 0;
+  padding: 0;
   cursor: pointer;
 }
-.dots span.active {
-  background: #0072AB;
+
+.step .dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 1px solid #d6dbe3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
+
+.step .dot::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #575f6c;
+  opacity: 0.6;
+}
+
+.step .line {
+  width: 180px;
+  height: 0;
+  border-top: 2px dashed rgba(0, 114, 171, 0.35);
+  transform: translateY(0);
+}
+
+.step.done .dot {
+  border-color: rgba(0, 114, 171, 0.25);
+}
+
+.step.done .dot::after {
+  background: #0072ab;
+  opacity: 1;
+}
+
+.step.done .line {
+  border-top-color: rgba(0, 114, 171, 0.9);
+}
+
+.step.active .dot {
+  border-color: rgba(0, 114, 171, 0.2);
+  transform: scale(1.08);
+}
+
+.step.active .dot::after {
+  background: #0072ab;
+  opacity: 1;
+  box-shadow: 0 0 0 4px rgba(0, 114, 171, 0.14);
+}
+
+.step:hover .dot {
+  border-color: rgba(0, 114, 171, 0.25);
+}
+
+.step:focus-visible {
+  outline: none;
+}
+
+.step:focus-visible .dot {
+  box-shadow: 0 0 0 3px rgba(0, 114, 171, 0.22);
+}
+
 @media (max-width: 1024px) {
+  .mob-section {
+    width: 90%;
+    margin: 0 auto;
+  }
+
   .carousel-container .item {
     width: 350px;
     height: 350px;
@@ -228,8 +360,20 @@ export default {
   .carousel-container .item.active {
     width: 400px;
   }
+
+  .step .line {
+    width: 120px;
+  }
+
+  .timeline-mask::after {
+    width: 140px;
+  }
 }
+
 @media (max-width: 768px) {
+  .mob-section {
+    width: 100%;
+  }
   .carousel-container .item {
     flex: 0 0 100%;
     height: 50vh;
@@ -241,10 +385,6 @@ export default {
 
   .item-desc {
     padding: 20px;
-  }
-
-  .dots {
-    display: none;
   }
 
   .carousel-container .item {
