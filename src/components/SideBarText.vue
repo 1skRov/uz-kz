@@ -13,10 +13,9 @@ export default {
 
 <template>
   <aside
-    class="side-bar-region"
+    class="side-bar"
     :style="{ backgroundColor: isBackground ? '#0072AB' : 'white' }"
   >
-    <div class="side-bar-sticky"></div>
     <p
       class="font-gilroy"
       :style="{ color: isBackground ? 'white' : '#CFD3DA' }"
@@ -27,36 +26,29 @@ export default {
 </template>
 
 <style scoped>
-.side-bar-region {
+.side-bar {
   width: 160px;
-  height: 100%;
   border-right: 1px solid #ebeef0;
+  display: flex;
+  align-items: start;
   padding-top: 7rem;
 }
 
-.side-bar-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  width: 100%;
-}
-
 p {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: 0;
+  text-align: center;
   font-size: 32px;
   font-weight: 500;
   text-transform: uppercase;
-  line-height: 135%;
   writing-mode: vertical-rl;
   transform: translateX(-50%) rotate(180deg);
+  margin: 0 auto;
 }
-
 @media (max-width: 1440px) {
-  .side-bar-region {
+  .side-bar {
     display: none;
   }
+}
+
+@media (max-width: 768px) {
 }
 </style>

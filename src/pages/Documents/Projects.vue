@@ -5,12 +5,12 @@ import Important from "@/pages/Documents/Important.vue";
 import Sections from "@/components/Sections.vue";
 import Right from "@/components/Buttons/right.vue";
 import Left from "@/components/Buttons/left.vue";
-import {mapGetters} from "vuex";
-import api, {BASE_URL} from "@/axios";
+import { mapGetters } from "vuex";
+import api, { BASE_URL } from "@/axios";
 
 export default {
   name: "Projects",
-  components: {Left, Right, Sections, Important, Articles, SideBar},
+  components: { Left, Right, Sections, Important, Articles, SideBar },
   props: {
     title: {
       type: String,
@@ -22,18 +22,18 @@ export default {
     },
     isBackground: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       projects: [],
       activeIndex: 0,
-      BASE_URL
+      BASE_URL,
     };
   },
   computed: {
-    ...mapGetters(['currentLanguage']),
+    ...mapGetters(["currentLanguage"]),
   },
   watch: {
     currentLanguage(newLang) {
@@ -45,62 +45,66 @@ export default {
   },
   methods: {
     getProjects() {
-      api.get(`/projects-for2025/?lang_code=${this.currentLanguage}`)
-          .then((response) => {
-            this.projects = response.data;
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+      api
+        .get(`/projects-for2025/?lang_code=${this.currentLanguage}`)
+        .then((response) => {
+          this.projects = response.data;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     scrollLeft() {
-      const container = this.$el.querySelector('.carousel-container');
-      const cardWidth = container.querySelector('.item').offsetWidth;
+      const container = this.$el.querySelector(".carousel-container");
+      const cardWidth = container.querySelector(".item").offsetWidth;
       container.scrollBy({
         left: -cardWidth,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     },
     scrollRight() {
-      const container = this.$el.querySelector('.carousel-container');
-      const cardWidth = container.querySelector('.item').offsetWidth;
+      const container = this.$el.querySelector(".carousel-container");
+      const cardWidth = container.querySelector(".item").offsetWidth;
       container.scrollBy({
         left: cardWidth,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     },
     goToDetails(newsId) {
-      this.$router.push({name: 'Project', params: {id: newsId}});
+      this.$router.push({ name: "Project", params: { id: newsId } });
     },
   },
-}
+};
 </script>
 
 <template>
-  <div style="display: flex" id="doc2">
-    <side-bar :title="title_side" :isBackground="isBackground"></side-bar>
+  <div style="display: flex; position: relative" id="doc2">
+    <side-bar
+      class="side"
+      :title="title_side"
+      :isBackground="isBackground"
+    ></side-bar>
     <div class="content">
       <sections>
         <template #title>{{ title }}</template>
         <template #title-button>
           <div class="btn">
             <div @click="scrollLeft">
-              <left/>
+              <left />
             </div>
             <div @click="scrollRight">
-              <right/>
+              <right />
             </div>
           </div>
         </template>
         <template #content>
           <div class="carousel-container">
             <div
-                class="item"
-                v-for="(p, index) in projects"
-                :key="index"
-                :style="{ backgroundImage: `url(${BASE_URL + p.image})` }"
-                @click="goToDetails(p.id)"
-
+              class="item"
+              v-for="(p, index) in projects"
+              :key="index"
+              :style="{ backgroundImage: `url(${BASE_URL + p.image})` }"
+              @click="goToDetails(p.id)"
             >
               <div class="item-desc">
                 <h3>{{ p.title }}</h3>
@@ -112,10 +116,10 @@ export default {
         <template #btn>
           <div class="btn">
             <div @click="scrollLeft">
-              <left/>
+              <left />
             </div>
             <div @click="scrollRight">
-              <right/>
+              <right />
             </div>
           </div>
         </template>
@@ -126,7 +130,6 @@ export default {
 
 <style scoped>
 .content {
-  width: 65%;
   margin: 0 auto;
 }
 
@@ -174,7 +177,7 @@ h3 {
 }
 
 p {
-  margin: 0
+  margin: 0;
 }
 
 @media (max-width: 1024px) {
