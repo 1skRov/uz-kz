@@ -311,6 +311,7 @@ img {
     flex-direction: column;
     gap: 40px;
   }
+
   .news-detail {
     width: 90%;
     margin: 0 auto;
@@ -342,6 +343,10 @@ img {
 }
 
 @media (max-width: 768px) {
+  .news-detail {
+    padding: 40px 0;
+  }
+
   .news-item {
     gap: 20px;
   }

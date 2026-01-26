@@ -45,14 +45,12 @@ export default {
     setActive(index) {
       this.activeIndex = index;
     },
-    onCardClick(index) {
-      this.setActive(index);
-    },
     scrollLeft() {
       if (this.activeIndex > 0) {
         this.setActive(this.activeIndex - 1);
       }
     },
+
     scrollRight() {
       if (this.activeIndex < this.history.length - 1) {
         this.setActive(this.activeIndex + 1);
@@ -108,23 +106,20 @@ export default {
               <right :is-white="true" />
             </div>
           </div>
-          <div class="carousel-container">
-            <div
-              class="item"
-              v-for="(h, index) in history"
-              :key="index"
-              :style="{ backgroundImage: `url(${BASE_URL + h.image})` }"
-              :class="{ active: activeIndex === index }"
-              @click="onCardClick(index)"
-            >
-              <div class="overlay" v-if="activeIndex === index"></div>
-              <div class="item-desc">
-                <h3 class="font-gilroy">{{ h.title }}</h3>
-                <p
-                  v-html="h?.desc"
-                  class="truncate-text"
-                  style="word-wrap: break-word"
-                ></p>
+          <div class="carousel-wrap">
+            <div class="carousel-container">
+              <div
+                class="item"
+                v-for="(h, index) in history"
+                :key="index"
+                :style="{ backgroundImage: `url(${BASE_URL + h.image})` }"
+                :class="{ active: activeIndex === index }"
+              >
+                <div class="overlay"></div>
+                <div class="item-desc">
+                  <h3 class="font-gilroy">{{ h.title }}</h3>
+                  <p v-html="h?.desc" style="word-wrap: break-word"></p>
+                </div>
               </div>
             </div>
           </div>
@@ -175,9 +170,55 @@ export default {
   position: relative;
 }
 
+.carousel-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -2px;
+  height: 100%;
+  width: 350px;
+  pointer-events: none;
+  z-index: 50;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+}
+
+.timeline-mask::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -2px;
+  width: 350px;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  z-index: 10;
+}
+
+.timeline {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 18px;
+  padding-left: 20px;
+}
+
 .carousel-container .item {
   flex: 0 0 auto;
-  width: 390px;
+  width: 500px;
   height: 450px;
   display: flex;
   align-items: flex-end;
@@ -187,10 +228,6 @@ export default {
   position: relative;
   transition: all 0.4s ease-in-out;
   cursor: pointer;
-}
-
-.carousel-container .item.active {
-  width: 500px;
 }
 
 .carousel-container .item:after {
@@ -213,6 +250,8 @@ export default {
   background-color: rgba(0, 114, 171, 0.5);
   z-index: 1;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
 .item-desc {
@@ -222,11 +261,11 @@ export default {
   z-index: 2;
   overflow: hidden;
   transform: translateY(calc(100% - 54px));
-  transition: all 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out;
 }
 
-.item.active .item-desc {
-  transform: none;
+.carousel-container .item:hover .overlay {
+  opacity: 1;
 }
 
 .item-desc h3 {
@@ -243,9 +282,14 @@ export default {
   transition: all 0.4s ease-in-out 0.2s;
 }
 
-.item.active .item-desc p {
+.carousel-container .item:hover .overlay,
+.carousel-container .item:focus-within .overlay {
   opacity: 1;
-  transform: translateY(0);
+}
+
+.carousel-container .item:hover .item-desc,
+.carousel-container .item:focus-within .item-desc {
+  transform: none;
 }
 
 .timeline-mask {
@@ -253,6 +297,12 @@ export default {
   position: relative;
   overflow: hidden;
   padding: 8px 0;
+}
+
+.carousel-container .item:hover .item-desc p,
+.carousel-container .item:focus-within .item-desc p {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .timeline-mask::after {
@@ -347,18 +397,18 @@ export default {
 }
 
 @media (max-width: 1024px) {
+  .carousel-container .item .overlay {
+    opacity: 1;
+  }
+
   .mob-section {
     width: 90%;
     margin: 0 auto;
   }
 
   .carousel-container .item {
-    width: 350px;
-    height: 350px;
-  }
-
-  .carousel-container .item.active {
     width: 400px;
+    height: 350px;
   }
 
   .step .line {
@@ -368,19 +418,41 @@ export default {
   .timeline-mask::after {
     width: 140px;
   }
+  .item-desc {
+    transform: none;
+    padding-bottom: 24px;
+  }
+  .item-desc p {
+    opacity: 1;
+    transform: translateY(0);
+    margin-top: 8px;
+  }
 }
 
 @media (max-width: 768px) {
+  .carousel-container .item .overlay {
+    opacity: 1;
+  }
+  .item-desc {
+    transform: none;
+  }
+
+  .item-desc p {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   .mob-section {
     width: 100%;
   }
+
+  .carousel-wrap::after {
+    display: none;
+  }
+
   .carousel-container .item {
     flex: 0 0 100%;
     height: 50vh;
-  }
-
-  .carousel-container .item.active {
-    width: 100%;
   }
 
   .item-desc {

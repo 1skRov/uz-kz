@@ -337,6 +337,9 @@ img {
 }
 
 @media (max-width: 768px) {
+  .news-detail {
+    padding: 40px 0;
+  }
   .news-item {
     gap: 20px;
   }
