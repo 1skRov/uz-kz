@@ -2,10 +2,10 @@
 import Sections from "@/components/Sections.vue";
 import Right from "@/components/Buttons/right.vue";
 import Left from "@/components/Buttons/left.vue";
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Grid } from 'swiper/modules';
-import api, {BASE_URL} from "@/axios";
-import {mapGetters} from "vuex";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Grid } from "swiper/modules";
+import api, { BASE_URL } from "@/axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "VideoMaterials",
@@ -14,17 +14,17 @@ export default {
     Right,
     Left,
     Swiper,
-    SwiperSlide
+    SwiperSlide,
   },
-  props:{
-    title:{
+  props: {
+    title: {
       type: String,
-      default: "{ video_material }"
+      default: "{ video_material }",
     },
     rows: {
       type: Number,
       default: 1,
-    }
+    },
   },
   data() {
     return {
@@ -48,21 +48,21 @@ export default {
   methods: {
     getNews() {
       api
-          .get(`/video-materials/?lang_code=${this.currentLanguage}`)
-          .then((response) => {
-            const data = response.data;
-            if (Array.isArray(data) && data.length > 0) {
-              this.materials = data.map((item) => ({
-                ...item,
-                formattedDate: this.formatDate(item.posted_date),
-              }));
-            } else {
-              this.materials = [];
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        .get(`/video-materials/?lang_code=${this.currentLanguage}`)
+        .then((response) => {
+          const data = response.data;
+          if (Array.isArray(data) && data.length > 0) {
+            this.materials = data.map((item) => ({
+              ...item,
+              formattedDate: this.formatDate(item.posted_date),
+            }));
+          } else {
+            this.materials = [];
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     formatDate(dateString) {
       const options = {
@@ -72,7 +72,10 @@ export default {
         hour: "2-digit",
         minute: "2-digit",
       };
-      return new Date(dateString).toLocaleDateString(this.currentLanguage || "en-US", options);
+      return new Date(dateString).toLocaleDateString(
+        this.currentLanguage || "en-US",
+        options,
+      );
     },
     onSwiper(swiper) {
       this.swiperInstance = swiper;
@@ -88,10 +91,10 @@ export default {
       }
     },
     goToVideoDetails(newsId) {
-      this.$router.push({ name: 'VideoDetails', params: { id: newsId } });
+      this.$router.push({ name: "VideoDetails", params: { id: newsId } });
     },
   },
-}
+};
 </script>
 
 <template>
@@ -100,57 +103,77 @@ export default {
       <template #title>{{ title }}</template>
       <template #title-button>
         <div class="btn">
-          <div @click="prevSlide"><left/></div>
-          <div  @click="nextSlide"><right/></div>
+          <div @click="prevSlide">
+            <left />
+          </div>
+          <div @click="nextSlide">
+            <right />
+          </div>
         </div>
       </template>
       <template #content>
         <swiper
-            :modules="[Grid]"
-            :slidesPerView="3"
-            :slidesPerGroup="1"
-            :spaceBetween="10"
-            :grid="{ rows: rows, fill: 'row' }"
-            :onSwiper="onSwiper"
-            :breakpoints="{
-              0: {
-                slidesPerView: 1,
-                slidesPerGroup: 1,
-                grid: {
-                  rows: 1,
-                  fill: 'row'
-                }
+          :modules="[Grid]"
+          :slidesPerView="3"
+          :slidesPerGroup="1"
+          :spaceBetween="10"
+          :grid="{ rows: rows, fill: 'row' }"
+          :onSwiper="onSwiper"
+          :breakpoints="{
+            0: {
+              slidesPerView: 1,
+              slidesPerGroup: 1,
+              grid: {
+                rows: 1,
+                fill: 'row',
               },
-              768: {
-                slidesPerView: 3,
-                slidesPerGroup: 1,
-                grid: {
-                  rows: rows,
-                  fill: 'row'
-                }
-              }
-            }"
+            },
+            768: {
+              slidesPerView: 3,
+              slidesPerGroup: 1,
+              grid: {
+                rows: rows,
+                fill: 'row',
+              },
+            },
+          }"
         >
           <SwiperSlide
-              v-for="(m, index) in materials"
-              :key="index"
-              @click="goToVideoDetails(m.id)"
+            v-for="(m, index) in materials"
+            :key="index"
+            @click="goToVideoDetails(m.id)"
           >
             <div class="card">
               <div class="image-card">
-                <video controls="controls" :poster="BASE_URL + m.image">
-                  <source :src="BASE_URL + m.video">
-                </video>
+                <img :src="BASE_URL + m.image" alt="vid" />
                 <div class="card__overlay">
-                  <svg width="49" height="48" viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M24.333 44C35.3787 44 44.333 35.0457 44.333 24C44.333 12.9543 35.3787 4 24.333 4C13.2873 4 4.33301 12.9543 4.33301 24C4.33301 35.0457 13.2873 44 24.333 44Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M20.333 16L32.333 24L20.333 32V16Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <svg
+                    width="49"
+                    height="48"
+                    viewBox="0 0 49 48"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M24.333 44C35.3787 44 44.333 35.0457 44.333 24C44.333 12.9543 35.3787 4 24.333 4C13.2873 4 4.33301 12.9543 4.33301 24C4.33301 35.0457 13.2873 44 24.333 44Z"
+                      stroke="white"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M20.333 16L32.333 24L20.333 32V16Z"
+                      stroke="white"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
                   </svg>
                 </div>
               </div>
               <div class="card-content">
                 <div class="title font-gilroy truncate-text">{{ m.title }}</div>
-                <div class="time">{{ m.formattedDate  }}</div>
+                <div class="time">{{ m.formattedDate }}</div>
               </div>
             </div>
           </SwiperSlide>
@@ -158,8 +181,12 @@ export default {
       </template>
       <template #btn>
         <div class="btn">
-          <div @click="prevSlide"><left/></div>
-          <div  @click="nextSlide"><right/></div>
+          <div @click="prevSlide">
+            <left />
+          </div>
+          <div @click="nextSlide">
+            <right />
+          </div>
         </div>
       </template>
     </sections>
@@ -175,50 +202,52 @@ export default {
 
 .card {
   padding: 5px;
-  max-height: 25rem;
-  height: 25rem;
+  height: 360px;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
 
-  .image-card {
-    height: 60%;
-    max-height: 60%;
-    width: 100%;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
+.image-card {
+  height: 200px;
+  min-height: 200px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
 
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      justify-content: center;
-    }
-  }
+.image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 
-  .card-content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    overflow: hidden;
+.card-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
 
-    .title {
-      color: #333333;
-      font-weight: 500;
-      line-height: 28px;
-      font-size: 18px;
-    }
+.title {
+  color: #333333;
+  font-weight: 500;
+  line-height: 120%;
+  font-size: 24px;
+}
 
-    .time {
-      color: #CFD3DA;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-  }
+.time {
+  color: #cfd3da;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+  line-height: 140%;
+  font-size: 16px;
 }
 
 .card__overlay {
@@ -235,11 +264,13 @@ export default {
   transition: opacity 0.3s ease-in-out;
   border-radius: 8px;
 }
+
 .card__overlay svg {
   width: 50px;
   height: 50px;
   color: white;
 }
+
 .card:hover .card__overlay {
   opacity: 1;
 }
@@ -248,12 +279,11 @@ export default {
   .card {
     height: 22rem;
     gap: 1rem;
-    .card-content {
-      .title {
-        line-height: 24px;
-        font-size: 16px;
-      }
-    }
+  }
+
+  .title {
+    line-height: 24px;
+    font-size: 16px;
   }
 }
 
@@ -261,14 +291,14 @@ export default {
   .btn {
     gap: 2em;
   }
+
   .card {
-    height: 27rem;
+    height: 300px;
     gap: 1.5rem;
-    .card-content {
-      .title {
-        font-size: 15px;
-      }
-    }
+  }
+
+  .title {
+    font-size: 15px;
   }
 }
 </style>

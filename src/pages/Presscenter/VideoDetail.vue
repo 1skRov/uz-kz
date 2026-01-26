@@ -1,12 +1,21 @@
 <script>
-import api, {BASE_URL} from "@/axios";
-import {mapGetters} from "vuex";
+import api, { BASE_URL } from "@/axios";
+import { mapGetters } from "vuex";
 import BasicButton from "@/components/Buttons/button_basic.vue";
-import {SwiperSlide} from "swiper/vue";
+import { SwiperSlide } from "swiper/vue";
+import VideoEmbed from "@/pages/Presscenter/VideoEmbed.vue";
+import LatestNews from "@/pages/Presscenter/LatestNews.vue";
+import VideoMaterials from "@/pages/Presscenter/VideoMaterials.vue";
 
 export default {
   name: "VideoDetail",
-  components: {SwiperSlide, BasicButton},
+  components: {
+    VideoMaterials,
+    LatestNews,
+    SwiperSlide,
+    BasicButton,
+    VideoEmbed,
+  },
   props: {
     id: {
       type: String,
@@ -27,11 +36,11 @@ export default {
     currentLanguage(newLang) {
       this.getNews();
     },
-    '$route.params.id': {
+    "$route.params.id": {
       immediate: true,
       handler(newId) {
         this.getNews();
-      }
+      },
     },
   },
   mounted() {
@@ -40,25 +49,25 @@ export default {
   methods: {
     getNews() {
       api
-          .get(`/video-materials/?lang_code=${this.currentLanguage}`)
-          .then((response) => {
-            const data = response.data;
-            if (Array.isArray(data) && data.length > 0) {
-              this.news = data
-                  .filter((item) => item.id !== Number(this.id))
-                  .slice(0, 6);
+        .get(`/video-materials/?lang_code=${this.currentLanguage}`)
+        .then((response) => {
+          const data = response.data;
+          if (Array.isArray(data) && data.length > 0) {
+            this.news = data
+              .filter((item) => item.id !== Number(this.id))
+              .slice(0, 6);
 
-              const newsItem = data.find((item) => item.id === Number(this.id));
-              if (newsItem) {
-                this.news_item = newsItem;
-              }
-            } else {
-              this.news = [];
+            const newsItem = data.find((item) => item.id === Number(this.id));
+            if (newsItem) {
+              this.news_item = newsItem;
             }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+          } else {
+            this.news = [];
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
     formatDate(dateString) {
       const options = {
@@ -68,267 +77,294 @@ export default {
         hour: "2-digit",
         minute: "2-digit",
       };
-      return new Date(dateString).toLocaleDateString(this.currentLanguage || "en-US", options);
+      return new Date(dateString).toLocaleDateString(
+        this.currentLanguage || "en-US",
+        options,
+      );
     },
     goToNewsDetails(newsId) {
-      this.$router.push({ name: 'NewsDetails', params: { id: newsId } });
+      this.$router.push({ name: "NewsDetails", params: { id: newsId } });
     },
     goToAllVideo() {
-      this.$router.push({ name: 'PressCenter' });
+      this.$router.push({ name: "PressCenter" });
     },
   },
-}
+};
 </script>
 
 <template>
-  <div style="position: relative">
-    <div class="back">
-      <basic-button :title_button="getTranslations.goToNews || '{ goToNews }'" @click="goToAllVideo"></basic-button>
+  <div class="news-detail">
+    <div class="news-nav">
+      <span @click="goToAllVideo">{{
+        getTranslations.mainPage || "{ mainPage }"
+      }}</span>
+      <span>/</span>
+      <span @click="goToAllVideo">{{
+        getTranslations.press_center || "{ press_center }"
+      }}</span>
+      <span>/</span>
+      <span class="truncate-text-line" style="color: #333333">
+        {{ news_item.title || "" }}
+      </span>
     </div>
-    <div class="newsItem">
-      <div class="newsItem___detail">
-        <nav style="display: flex; align-items: center; gap: 20px">
-          <div class="item-back"  @click="goToAllVideo">
-            <basic-button :title_button="getTranslations.goToNews || '{ goToNews }'"></basic-button>
-          </div>
-          <div style="display: flex; align-items: center;">
-            <basic-button :title_button="getTranslations.olymp || '{ olymp }'" :is-blue="true"></basic-button>
-            <div class="time">{{ formatDate(news_item.posted_date) }}</div>
-          </div>
-        </nav>
-        <div class="page">
-          <div class="newsItem__main">
-            <div class="newsItem__image">
-              <video controls="controls">
-                <source :src="BASE_URL + news_item.video" type="video/mp4">
-              </video>
+    <div class="news-body">
+      <div class="news-item">
+        <div class="news-cover">
+          <VideoEmbed
+            :src="BASE_URL + news_item.video"
+            :videoUrl="news_item.video_url"
+            :poster="BASE_URL + news_item.image"
+          ></VideoEmbed>
+        </div>
+        <div class="news-title font-gilroy">{{ news_item.title }}</div>
+        <div class="news-description" v-html="news_item.desc"></div>
+        <div class="news-secondary">
+          <basic-button
+            :is-blue="true"
+            :title_button="getTranslations.olymp || '{ olymp }'"
+          ></basic-button>
+          <p class="news-time">{{ formatDate(news_item.posted_date) }}</p>
+        </div>
+      </div>
+      <div class="recommendNews">
+        <div class="recommendNews___title font-gilroy">
+          {{ getTranslations.recommended || "{ recommended }" }}
+        </div>
+        <div
+          class="recommendNews___content"
+          v-for="(n, index) in news"
+          :key="index"
+          @click="goToNewsDetails(n.id)"
+        >
+          <div class="card">
+            <div class="image-card">
+              <img :src="BASE_URL + n.image" alt="Новость" />
             </div>
-            <div class="newsItem__text">
-              <p class="title font-gilroy">{{news_item.title}}</p>
-              <div class="content-text" v-html="news_item.desc"></div>
-            </div>
-          </div>
-          <div class="recommendNews">
-            <div class="recommendNews___title">{{ getTranslations.recommended || '{ recommended }' }}</div>
-            <div class="recommendNews___content" v-for="(n, index) in news"
-                 :key="index"
-                 @click="goToNewsDetails(n.id)">
-              <div class="card">
-                <div class="image-card">
-                  <video :poster="BASE_URL + n.image" controls="controls">
-                    <source :src="BASE_URL + n.video" type="video/mp4">
-                  </video>
-                </div>
-                <div class="card-content">
-                  <div class="title font-gilroy truncate-text">{{ n.title }}</div>
-                  <div class="time">{{ formatDate(n.posted_date)  }}</div>
-                </div>
+            <div class="card-content">
+              <div class="title font-gilroy truncate-text">
+                {{ n.title }}
               </div>
+              <div class="time">{{ formatDate(n.posted_date) }}</div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="tablet-form">
+        <VideoMaterials
+          :title="getTranslations.video_material"
+        ></VideoMaterials>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.back {
-  position: absolute;
-  top:50px;
-  left: 20px;
-}
-.newsItem {
-  display: flex;
-  padding: 50px 0;
-  width: 65%;
+.news-detail {
+  width: 1224px;
   margin: 0 auto;
-}
-
-.newsItem___detail {
-  display: flex;
-  flex-direction: column;
   height: 100%;
+  padding: 80px 0;
 }
-.item-back {
-  display: none;
-}
-nav {
-  margin-bottom: 20px;
-  width: 100%;
+
+.news-nav {
   display: flex;
-
-  p {
-    font-weight: 500;
-    color: #CFD3DA;
-    margin: 0;
-  }
-
-  span {
-    color: #333333;
-    font-weight: 500;
-    max-width: 200px;
-    width: 200px;
-  }
-}
-
-.newsItem__main {
-  width: 60%;
-  max-width: 60%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.newsItem__image {
-  width: 100%;
-  height: 30rem;
-  border-radius: 8px;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px;
+  width: 40%;
   overflow: hidden;
-
-  video {
-    width: 100%;
-    height: 100%;
-  }
+  cursor: pointer;
 }
 
-.newsItem__text {
-  .title {
-    font-size: 40px;
-    font-weight: 500;
-  }
-
-  .content-text {
-    line-height: 30px;
-  }
-
-  .time_buttons {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1.5rem;
-
-    .time {
-      color: #575F6C;
-      font-weight: 500;
-    }
-  }
+.news-nav span {
+  white-space: nowrap;
+  color: #cfd3da;
+  font-size: 16px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+  line-height: 140%;
 }
 
-.page {
+.news-body {
+  margin-top: 38px;
   display: flex;
   justify-content: space-between;
-  height: 100%;
+}
+
+.news-item {
+  width: 710px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.news-cover {
+  width: 100%;
+  min-height: 400px;
+  max-height: 500px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.news-title {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 130%;
+}
+
+.news-description {
+  font-size: 16px !important;
+  line-height: 200%;
+  color: #575f6c !important;
+}
+
+.news-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.news-time {
+  margin: 0;
+  color: #575f6c;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 140%;
+}
+
+.title {
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.time {
+  color: #575f6c;
+  font-weight: 500;
 }
 
 .recommendNews {
-  width: 30%;
+  width: 390px;
   box-sizing: border-box;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .recommendNews___title {
   font-size: 32px;
   color: #333333;
+  margin-bottom: 12px;
+  line-height: 120%;
 }
 
-.recommendNews___content {
-  .card {
-    padding: 5px;
-    max-height: 25rem;
-    height: 25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-
-    .image-card {
-      height: 60%;
-      max-height: 60%;
-      width: 100%;
-      border-radius: 8px;
-      overflow: hidden;
-
-      video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        justify-content: center;
-      }
-    }
-
-    .card-content {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      overflow: hidden;
-
-      .title {
-        color: #333333;
-        font-weight: 500;
-        line-height: 28px;
-        font-size: 18px;
-      }
-
-      .time {
-        color: #CFD3DA;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        font-weight: 500;
-      }
-    }
-  }
+.card {
+  padding: 5px;
+  max-height: 350px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
+.image-card {
+  height: 200px;
+  max-height: 200px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.card-content .title {
+  color: #333333;
+  font-weight: 500;
+  line-height: 120%;
+  font-size: 24px;
+}
+
+.card-content .time {
+  color: #cfd3da;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.tablet-form {
+  display: none;
+}
 
 @media (max-width: 1024px) {
-  .newsItem {
+  .news-body {
+    flex-direction: column;
+    gap: 40px;
+  }
+  .news-detail {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .news-nav {
     width: 90%;
   }
-  .newsItem__text {
-    .title {
-      font-size: 26px;
-    }
 
-    .content-text {
-      line-height: 30px;
-    }
-
-    .time {
-      color: #575F6C;
-      font-weight: 500;
-    }
+  .news-item {
+    width: 100%;
   }
 
-  .item-back {
-    display: flex;
+  .news-title {
+    font-size: 28px;
   }
 
-  .back {
+  .news-description {
+    font-size: 14px !important;
+  }
+
+  .recommendNews {
     display: none;
   }
-  .newsItem___detail nav {
-    display: flex;
-    justify-content: space-between;
-  }
-  .page {
-    flex-direction: column;
-  }
-  .newsItem__main {
-    width: 100%;
-    max-width: 100%;
-  }
-  .recommendNews {
-    width: 100%;
-    max-width: 100%;
+
+  .tablet-form {
+    display: block;
   }
 }
 
 @media (max-width: 768px) {
-  .btn {
-    padding: 10px 20px;
+  .news-item {
+    gap: 20px;
+  }
+
+  .news-cover {
+    min-height: 200px;
+    max-height: 200px;
+  }
+
+  .news-title {
+    font-size: 24px;
+  }
+
+  .news-description {
+    font-size: 12px !important;
+  }
+
+  .news-time {
+    font-size: 14px;
   }
 }
 </style>
