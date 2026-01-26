@@ -88,10 +88,6 @@ export default {
   <div class="news-detail">
     <div class="news-nav">
       <span @click="goToAllNews">{{
-        getTranslations.mainPage || "{ mainPage }"
-      }}</span>
-      <span>/</span>
-      <span @click="goToAllNews">{{
         getTranslations.press_center || "{ press_center }"
       }}</span>
       <span>/</span>

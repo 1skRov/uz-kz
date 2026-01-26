@@ -96,10 +96,6 @@ export default {
   <div class="news-detail">
     <div class="news-nav">
       <span @click="goToAllVideo">{{
-        getTranslations.mainPage || "{ mainPage }"
-      }}</span>
-      <span>/</span>
-      <span @click="goToAllVideo">{{
         getTranslations.press_center || "{ press_center }"
       }}</span>
       <span>/</span>
