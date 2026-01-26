@@ -1,6 +1,7 @@
 <script>
 import BasicButton from "@/components/Buttons/button_basic.vue";
 import { BASE_URL } from "@/axios";
+import { slugify } from "@/utils/slugify";
 
 export default {
   name: "PopularItem",
@@ -46,9 +47,10 @@ export default {
       }
     },
     openDetails() {
+      const slug = slugify(this.name);
       this.$router.push({
         name: this.route_name,
-        params: { id: this.id },
+        params: { id: this.id, slug: slug },
       });
     },
     updateWindowWidth() {

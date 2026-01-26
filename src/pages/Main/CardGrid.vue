@@ -1,4 +1,5 @@
 <script>
+import { slugify } from "@/utils/slugify";
 import { BASE_URL } from "@/axios";
 
 export default {
@@ -15,10 +16,11 @@ export default {
     };
   },
   methods: {
-    openDetails(id) {
+    openDetails(n) {
+      const slug = slugify(n.sur_name);
       this.$router.push({
         name: "FamousPersonDetails",
-        params: { id },
+        params: { id: n.id, slug: slug },
       });
     },
   },
@@ -32,7 +34,7 @@ export default {
         class="card"
         v-for="card in cards"
         :key="card.id"
-        @click="openDetails(card.id)"
+        @click="openDetails(card)"
       >
         <div
           class="card__background"

@@ -5,6 +5,7 @@ import api, { BASE_URL } from "@/axios";
 import { mapGetters } from "vuex";
 import Left from "@/components/Buttons/left.vue";
 import Right from "@/components/Buttons/right.vue";
+import { slugify } from "@/utils/slugify";
 
 export default {
   name: "YouthOrganization",
@@ -69,10 +70,11 @@ export default {
         this.swiperInstance.slideNext();
       }
     },
-    goToDetails(newsId) {
+    goToDetails(n) {
+      const slug = slugify(n.title);
       this.$router.push({
         name: "OrganizationDetails",
-        params: { id: newsId },
+        params: { id: n.id, slug: slug },
       });
     },
   },
@@ -89,7 +91,7 @@ export default {
               v-for="(card, index) in cards.slice(0, 2)"
               :key="index"
               class="card"
-              @click="goToDetails(card.id)"
+              @click="goToDetails(card)"
             >
               <img
                 :src="BASE_URL + card.image"
@@ -103,7 +105,7 @@ export default {
                     class="card-description truncate-text"
                     v-html="card.desc"
                   ></div>
-                  <button class="card-button" @click="goToDetails(card.id)">
+                  <button class="card-button" @click="goToDetails(card)">
                     {{ btn_title }}
                   </button>
                 </div>
@@ -115,7 +117,7 @@ export default {
               v-for="(card, index) in cards.slice(2, 5)"
               :key="index"
               class="card"
-              @click="goToDetails(card.id)"
+              @click="goToDetails(card)"
             >
               <img
                 :src="BASE_URL + card.image"

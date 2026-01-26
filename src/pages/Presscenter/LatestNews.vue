@@ -1,4 +1,5 @@
 <script>
+import { slugify } from "@/utils/slugify";
 import Sections from "@/components/Sections.vue";
 import Right from "@/components/Buttons/right.vue";
 import Left from "@/components/Buttons/left.vue";
@@ -91,8 +92,12 @@ export default {
         this.swiperInstance.slideNext();
       }
     },
-    goToNewsDetails(newsId) {
-      this.$router.push({ name: "NewsDetails", params: { id: newsId } });
+    goToNewsDetails(n) {
+      const slug = slugify(n.title);
+      this.$router.push({
+        name: "NewsDetails",
+        params: { id: n.id, slug: slug },
+      });
     },
   },
 };
@@ -144,7 +149,7 @@ export default {
           <SwiperSlide
             v-for="(n, index) in news"
             :key="index"
-            @click="goToNewsDetails(n.id)"
+            @click="goToNewsDetails(n)"
           >
             <div class="card">
               <div class="image-card">

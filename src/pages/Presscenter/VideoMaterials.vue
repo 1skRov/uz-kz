@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import { Grid } from "swiper/modules";
 import api, { BASE_URL } from "@/axios";
 import { mapGetters } from "vuex";
+import { slugify } from "@/utils/slugify";
 
 export default {
   name: "VideoMaterials",
@@ -90,8 +91,12 @@ export default {
         this.swiperInstance.slideNext();
       }
     },
-    goToVideoDetails(newsId) {
-      this.$router.push({ name: "VideoDetails", params: { id: newsId } });
+    goToVideoDetails(n) {
+      const slug = slugify(n.title);
+      this.$router.push({
+        name: "VideoDetails",
+        params: { id: n.id, slug: slug },
+      });
     },
   },
 };
@@ -141,7 +146,7 @@ export default {
           <SwiperSlide
             v-for="(m, index) in materials"
             :key="index"
-            @click="goToVideoDetails(m.id)"
+            @click="goToVideoDetails(m)"
           >
             <div class="card">
               <div class="image-card">
